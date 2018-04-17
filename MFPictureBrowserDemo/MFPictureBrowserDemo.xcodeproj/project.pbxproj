@@ -8,14 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		4A5AEE862085987300EBFF88 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5AEE852085987300EBFF88 /* AppDelegate.m */; };
-		4A5AEE892085987300EBFF88 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5AEE882085987300EBFF88 /* ViewController.m */; };
 		4A5AEE8C2085987300EBFF88 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4A5AEE8A2085987300EBFF88 /* Main.storyboard */; };
-		4A5AEE8E2085987300EBFF88 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4A5AEE8D2085987300EBFF88 /* Assets.xcassets */; };
 		4A5AEE912085987300EBFF88 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4A5AEE8F2085987300EBFF88 /* LaunchScreen.storyboard */; };
 		4A5AEE942085987300EBFF88 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5AEE932085987300EBFF88 /* main.m */; };
 		4A5AEE9D2085A87600EBFF88 /* MFPictureBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5AEE9C2085A87600EBFF88 /* MFPictureBrowser.m */; };
 		4A5AEEA02085BC7500EBFF88 /* MFPictureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5AEE9F2085BC7500EBFF88 /* MFPictureView.m */; };
 		4A5AEEA32085C11B00EBFF88 /* MFDisplayPhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5AEEA22085C11B00EBFF88 /* MFDisplayPhotoCollectionViewCell.m */; };
+		5E53B83F20863DD5007480C7 /* ListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E53B83E20863DD5007480C7 /* ListViewController.m */; };
+		5E53B84220863F0B007480C7 /* RemoteImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E53B84120863F0B007480C7 /* RemoteImageViewController.m */; };
+		5E53B84520863F14007480C7 /* LocalImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E53B84420863F14007480C7 /* LocalImageViewController.m */; };
+		5E53B849208642AE007480C7 /* Image.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5E53B848208642AE007480C7 /* Image.xcassets */; };
 		C343AF5E55FDB1C04384A8C5 /* libPods-MFPictureBrowserDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3403644A2EFF9B61054AEB2 /* libPods-MFPictureBrowserDemo.a */; };
 /* End PBXBuildFile section */
 
@@ -24,10 +26,7 @@
 		4A5AEE812085987300EBFF88 /* MFPictureBrowserDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MFPictureBrowserDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A5AEE842085987300EBFF88 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		4A5AEE852085987300EBFF88 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		4A5AEE872085987300EBFF88 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		4A5AEE882085987300EBFF88 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		4A5AEE8B2085987300EBFF88 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		4A5AEE8D2085987300EBFF88 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4A5AEE902085987300EBFF88 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4A5AEE922085987300EBFF88 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4A5AEE932085987300EBFF88 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -37,6 +36,13 @@
 		4A5AEE9F2085BC7500EBFF88 /* MFPictureView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MFPictureView.m; sourceTree = "<group>"; };
 		4A5AEEA12085C11B00EBFF88 /* MFDisplayPhotoCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFDisplayPhotoCollectionViewCell.h; sourceTree = "<group>"; };
 		4A5AEEA22085C11B00EBFF88 /* MFDisplayPhotoCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFDisplayPhotoCollectionViewCell.m; sourceTree = "<group>"; };
+		5E53B83D20863DD5007480C7 /* ListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ListViewController.h; sourceTree = "<group>"; };
+		5E53B83E20863DD5007480C7 /* ListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ListViewController.m; sourceTree = "<group>"; };
+		5E53B84020863F0B007480C7 /* RemoteImageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RemoteImageViewController.h; sourceTree = "<group>"; };
+		5E53B84120863F0B007480C7 /* RemoteImageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RemoteImageViewController.m; sourceTree = "<group>"; };
+		5E53B84320863F14007480C7 /* LocalImageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocalImageViewController.h; sourceTree = "<group>"; };
+		5E53B84420863F14007480C7 /* LocalImageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocalImageViewController.m; sourceTree = "<group>"; };
+		5E53B848208642AE007480C7 /* Image.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Image.xcassets; sourceTree = "<group>"; };
 		8E2D0E105573B85353E3FBA2 /* Pods-MFPictureBrowserDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MFPictureBrowserDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-MFPictureBrowserDemo/Pods-MFPictureBrowserDemo.release.xcconfig"; sourceTree = "<group>"; };
 		A3403644A2EFF9B61054AEB2 /* libPods-MFPictureBrowserDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MFPictureBrowserDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -86,15 +92,19 @@
 				4A5AEE9A2085988A00EBFF88 /* MFPictureBrowser */,
 				4A5AEE842085987300EBFF88 /* AppDelegate.h */,
 				4A5AEE852085987300EBFF88 /* AppDelegate.m */,
-				4A5AEE872085987300EBFF88 /* ViewController.h */,
-				4A5AEE882085987300EBFF88 /* ViewController.m */,
+				5E53B83D20863DD5007480C7 /* ListViewController.h */,
+				5E53B83E20863DD5007480C7 /* ListViewController.m */,
+				5E53B84020863F0B007480C7 /* RemoteImageViewController.h */,
+				5E53B84120863F0B007480C7 /* RemoteImageViewController.m */,
+				5E53B84320863F14007480C7 /* LocalImageViewController.h */,
+				5E53B84420863F14007480C7 /* LocalImageViewController.m */,
 				4A5AEEA12085C11B00EBFF88 /* MFDisplayPhotoCollectionViewCell.h */,
 				4A5AEEA22085C11B00EBFF88 /* MFDisplayPhotoCollectionViewCell.m */,
 				4A5AEE8A2085987300EBFF88 /* Main.storyboard */,
-				4A5AEE8D2085987300EBFF88 /* Assets.xcassets */,
 				4A5AEE8F2085987300EBFF88 /* LaunchScreen.storyboard */,
 				4A5AEE922085987300EBFF88 /* Info.plist */,
 				4A5AEE932085987300EBFF88 /* main.m */,
+				5E53B848208642AE007480C7 /* Image.xcassets */,
 			);
 			path = MFPictureBrowserDemo;
 			sourceTree = "<group>";
@@ -178,7 +188,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4A5AEE912085987300EBFF88 /* LaunchScreen.storyboard in Resources */,
-				4A5AEE8E2085987300EBFF88 /* Assets.xcassets in Resources */,
+				5E53B849208642AE007480C7 /* Image.xcassets in Resources */,
 				4A5AEE8C2085987300EBFF88 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -213,9 +223,11 @@
 			files = (
 				4A5AEE9D2085A87600EBFF88 /* MFPictureBrowser.m in Sources */,
 				4A5AEEA32085C11B00EBFF88 /* MFDisplayPhotoCollectionViewCell.m in Sources */,
+				5E53B83F20863DD5007480C7 /* ListViewController.m in Sources */,
 				4A5AEEA02085BC7500EBFF88 /* MFPictureView.m in Sources */,
-				4A5AEE892085987300EBFF88 /* ViewController.m in Sources */,
+				5E53B84220863F0B007480C7 /* RemoteImageViewController.m in Sources */,
 				4A5AEE942085987300EBFF88 /* main.m in Sources */,
+				5E53B84520863F14007480C7 /* LocalImageViewController.m in Sources */,
 				4A5AEE862085987300EBFF88 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -350,7 +362,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 03F4406D2CD57D8E4838F5A5 /* Pods-MFPictureBrowserDemo.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5D33D27VC6;
 				INFOPLIST_FILE = MFPictureBrowserDemo/Info.plist;
@@ -366,7 +377,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8E2D0E105573B85353E3FBA2 /* Pods-MFPictureBrowserDemo.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5D33D27VC6;
 				INFOPLIST_FILE = MFPictureBrowserDemo/Info.plist;

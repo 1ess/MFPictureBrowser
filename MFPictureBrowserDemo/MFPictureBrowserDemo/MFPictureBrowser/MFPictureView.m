@@ -126,7 +126,7 @@ UIScrollViewDelegate
     }
     _imageName = imageName;
     self.userInteractionEnabled = true;
-    YYImage *image = [YYImage imageNamed:imageName];
+    UIImage *image = [UIImage imageNamed:imageName];
     [self setPictureSize:image.size];
     self.imageView.image = image;
 }
