@@ -1,10 +1,5 @@
-//
-//  MFPictureView.m
-//  MFPictureBrowserDemo
-//
-//  Created by 张冬冬 on 2018/4/17.
-//  Copyright © 2018年 张冬冬. All rights reserved.
-//
+
+//  Copyright © 2018年 GodzzZZZ. All rights reserved.
 
 #import "MFPictureView.h"
 
