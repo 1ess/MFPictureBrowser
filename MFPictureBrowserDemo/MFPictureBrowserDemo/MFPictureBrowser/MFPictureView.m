@@ -18,7 +18,8 @@ UIScrollViewDelegate
 @property (nonatomic, assign) CGFloat scale;
 @property (nonatomic, assign) CGFloat offsetY;
 @property (nonatomic, assign, getter = isShowingAnimation) BOOL showingAnimation;
-//@property (nonatomic, strong) UIProgressView *progressView;
+@property (nonatomic, strong) UIProgressView *progressView;
+@property (nonatomic, assign) BOOL loadingFinished;
 @end
 
 @implementation MFPictureView
@@ -48,16 +49,18 @@ UIScrollViewDelegate
     imageView.userInteractionEnabled = true;
     _imageView = imageView;
     [self addSubview:imageView];
+    
     if (!self.localImage) {
-//        self.progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height - 3, [UIScreen mainScreen].bounds.size.width, 3)];
-//        self.progressView.progressViewStyle = UIProgressViewStyleDefault;
-//        self.progressView.tintColor = [UIColor colorWithWhite:0 alpha:0];
-//        self.progressView.trackTintColor = [UIColor redColor];
-//        [self addSubview:self.progressView];
-//        self.progressView.hidden = true;
-//        CGAffineTransform transform = CGAffineTransformMakeScale(1.0f, 3.0f);
-//        self.progressView.transform = transform;
+        self.progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height - 3, [UIScreen mainScreen].bounds.size.width, 3)];
+        self.progressView.progressViewStyle = UIProgressViewStyleDefault;
+        self.progressView.tintColor = [UIColor colorWithWhite:1 alpha:0.6];
+        self.progressView.trackTintColor = [UIColor colorWithWhite:0 alpha:0.2];
+        [self addSubview:self.progressView];
+        self.progressView.hidden = true;
+        CGAffineTransform transform = CGAffineTransformMakeScale(1.0f, 3.0f);
+        self.progressView.transform = transform;
     }
+    
     // 添加监听事件
     UITapGestureRecognizer *doubleTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleClick:)];
     doubleTapGesture.numberOfTapsRequired = 2;
@@ -67,9 +70,9 @@ UIScrollViewDelegate
 - (void)setShowingAnimation:(BOOL)showingAnimation {
     _showingAnimation = showingAnimation;
     if (showingAnimation) {
-//        self.progressView.hidden = true;
+        self.progressView.hidden = true;
     }else {
-//        self.progressView.hidden = self.progressView.progress == 1;
+        self.progressView.hidden = self.progressView.progress == 1;
     }
 }
 
@@ -96,7 +99,7 @@ UIScrollViewDelegate
 
 - (void)animationDismissWithToRect:(CGRect)rect animationBlock:(void (^)(void))animationBlock completionBlock:(void (^)(void))completionBlock {
     // 隐藏进度视图
-//    self.progressView.hidden = true;
+    self.progressView.hidden = true;
     [UIView animateWithDuration:0.25 animations:^{
         if (animationBlock) {
             animationBlock();
@@ -143,32 +146,32 @@ UIScrollViewDelegate
     NSData *data = [manager.cache getImageDataForKey:key];
     // 如果没有在执行动画，那么就显示出来
     if (!data && !self.showingAnimation) {
-        // 显示出来
-//        self.progressView.hidden = false;
+        self.progressView.hidden = false;
     }else {
-//        self.progressView.hidden = true;
+        self.progressView.hidden = true;
     }
 //    NSLog(@"===%@", @(self.progressView.hidden));
     // 取消上一次的下载
     self.userInteractionEnabled = false;
     [self.imageView yy_setImageWithURL:[NSURL URLWithString:imageURL] placeholder:self.placeholderImage options:0 progress:^(NSInteger receivedSize, NSInteger expectedSize) {
         CGFloat progress = 1.0 * receivedSize / expectedSize ;
-        NSLog(@"-------%@", @(progress));
-//        self.progressView.progress = progress;
+        [self.progressView setProgress:progress animated:true];
     } transform:nil completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
+        self.loadingFinished = true;
         if (error) {
-//            self.progressView.hidden = true;
+            self.progressView.hidden = true;
         }else {
             if (stage == YYWebImageStageFinished) {
-//                self.progressView.hidden = true;
+                self.progressView.hidden = true;
                 self.userInteractionEnabled = true;
+                if ([_pictureDelegate respondsToSelector:@selector(pictureView:didLoadImageWithError:)]) {
+                    [_pictureDelegate pictureView:self didLoadImageWithError:error];
+                }
                 if (image) {
                     // 计算图片的大小
                     [self setPictureSize:image.size];
-                    
                 }else {
-//                    self.progressView.hidden = true;
-//                    self.progressView.progress = 1;
+                    self.progressView.progress = 1;
                 }
             }
         }
@@ -234,6 +237,9 @@ UIScrollViewDelegate
 #pragma mark - 监听方法
 
 - (void)doubleClick:(UITapGestureRecognizer *)ges {
+    if (!self.loadingFinished) {
+        return;
+    }
     CGFloat newScale = 2;
     if (_doubleClicks) {
         newScale = 1;

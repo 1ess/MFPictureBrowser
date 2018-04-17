@@ -15,10 +15,8 @@
 UIScrollViewDelegate,
 MFPictureViewDelegate
 >
-/// 图片数组，3个 UIImageView。进行复用
+/// MFPictureView数组，最多保存9个MFPictureView
 @property (nonatomic, strong) NSMutableArray<MFPictureView *> *pictureViews;
-/// 准备待用的图片视图（缓存）
-@property (nonatomic, strong) NSMutableArray<MFPictureView *> *readyToUsePictureViews;
 /// 图片张数
 @property (nonatomic, assign) NSInteger picturesCount;
 /// 当前页数
@@ -55,7 +53,6 @@ MFPictureViewDelegate
     self.pageTextColor = [UIColor whiteColor];
     // 初始化数组
     self.pictureViews = @[].mutableCopy;
-    self.readyToUsePictureViews = @[].mutableCopy;
     // 初始化 scrollView
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(- self.imagesSpacing * 0.5, 0, self.width + self.imagesSpacing, self.height)];
     scrollView.showsVerticalScrollIndicator = false;
@@ -101,8 +98,12 @@ MFPictureViewDelegate
     self.scrollView.contentSize = CGSizeMake(picturesCount * _scrollView.width, _scrollView.height);
     // 滚动到指定位置
     [self.scrollView setContentOffset:CGPointMake(currentPictureIndex * _scrollView.width, 0) animated:false];
-    // 设置第1个 view 的位置以及大小
-    MFPictureView *pictureView = [self p_setPictureViewForIndex:currentPictureIndex fromView:fromView];
+    // 设置当前展示的MFPictureView的位置以及大小
+    for (NSInteger i = 0; i < picturesCount; i++) {
+        MFPictureView *pictureView = [self p_setPictureViewForIndex:i fromView: nil];
+        [_pictureViews addObject:pictureView];
+    }
+    MFPictureView *pictureView = _pictureViews[currentPictureIndex];
     // 获取来源图片在屏幕上的位置
     CGRect rect = [fromView convertRect:fromView.bounds toView:nil];
 
@@ -114,15 +115,7 @@ MFPictureViewDelegate
             self.pageTextLabel.alpha = 0;
         }
     } completionBlock:^{
-        // 设置左边与右边的 pictureView
-        if (currentPictureIndex != 0 && picturesCount > 1) {
-            // 设置左边
-            [self p_setPictureViewForIndex:currentPictureIndex - 1 fromView: nil];
-        }
-        if (currentPictureIndex < picturesCount - 1) {
-            // 设置右边
-            [self p_setPictureViewForIndex:currentPictureIndex + 1 fromView: nil];
-        }
+        
     }];
 }
 
@@ -147,9 +140,6 @@ MFPictureViewDelegate
         [pictureView.imageView yy_cancelCurrentImageRequest];
     }
 
-    for (MFPictureView *pictureView in _readyToUsePictureViews) {
-        [pictureView.imageView yy_cancelCurrentImageRequest];
-    }
     // 执行关闭动画
     [pictureView animationDismissWithToRect:rect animationBlock:^{
         self.backgroundColor = [UIColor clearColor];
@@ -213,23 +203,8 @@ MFPictureViewDelegate
     if (_currentPage == currentPage) {
         return;
     }
-    NSUInteger oldValue = _currentPage;
     _currentPage = currentPage;
-    [self p_removeViewToReuse];
     [self p_setPageText:currentPage];
-    // 如果新值大于旧值
-    if (currentPage > oldValue) {
-        // 往右滑，设置右边的视图
-        if (currentPage + 1 < _picturesCount) {
-            [self p_setPictureViewForIndex:currentPage + 1 fromView: nil];
-        }
-    }else {
-        // 往左滑，设置左边的视图
-        if (currentPage > 0) {
-            [self p_setPictureViewForIndex:currentPage - 1 fromView: nil];
-        }
-    }
-    
 }
 
 /**
@@ -241,7 +216,6 @@ MFPictureViewDelegate
  @return 当前设置的控件
  */
 - (MFPictureView *)p_setPictureViewForIndex:(NSInteger)index fromView:(UIImageView *)fromView {
-    [self p_removeViewToReuse];
     MFPictureView *view = [self p_createPictureView];
     view.index = index;
     CGRect frame = view.frame;
@@ -281,32 +255,12 @@ MFPictureViewDelegate
 }
 
 - (MFPictureView *)p_createPictureView {
-    MFPictureView *view;
-    if (_readyToUsePictureViews.count == 0) {
-        view = [[MFPictureView alloc] init];
-        // 手势事件冲突处理
-        [self.dismissTapGesture requireGestureRecognizerToFail:view.imageView.gestureRecognizers.firstObject];
-        view.pictureDelegate = self;
-    }else {
-        view = [_readyToUsePictureViews firstObject];
-        [_readyToUsePictureViews removeObjectAtIndex:0];
-    }
+    MFPictureView *view = [[MFPictureView alloc] init];
+    [self.dismissTapGesture requireGestureRecognizerToFail:view.imageView.gestureRecognizers.firstObject];
+    view.pictureDelegate = self;
     [_scrollView addSubview:view];
-    [_pictureViews addObject:view];
+//    [_pictureViews addObject:view];
     return view;
-}
-
-- (void)p_removeViewToReuse {
-    NSMutableArray *tempArray = [NSMutableArray array];
-    for (MFPictureView *view in self.pictureViews) {
-        // 判断某个view的页数与当前页数相差值为2的话，那么让这个view从视图上移除
-        if (abs((int)view.index - (int)_currentPage) == 2){
-            [tempArray addObject:view];
-            [view removeFromSuperview];
-            [_readyToUsePictureViews addObject:view];
-        }
-    }
-    [self.pictureViews removeObjectsInArray:tempArray];
 }
 
 - (void)p_setPageText:(NSUInteger)index {
@@ -327,12 +281,6 @@ MFPictureViewDelegate
     if (self.currentPage != page) {
         if ([_delegate respondsToSelector:@selector(pictureView:scrollToIndex:)]) {
             [_delegate pictureView:self scrollToIndex:page];
-            [self.pictureViews enumerateObjectsUsingBlock:^(MFPictureView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                if (obj.index == page) {
-                    *stop = true;
-                    
-                }
-            }];
         }
     }
     self.currentPage = page;
@@ -346,6 +294,12 @@ MFPictureViewDelegate
 
 - (void)pictureView:(MFPictureView *)pictureView scale:(CGFloat)scale {
     self.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1 - scale];
+}
+
+- (void)pictureView:(MFPictureView *)pictureView didLoadImageWithError:(NSError *)error {
+    if ([_delegate respondsToSelector:@selector(pictureView:didLoadImageAtIndex:withError:)]) {
+        [_delegate pictureView:self didLoadImageAtIndex:pictureView.index withError:error];
+    }
 }
 
 @end

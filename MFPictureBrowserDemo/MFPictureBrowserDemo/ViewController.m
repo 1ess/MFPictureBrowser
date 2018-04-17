@@ -40,10 +40,10 @@ MFPictureBrowserDelegate
     if (!_picList) {
         _picList = @[
                      @"https://cdn.dribbble.com/users/571755/screenshots/4479924/captainjet-app.jpg",
-                     @"https://cdn.dribbble.com/users/1200964/screenshots/3812962/todo_concept_iphonex_30fps.gif",
-                     @"https://cdn.dribbble.com/users/877784/screenshots/3869376/cinema_app_concept.gif",
+                     @"https://pic4.zhimg.com/v2-fd1ed42848c7887efb60c3ab9927308b_b.gif",
+                     @"https://pic2.zhimg.com/v2-4429bf94b04e5e72a44a38387867a91d_b.gif",
                      @"https://pic1.zhimg.com/6f19a4976f57c61e87507bc19f5d6c64_r.jpg",
-//                     @""
+                     @"https://pic4.zhimg.com/v2-3f7510e46f5014e0373d769d5b9cfbeb_b.gif"
                      ].mutableCopy;
     }
     return _picList;
@@ -77,6 +77,7 @@ MFPictureBrowserDelegate
             dispatch_async(dispatch_get_main_queue(), ^{
                 YYImageType type = YYImageDetectType(dataRef);
                 CGFloat height = image.size.height * 320 / image.size.width;
+                NSLog(@"----%@", @(height));
                 if (height > [UIScreen mainScreen].bounds.size.height) {
                     cell.tagImageView.image = [UIImage imageNamed:@"ic_messages_pictype_long_pic_30x30_"];
                 }
@@ -148,7 +149,19 @@ minimumInteritemSpacingForSectionAtIndex: (NSInteger)section{
     return cell.displayImageView;
 }
 
-
+- (void)pictureView:(MFPictureBrowser *)pictureBrowser didLoadImageAtIndex:(NSInteger)index withError:(NSError *)error{
+    if (!error) {
+        YYWebImageManager *manager = [YYWebImageManager sharedManager];
+        NSString *key = [manager cacheKeyForURL:[NSURL URLWithString:self.picList[index]]];
+        UIImage *image = [manager.cache getImageForKey:key];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+        MFDisplayPhotoCollectionViewCell *cell = (MFDisplayPhotoCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+        if (image != cell.displayImageView.image) {
+            [self.collectionView reloadItemsAtIndexPaths:@[indexPath]];
+            cell.displayImageView.alpha = 0;
+        }
+    }
+}
 
 
 @end

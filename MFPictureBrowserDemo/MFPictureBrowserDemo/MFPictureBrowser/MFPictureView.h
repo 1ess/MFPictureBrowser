@@ -12,6 +12,7 @@
 @protocol MFPictureViewDelegate <NSObject>
 - (void)pictureViewTouch:(MFPictureView *)pictureView;
 - (void)pictureView:(MFPictureView *)pictureView scale:(CGFloat)scale;
+- (void)pictureView:(MFPictureView *)pictureView didLoadImageWithError:(NSError *)error;
 @end
 
 @interface MFPictureView : UIScrollView
@@ -31,8 +32,7 @@
 @property (nonatomic, strong, readonly) YYAnimatedImageView *imageView;
 // 代理
 @property (nonatomic, weak) id<MFPictureViewDelegate> pictureDelegate;
-// progress
-//@property (nonatomic, weak) ESPictureProgressView *progressView;
+
 /**
  动画显示
  
