@@ -56,7 +56,7 @@ UIScrollViewDelegate
         self.progressView.tintColor = [UIColor colorWithWhite:1 alpha:0.6];
         self.progressView.trackTintColor = [UIColor colorWithWhite:0 alpha:0.2];
         [self addSubview:self.progressView];
-        self.progressView.hidden = true;
+        self.progressView.alpha = 0;
         CGAffineTransform transform = CGAffineTransformMakeScale(1.0f, 3.0f);
         self.progressView.transform = transform;
     }
@@ -70,9 +70,9 @@ UIScrollViewDelegate
 - (void)setShowingAnimation:(BOOL)showingAnimation {
     _showingAnimation = showingAnimation;
     if (showingAnimation) {
-        self.progressView.hidden = true;
+        self.progressView.alpha = 0;
     }else {
-        self.progressView.hidden = self.progressView.progress == 1;
+        self.progressView.alpha = self.progressView.progress == 1;
     }
 }
 
@@ -99,7 +99,7 @@ UIScrollViewDelegate
 
 - (void)animationDismissWithToRect:(CGRect)rect animationBlock:(void (^)(void))animationBlock completionBlock:(void (^)(void))completionBlock {
     // 隐藏进度视图
-    self.progressView.hidden = true;
+    self.progressView.alpha = 0;;
     [UIView animateWithDuration:0.25 animations:^{
         if (animationBlock) {
             animationBlock();
@@ -146,11 +146,10 @@ UIScrollViewDelegate
     NSData *data = [manager.cache getImageDataForKey:key];
     // 如果没有在执行动画，那么就显示出来
     if (!data && !self.showingAnimation) {
-        self.progressView.hidden = false;
+        self.progressView.alpha = 1;
     }else {
-        self.progressView.hidden = true;
+        self.progressView.alpha = 0;
     }
-//    NSLog(@"===%@", @(self.progressView.hidden));
     // 取消上一次的下载
     self.userInteractionEnabled = false;
     [self.imageView yy_setImageWithURL:[NSURL URLWithString:imageURL] placeholder:self.placeholderImage options:0 progress:^(NSInteger receivedSize, NSInteger expectedSize) {
@@ -159,10 +158,10 @@ UIScrollViewDelegate
     } transform:nil completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
         self.loadingFinished = true;
         if (error) {
-            self.progressView.hidden = true;
+            self.progressView.alpha = 0;
         }else {
             if (stage == YYWebImageStageFinished) {
-                self.progressView.hidden = true;
+                self.progressView.alpha = 0;
                 self.userInteractionEnabled = true;
                 if ([_pictureDelegate respondsToSelector:@selector(pictureView:didLoadImageWithError:)]) {
                     [_pictureDelegate pictureView:self didLoadImageWithError:error];

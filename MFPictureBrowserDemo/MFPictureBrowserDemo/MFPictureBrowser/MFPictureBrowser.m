@@ -147,6 +147,7 @@ MFPictureViewDelegate
         [self showStatusBar];
     } completionBlock:^{
         [self removeFromSuperview];
+        [self.pictureViews removeAllObjects];
         _endView.alpha = 1;
     }];
 }

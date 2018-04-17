@@ -76,8 +76,8 @@ MFPictureBrowserDelegate
             CFDataRef dataRef = CFBridgingRetain(data);
             dispatch_async(dispatch_get_main_queue(), ^{
                 YYImageType type = YYImageDetectType(dataRef);
+                CFBridgingRelease(dataRef);
                 CGFloat height = image.size.height * 320 / image.size.width;
-                NSLog(@"----%@", @(height));
                 if (height > [UIScreen mainScreen].bounds.size.height) {
                     cell.tagImageView.image = [UIImage imageNamed:@"ic_messages_pictype_long_pic_30x30_"];
                 }
