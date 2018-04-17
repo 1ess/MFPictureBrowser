@@ -13,13 +13,13 @@
 - 初始化并设置代理
 
 ```
-    MFPictureBrowser *brower = [[MFPictureBrowser alloc] init];
-    brower.delegate = self;
+MFPictureBrowser *brower = [[MFPictureBrowser alloc] init];
+brower.delegate = self;
 ```
 - 展示
 
 ```
-    [brower showFromView:(view) picturesCount:(count) currentPictureIndex:(index)];
+[brower showFromView:(view) picturesCount:(count) currentPictureIndex:(index)];
 ```
 
 - 实现代理方法
