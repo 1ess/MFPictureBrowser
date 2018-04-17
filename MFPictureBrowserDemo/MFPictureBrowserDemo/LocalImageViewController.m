@@ -63,12 +63,17 @@ MFPictureBrowserDelegate
     
     MFDisplayPhotoCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"reuseCell" forIndexPath:indexPath];
     NSString *imageName = self.picList[indexPath.row];
-    UIImage *image = [UIImage imageNamed:imageName];
+    UIImage *image = nil;
+    if ([imageName.pathExtension isEqualToString:@"gif"]) {
+        image = [YYImage imageNamed:imageName];
+    }else {
+        image = [UIImage imageNamed:imageName];
+    }
     cell.displayImageView.image = image;
     CGFloat height = image.size.height * 320 / image.size.width;
     if (height > [UIScreen mainScreen].bounds.size.height) {
         cell.tagImageView.image = [UIImage imageNamed:@"ic_messages_pictype_long_pic_30x30_"];
-    }else if ([imageName.lastPathComponent isEqualToString:@"gif"]) {
+    }else if ([imageName.pathExtension isEqualToString:@"gif"]) {
         cell.tagImageView.image = [UIImage imageNamed:@"ic_messages_pictype_gif_30x30_"];
     }
     if (cell.tagImageView.image) {

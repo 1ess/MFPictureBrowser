@@ -126,7 +126,12 @@ UIScrollViewDelegate
     }
     _imageName = imageName;
     self.userInteractionEnabled = true;
-    UIImage *image = [UIImage imageNamed:imageName];
+    UIImage *image = nil;
+    if ([imageName.pathExtension isEqualToString:@"gif"]) {
+        image = [YYImage imageNamed:imageName];
+    }else {
+        image = [UIImage imageNamed:imageName];
+    }
     [self setPictureSize:image.size];
     self.imageView.image = image;
 }
