@@ -1,0 +1,1 @@
+../../../MFCategory/Classes/Manager/MFSavePhotoManager.h
