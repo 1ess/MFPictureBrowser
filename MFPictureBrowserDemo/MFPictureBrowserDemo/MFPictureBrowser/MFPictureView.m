@@ -155,7 +155,9 @@ UIScrollViewDelegate
     __weak __typeof(self)weakSelf = self;
     [self.imageView yy_setImageWithURL:[NSURL URLWithString:imageURL] placeholder:self.placeholderImage options:0 progress:^(NSInteger receivedSize, NSInteger expectedSize) {
         CGFloat progress = 1.0 * receivedSize / expectedSize ;
-        [self.progressView setProgress:progress animated:true];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.progressView setProgress:progress animated:true];
+        });
     } transform:nil completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         strongSelf.loadingFinished = true;
