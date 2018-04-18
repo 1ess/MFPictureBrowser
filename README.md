@@ -37,7 +37,7 @@ brower.delegate = self;
 
 ```objc
 //必须实现
-- (UIView *)pictureView:(MFPictureBrowser *)pictureBrowser imageViewAtIndex:(NSInteger)index {
+- (UIImageView *)pictureView:(MFPictureBrowser *)pictureBrowser imageViewAtIndex:(NSInteger)index {
     ...
 }
 
@@ -50,4 +50,6 @@ brower.delegate = self;
     ...
 }
 ```
+
+具体使用方式参见 Demo
 
