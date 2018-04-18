@@ -3,6 +3,10 @@
 类似于<即刻>应用的图片浏览器效果
 参考：ESPictureBrowser
 
+## 效果图
+
+<img src="https://github.com/GodzzZZZ/MFPictureBrowser/blob/master/Snapshot/1.gif" width="50%"/><img src="https://github.com/GodzzZZZ/MFPictureBrowser/blob/master/Snapshot/2.gif" width="50%"/>
+
 ## 使用方式
 - 导入
 
