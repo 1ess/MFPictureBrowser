@@ -4,7 +4,7 @@
 #import "MFPictureBrowser.h"
 #import "MFPictureView.h"
 #import <YYWebImage/YYWebImage.h>
-#import <UIView+MFFrame.h>
+#import <MFCategory/UIView+MFFrame.h>
 @interface MFPictureBrowser()
 <
 UIScrollViewDelegate,
@@ -76,8 +76,8 @@ MFPictureViewDelegate
 
 - (void)showFromView:(UIImageView *)fromView picturesCount:(NSInteger)picturesCount currentPictureIndex:(NSInteger)currentPictureIndex {
     [self hideStautsBar];
-    NSString *errorStr = [NSString stringWithFormat:@"Parameter is not correct, pictureCount is %zd, currentPictureIndex is %zd", picturesCount, currentPictureIndex];
-    NSAssert(picturesCount > 0 && currentPictureIndex < picturesCount && picturesCount <= 9, errorStr);
+    
+    NSAssert(picturesCount > 0 && currentPictureIndex < picturesCount && picturesCount <= 9, @"Parameter is not correct");
     NSAssert(self.delegate != nil, @"Please set up delegate for pictureBrowser");
     fromView.alpha = 0;
     if (!currentPictureIndex && [_delegate respondsToSelector:@selector(pictureView:imageViewAtIndex:)]) {
@@ -136,14 +136,17 @@ MFPictureViewDelegate
     }
 
     // 执行关闭动画
+    __weak __typeof(self)weakSelf = self;
     [pictureView animationDismissWithToRect:rect animationBlock:^{
-        self.backgroundColor = [UIColor clearColor];
-        self.pageTextLabel.alpha = 0;
-        [self showStatusBar];
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        strongSelf.backgroundColor = [UIColor clearColor];
+        strongSelf.pageTextLabel.alpha = 0;
+        [strongSelf showStatusBar];
     } completionBlock:^{
-        [self removeFromSuperview];
-        [self.pictureViews removeAllObjects];
-        _endView.alpha = 1;
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        [strongSelf removeFromSuperview];
+        [strongSelf.pictureViews removeAllObjects];
+        strongSelf.endView.alpha = 1;
     }];
 }
 

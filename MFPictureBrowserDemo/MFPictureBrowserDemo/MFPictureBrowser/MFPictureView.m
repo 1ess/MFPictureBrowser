@@ -150,27 +150,29 @@ UIScrollViewDelegate
     }else {
         self.progressView.alpha = 0;
     }
-    // 取消上一次的下载
+    
     self.userInteractionEnabled = false;
+    __weak __typeof(self)weakSelf = self;
     [self.imageView yy_setImageWithURL:[NSURL URLWithString:imageURL] placeholder:self.placeholderImage options:0 progress:^(NSInteger receivedSize, NSInteger expectedSize) {
         CGFloat progress = 1.0 * receivedSize / expectedSize ;
         [self.progressView setProgress:progress animated:true];
     } transform:nil completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
-        self.loadingFinished = true;
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        strongSelf.loadingFinished = true;
         if (error) {
-            self.progressView.alpha = 0;
+            strongSelf.progressView.alpha = 0;
         }else {
             if (stage == YYWebImageStageFinished) {
-                self.progressView.alpha = 0;
-                self.userInteractionEnabled = true;
+                strongSelf.progressView.alpha = 0;
+                strongSelf.userInteractionEnabled = true;
                 if ([_pictureDelegate respondsToSelector:@selector(pictureView:didLoadImageWithError:)]) {
-                    [_pictureDelegate pictureView:self didLoadImageWithError:error];
+                    [_pictureDelegate pictureView:strongSelf didLoadImageWithError:error];
                 }
                 if (image) {
                     // 计算图片的大小
-                    [self setPictureSize:image.size];
+                    [strongSelf setPictureSize:image.size];
                 }else {
-                    self.progressView.progress = 1;
+                    strongSelf.progressView.progress = 1;
                 }
             }
         }
