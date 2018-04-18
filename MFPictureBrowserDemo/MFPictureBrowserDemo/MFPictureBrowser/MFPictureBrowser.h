@@ -13,7 +13,7 @@
  
  @return 视图
  */
-- (UIImageView *)pictureView:(MFPictureBrowser *)pictureBrowser imageViewAtIndex:(NSInteger)index;
+- (UIImageView *)pictureBrowser:(MFPictureBrowser *)pictureBrowser imageViewAtIndex:(NSInteger)index;
 @optional
 
 /**
@@ -25,7 +25,7 @@
  
  @return 高质量图片 url 字符串
  */
-- (NSString *)pictureView:(MFPictureBrowser *)pictureBrowser imageURLAtIndex:(NSInteger)index;
+- (NSString *)pictureBrowser:(MFPictureBrowser *)pictureBrowser imageURLAtIndex:(NSInteger)index;
 /**
  如果加载本地图片, 实现这个方法
  获取对应索引的高质量图片名称字符串
@@ -35,7 +35,7 @@
  
  @return 高质量图片名称
  */
-- (NSString *)pictureView:(MFPictureBrowser *)pictureBrowser imageNameAtIndex:(NSInteger)index;
+- (NSString *)pictureBrowser:(MFPictureBrowser *)pictureBrowser imageNameAtIndex:(NSInteger)index;
 
 /**
  滚动到指定页时会调用该方法
@@ -43,7 +43,7 @@
  @param pictureBrowser 图片浏览器
  @param index          索引
  */
-- (void)pictureView:(MFPictureBrowser *)pictureBrowser scrollToIndex:(NSInteger)index;
+- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser scrollToIndex:(NSInteger)index;
 
 /**
  imageView加载完毕的回调
@@ -51,14 +51,14 @@
  @param pictureBrowser 图片浏览器
  @param error          error信息
  */
-- (void)pictureView:(MFPictureBrowser *)pictureBrowser didLoadImageAtIndex:(NSInteger)index withError:(NSError *)error;
+- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser didLoadImageAtIndex:(NSInteger)index withError:(NSError *)error;
 
 /**
  长按会调用此方法
  @param pictureBrowser 图片浏览器
  @param index          索引
  */
-- (void)pictureView:(MFPictureBrowser *)pictureBrowser longPressAtIndex:(NSInteger)index;
+- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser longPressAtIndex:(NSInteger)index;
 
 @end
 

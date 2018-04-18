@@ -13,6 +13,7 @@ MFPictureBrowserDelegate
 >
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) NSMutableArray *picList;
+@property (nonatomic, assign) NSInteger currentPictureIndex;
 @end
 
 @implementation RemoteImageViewController
@@ -49,6 +50,13 @@ MFPictureBrowserDelegate
     self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.collectionView];
     [self.collectionView registerClass:[MFDisplayPhotoCollectionViewCell class] forCellWithReuseIdentifier:@"reuseCell"];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    YYImageCache *cache = [YYWebImageManager sharedManager].cache;
+    [cache.memoryCache removeAllObjects];
+    [cache.diskCache removeAllObjects];
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -134,17 +142,17 @@ minimumInteritemSpacingForSectionAtIndex: (NSInteger)section{
     [brower showFromView:cell.displayImageView picturesCount:self.picList.count currentPictureIndex:indexPath.row];
 }
 
-- (NSString *)pictureView:(MFPictureBrowser *)pictureBrowser imageURLAtIndex:(NSInteger)index {
+- (NSString *)pictureBrowser:(MFPictureBrowser *)pictureBrowser imageURLAtIndex:(NSInteger)index {
     return self.picList[index];
 }
 
-- (UIView *)pictureView:(MFPictureBrowser *)pictureBrowser imageViewAtIndex:(NSInteger)index {
+- (UIImageView *)pictureBrowser:(MFPictureBrowser *)pictureBrowser imageViewAtIndex:(NSInteger)index {
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
     MFDisplayPhotoCollectionViewCell *cell = (MFDisplayPhotoCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
     return cell.displayImageView;
 }
 
-- (void)pictureView:(MFPictureBrowser *)pictureBrowser didLoadImageAtIndex:(NSInteger)index withError:(NSError *)error{
+- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser didLoadImageAtIndex:(NSInteger)index withError:(NSError *)error{
     if (!error) {
         YYWebImageManager *manager = [YYWebImageManager sharedManager];
         NSString *key = [manager cacheKeyForURL:[NSURL URLWithString:self.picList[index]]];
@@ -153,9 +161,15 @@ minimumInteritemSpacingForSectionAtIndex: (NSInteger)section{
         MFDisplayPhotoCollectionViewCell *cell = (MFDisplayPhotoCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
         if (image != cell.displayImageView.image) {
             [self.collectionView reloadItemsAtIndexPaths:@[indexPath]];
-            cell.displayImageView.alpha = 0;
+            if (index == self.currentPictureIndex) {
+                cell.displayImageView.alpha = 0;
+            }
         }
     }
+}
+
+- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser scrollToIndex:(NSInteger)index {
+    self.currentPictureIndex = index;
 }
 
 @end

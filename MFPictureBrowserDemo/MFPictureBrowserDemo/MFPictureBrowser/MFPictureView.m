@@ -165,8 +165,10 @@ UIScrollViewDelegate
             if (stage == YYWebImageStageFinished) {
                 strongSelf.progressView.alpha = 0;
                 strongSelf.userInteractionEnabled = true;
-                if ([_pictureDelegate respondsToSelector:@selector(pictureView:didLoadImageWithError:)]) {
-                    [_pictureDelegate pictureView:strongSelf didLoadImageWithError:error];
+                if (!data) {
+                    if ([_pictureDelegate respondsToSelector:@selector(pictureView:didLoadImageWithError:)]) {
+                        [_pictureDelegate pictureView:strongSelf didLoadImageWithError:error];
+                    }
                 }
                 if (image) {
                     // 计算图片的大小
@@ -226,7 +228,7 @@ UIScrollViewDelegate
     return CGRectMake(x, y, imageSize.width, imageSize.height);
 }
 
-- (CGRect)zoomRectForScale:(float)scale withCenter:(CGPoint)center{
+- (CGRect)zoomRectForScale:(float)scale withCenter:(CGPoint)center {
     CGRect zoomRect;
     zoomRect.size.height =self.frame.size.height / scale;
     zoomRect.size.width  =self.frame.size.width  / scale;
@@ -237,7 +239,7 @@ UIScrollViewDelegate
 
 #pragma mark - 监听方法
 
-- (void)doubleClick:(UITapGestureRecognizer *)ges {
+- (void)doubleClick:(UITapGestureRecognizer *)gesture {
     if (!self.loadingFinished) {
         return;
     }
@@ -245,7 +247,7 @@ UIScrollViewDelegate
     if (_doubleClicks) {
         newScale = 1;
     }
-    CGRect zoomRect = [self zoomRectForScale:newScale withCenter:[ges locationInView:ges.view]];
+    CGRect zoomRect = [self zoomRectForScale:newScale withCenter:[gesture locationInView:gesture.view]];
     [self zoomToRect:zoomRect animated:YES];
     _doubleClicks = !_doubleClicks;
 }
@@ -310,8 +312,7 @@ UIScrollViewDelegate
     return _imageView;
 }
 
-- (void)scrollViewDidZoom:(UIScrollView *)scrollView
-{
+- (void)scrollViewDidZoom:(UIScrollView *)scrollView {
     CGPoint center = _imageView.center;
     CGFloat offsetY = (scrollView.bounds.size.height > scrollView.contentSize.height) ? (scrollView.bounds.size.height - scrollView.contentSize.height) * 0.5 : 0.0;
     center.y = scrollView.contentSize.height * 0.5 + offsetY;

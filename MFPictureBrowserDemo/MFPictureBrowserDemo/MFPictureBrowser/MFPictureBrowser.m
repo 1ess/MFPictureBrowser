@@ -80,8 +80,11 @@ MFPictureViewDelegate
     NSAssert(picturesCount > 0 && currentPictureIndex < picturesCount && picturesCount <= 9, @"Parameter is not correct");
     NSAssert(self.delegate != nil, @"Please set up delegate for pictureBrowser");
     fromView.alpha = 0;
-    if (!currentPictureIndex && [_delegate respondsToSelector:@selector(pictureView:imageViewAtIndex:)]) {
-        _fromView = [_delegate pictureView:self imageViewAtIndex:currentPictureIndex];
+    if ([_delegate respondsToSelector:@selector(pictureBrowser:scrollToIndex:)]) {
+        [_delegate pictureBrowser:self scrollToIndex:currentPictureIndex];
+    }
+    if (!currentPictureIndex && [_delegate respondsToSelector:@selector(pictureBrowser:imageViewAtIndex:)]) {
+        _fromView = [_delegate pictureBrowser:self imageViewAtIndex:currentPictureIndex];
     }
     // 记录值并设置位置
     _currentPage = currentPictureIndex;
@@ -119,8 +122,8 @@ MFPictureViewDelegate
     CGFloat x = [UIScreen mainScreen].bounds.size.width * 0.5;
     CGFloat y = [UIScreen mainScreen].bounds.size.height * 0.5;
     CGRect rect = CGRectMake(x, y, 0, 0);
-    if ([_delegate respondsToSelector:@selector(pictureView:imageViewAtIndex:)]) {
-        _endView = [_delegate pictureView:self imageViewAtIndex:_currentPage];
+    if ([_delegate respondsToSelector:@selector(pictureBrowser:imageViewAtIndex:)]) {
+        _endView = [_delegate pictureBrowser:self imageViewAtIndex:_currentPage];
         if (_endView.superview != nil) {
             rect = [_endView convertRect:_endView.bounds toView:nil];
         }else {
@@ -158,8 +161,8 @@ MFPictureViewDelegate
 
 - (void)longPressGesture:(UILongPressGestureRecognizer *)gesture {
     if (gesture.state == UIGestureRecognizerStateEnded) {
-        if ([_delegate respondsToSelector:@selector(pictureView:longPressAtIndex:)]) {
-            [_delegate pictureView:self longPressAtIndex:_currentPage];
+        if ([_delegate respondsToSelector:@selector(pictureBrowser:longPressAtIndex:)]) {
+            [_delegate pictureBrowser:self longPressAtIndex:_currentPage];
         }
     }
 }
@@ -229,22 +232,22 @@ MFPictureViewDelegate
         }
     };
     
-    if ([_delegate respondsToSelector:@selector(pictureView:imageViewAtIndex:)]) {
-        UIImageView *v = [_delegate pictureView:self imageViewAtIndex:index];
+    if ([_delegate respondsToSelector:@selector(pictureBrowser:imageViewAtIndex:)]) {
+        UIImageView *v = [_delegate pictureBrowser:self imageViewAtIndex:index];
         UIImage *image = ((UIImageView *)v).image;
         setImageSizeBlock(image);
         // 并且设置占位图片
         view.placeholderImage = image;
     }
     
-    NSAssert(([_delegate respondsToSelector:@selector(pictureView:imageURLAtIndex:)] && ![_delegate respondsToSelector:@selector(pictureView:imageNameAtIndex:)]) || (![_delegate respondsToSelector:@selector(pictureView:imageURLAtIndex:)] && [_delegate respondsToSelector:@selector(pictureView:imageNameAtIndex:)]), @"You can not implement both methods!");
+    NSAssert(([_delegate respondsToSelector:@selector(pictureBrowser:imageURLAtIndex:)] && ![_delegate respondsToSelector:@selector(pictureBrowser:imageNameAtIndex:)]) || (![_delegate respondsToSelector:@selector(pictureBrowser:imageURLAtIndex:)] && [_delegate respondsToSelector:@selector(pictureBrowser:imageNameAtIndex:)]), @"You can not implement both methods!");
     
-    if ([_delegate respondsToSelector:@selector(pictureView:imageURLAtIndex:)]) {
-        view.imageURL = [_delegate pictureView:self imageURLAtIndex:index];
+    if ([_delegate respondsToSelector:@selector(pictureBrowser:imageURLAtIndex:)]) {
+        view.imageURL = [_delegate pictureBrowser:self imageURLAtIndex:index];
         view.localImage = false;
     }
-    if ([_delegate respondsToSelector:@selector(pictureView:imageNameAtIndex:)]) {
-        view.imageName = [_delegate pictureView:self imageNameAtIndex:index];
+    if ([_delegate respondsToSelector:@selector(pictureBrowser:imageNameAtIndex:)]) {
+        view.imageName = [_delegate pictureBrowser:self imageNameAtIndex:index];
         view.localImage = true;
     }
     CGPoint center = view.center;
@@ -273,13 +276,13 @@ MFPictureViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     _fromView.alpha = 1;
     NSUInteger page = (scrollView.contentOffset.x / scrollView.width + 0.5);
-    if ([_delegate respondsToSelector:@selector(pictureView:imageViewAtIndex:)]) {
-        _fromView = [_delegate pictureView:self imageViewAtIndex:page];
+    if ([_delegate respondsToSelector:@selector(pictureBrowser:imageViewAtIndex:)]) {
+        _fromView = [_delegate pictureBrowser:self imageViewAtIndex:page];
         _fromView.alpha = 0;
     }
     if (self.currentPage != page) {
-        if ([_delegate respondsToSelector:@selector(pictureView:scrollToIndex:)]) {
-            [_delegate pictureView:self scrollToIndex:page];
+        if ([_delegate respondsToSelector:@selector(pictureBrowser:scrollToIndex:)]) {
+            [_delegate pictureBrowser:self scrollToIndex:page];
         }
     }
     self.currentPage = page;
@@ -296,8 +299,8 @@ MFPictureViewDelegate
 }
 
 - (void)pictureView:(MFPictureView *)pictureView didLoadImageWithError:(NSError *)error {
-    if ([_delegate respondsToSelector:@selector(pictureView:didLoadImageAtIndex:withError:)]) {
-        [_delegate pictureView:self didLoadImageAtIndex:pictureView.index withError:error];
+    if ([_delegate respondsToSelector:@selector(pictureBrowser:didLoadImageAtIndex:withError:)]) {
+        [_delegate pictureBrowser:self didLoadImageAtIndex:pictureView.index withError:error];
     }
 }
 
