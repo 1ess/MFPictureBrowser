@@ -39,6 +39,7 @@ UIScrollViewDelegate
     // 添加 imageView
     YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] init];
     imageView.clipsToBounds = true;
+    imageView.layer.cornerRadius = 3;
     imageView.contentMode = UIViewContentModeScaleAspectFill;
     imageView.frame = self.bounds;
     imageView.userInteractionEnabled = true;
@@ -62,40 +63,31 @@ UIScrollViewDelegate
     [imageView addGestureRecognizer:doubleTapGesture];
 }
 
-- (void)setShowingAnimation:(BOOL)showingAnimation {
-    _showingAnimation = showingAnimation;
-    if (showingAnimation) {
-        self.progressView.alpha = 0;
-    }else {
-        self.progressView.alpha = self.progressView.progress == 1;
-    }
-}
-
 #pragma mark - 外部方法
 
 - (void)animationShowWithFromRect:(CGRect)rect animationBlock:(void (^)(void))animationBlock completionBlock:(void (^)(void))completionBlock {
-    _imageView.frame = rect;
-    
+    self.imageView.frame = rect;
     self.showingAnimation = true;
-    [UIView animateWithDuration:0.25 animations:^{
-        if (animationBlock != nil) {
+    self.progressView.alpha = 0;
+    [UIView animateWithDuration:0.25 delay:0 options:7 << 16 animations:^{
+        if (animationBlock) {
             animationBlock();
         }
         self.imageView.frame = [self getImageActualFrame:self.showPictureSize];
     } completion:^(BOOL finished) {
-        if (finished) {
-            if (completionBlock) {
-                completionBlock();
-            }
+        if (finished && completionBlock) {
+            self.showingAnimation = false;
+            self.progressView.alpha = self.progressView.progress != 1 ? 1 : 0;
+            completionBlock();
         }
-        self.showingAnimation = false;
+        
     }];
 }
 
 - (void)animationDismissWithToRect:(CGRect)rect animationBlock:(void (^)(void))animationBlock completionBlock:(void (^)(void))completionBlock {
     // 隐藏进度视图
-    self.progressView.alpha = 0;;
-    [UIView animateWithDuration:0.25 animations:^{
+    self.progressView.alpha = 0;
+    [UIView animateWithDuration:0.25 delay:0 options:7 << 16 animations:^{
         if (animationBlock) {
             animationBlock();
         }
@@ -105,11 +97,10 @@ UIScrollViewDelegate
         toRect.origin.x += self.contentOffset.x;
         self.imageView.frame = toRect;
     } completion:^(BOOL finished) {
-        if (finished) {
-            if (completionBlock) {
-                completionBlock();
-            }
+        if (finished && completionBlock) {
+            completionBlock();
         }
+        
     }];
 }
 
@@ -144,12 +135,6 @@ UIScrollViewDelegate
     YYWebImageManager *manager = [YYWebImageManager sharedManager];
     NSString *key = [manager cacheKeyForURL:[NSURL URLWithString:imageURL]];
     NSData *data = [manager.cache getImageDataForKey:key];
-    // 如果没有在执行动画，那么就显示出来
-    if (!data && !self.showingAnimation) {
-        self.progressView.alpha = 1;
-    }else {
-        self.progressView.alpha = 0;
-    }
     
     self.userInteractionEnabled = false;
     __weak __typeof(self)weakSelf = self;
@@ -161,24 +146,19 @@ UIScrollViewDelegate
     } transform:nil completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         strongSelf.loadingFinished = true;
-        if (error) {
-            strongSelf.progressView.alpha = 0;
-        }else {
-            if (stage == YYWebImageStageFinished) {
-                strongSelf.progressView.alpha = 0;
-                strongSelf.userInteractionEnabled = true;
-                if (!data) {
-                    if ([_pictureDelegate respondsToSelector:@selector(pictureView:didLoadImageWithError:)]) {
-                        [_pictureDelegate pictureView:strongSelf didLoadImageWithError:error];
-                    }
-                }
-                if (image) {
-                    // 计算图片的大小
-                    [strongSelf setPictureSize:image.size];
-                }else {
-                    strongSelf.progressView.progress = 1;
+        if (!error && stage == YYWebImageStageFinished) {
+            strongSelf.userInteractionEnabled = true;
+            if (!data) {
+                if ([_pictureDelegate respondsToSelector:@selector(pictureView:imageDidLoadAtIndex:withError:)]) {
+                    [_pictureDelegate pictureView:strongSelf imageDidLoadAtIndex:strongSelf.index withError:error];
                 }
             }
+            if (image) {
+                // 计算图片的大小
+                [strongSelf setPictureSize:image.size];
+            }
+            strongSelf.progressView.progress = 1;
+            
         }
     }];
 }

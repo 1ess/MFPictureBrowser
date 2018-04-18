@@ -14,7 +14,6 @@ typedef NS_ENUM(NSInteger, MFImageType) {
 };
 @interface PictureModel : NSObject
 @property (nonatomic, strong) NSString *imageURL;
-@property (nonatomic, assign) BOOL isLoad;
 @property (nonatomic, assign) MFImageType imageType;
-- (instancetype)initWithURL:(NSString *)imageURL isLoad:(BOOL)isLoad imageType:(MFImageType)imageType;
+- (instancetype)initWithURL:(NSString *)imageURL  imageType:(MFImageType)imageType;
 @end

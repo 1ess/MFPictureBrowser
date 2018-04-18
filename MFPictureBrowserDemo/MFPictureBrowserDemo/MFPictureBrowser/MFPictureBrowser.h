@@ -49,9 +49,10 @@
  imageView加载完毕的回调
  
  @param pictureBrowser 图片浏览器
+ @param index          索引
  @param error          error信息
  */
-- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser didLoadImageAtIndex:(NSInteger)index withError:(NSError *)error;
+- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser imageDidLoadAtIndex:(NSInteger)index withError:(NSError *)error;
 
 /**
  长按会调用此方法

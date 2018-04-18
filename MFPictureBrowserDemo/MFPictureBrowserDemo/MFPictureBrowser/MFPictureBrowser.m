@@ -81,12 +81,13 @@ MFPictureViewDelegate
     NSAssert(self.delegate != nil, @"Please set up delegate for pictureBrowser");
     
     if (!currentPictureIndex && [_delegate respondsToSelector:@selector(pictureBrowser:imageViewAtIndex:)]) {
-        _fromView = [_delegate pictureBrowser:self imageViewAtIndex:currentPictureIndex];
+        self.fromView = [_delegate pictureBrowser:self imageViewAtIndex:currentPictureIndex];
+        self.fromView.alpha = 0;
     }
     // 记录值并设置位置
-    _currentPage = currentPictureIndex;
+    self.currentPage = currentPictureIndex;
     self.picturesCount = picturesCount;
-    [self p_setPageText:currentPictureIndex];
+    
     // 添加到 window 上
     [[UIApplication sharedApplication].keyWindow addSubview:self];
     // 计算 scrollView 的 contentSize
@@ -98,6 +99,7 @@ MFPictureViewDelegate
         MFPictureView *pictureView = [self p_setPictureViewForIndex:i fromView: nil];
         [_pictureViews addObject:pictureView];
     }
+
     MFPictureView *pictureView = _pictureViews[currentPictureIndex];
     // 获取来源图片在屏幕上的位置
     CGRect rect = [fromView convertRect:fromView.bounds toView:nil];
@@ -110,7 +112,7 @@ MFPictureViewDelegate
             self.pageTextLabel.alpha = 0;
         }
     } completionBlock:^{
-        
+
     }];
 }
 
@@ -120,8 +122,8 @@ MFPictureViewDelegate
     CGFloat y = [UIScreen mainScreen].bounds.size.height * 0.5;
     CGRect rect = CGRectMake(x, y, 0, 0);
     if ([_delegate respondsToSelector:@selector(pictureBrowser:imageViewAtIndex:)]) {
-        _endView = [_delegate pictureBrowser:self imageViewAtIndex:_currentPage];
-        if (_endView.superview != nil) {
+        self.endView = [_delegate pictureBrowser:self imageViewAtIndex:_currentPage];
+        if (self.endView.superview != nil) {
             rect = [_endView convertRect:_endView.bounds toView:nil];
         }else {
             rect = _endView.frame;
@@ -159,7 +161,7 @@ MFPictureViewDelegate
 - (void)longPressGesture:(UILongPressGestureRecognizer *)gesture {
     if (gesture.state == UIGestureRecognizerStateEnded) {
         if ([_delegate respondsToSelector:@selector(pictureBrowser:longPressAtIndex:)]) {
-            [_delegate pictureBrowser:self longPressAtIndex:_currentPage];
+            [_delegate pictureBrowser:self longPressAtIndex:self.currentPage];
         }
     }
 }
@@ -199,9 +201,6 @@ MFPictureViewDelegate
 }
 
 - (void)setCurrentPage:(NSInteger)currentPage {
-    if (_currentPage == currentPage) {
-        return;
-    }
     _currentPage = currentPage;
     [self p_setPageText:currentPage];
 }
@@ -271,13 +270,17 @@ MFPictureViewDelegate
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    
     NSUInteger page = (scrollView.contentOffset.x / scrollView.width + 0.5);
-    if ([_delegate respondsToSelector:@selector(pictureBrowser:imageViewAtIndex:)]) {
-        _fromView = [_delegate pictureBrowser:self imageViewAtIndex:page];
-    }
+    
     if (self.currentPage != page) {
+        self.fromView.alpha = 1;
         if ([_delegate respondsToSelector:@selector(pictureBrowser:scrollToIndex:)]) {
             [_delegate pictureBrowser:self scrollToIndex:page];
+        }
+        if ([_delegate respondsToSelector:@selector(pictureBrowser:imageViewAtIndex:)]) {
+            self.fromView = [_delegate pictureBrowser:self imageViewAtIndex:page];
+            self.fromView.alpha = 0;
         }
     }
     self.currentPage = page;
@@ -293,9 +296,9 @@ MFPictureViewDelegate
     self.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1 - scale];
 }
 
-- (void)pictureView:(MFPictureView *)pictureView didLoadImageWithError:(NSError *)error {
-    if ([_delegate respondsToSelector:@selector(pictureBrowser:didLoadImageAtIndex:withError:)]) {
-        [_delegate pictureBrowser:self didLoadImageAtIndex:pictureView.index withError:error];
+- (void)pictureView:(MFPictureView *)pictureView imageDidLoadAtIndex:(NSInteger)index withError:(NSError *)error {
+    if ([_delegate respondsToSelector:@selector(pictureBrowser:imageDidLoadAtIndex:withError:)]) {
+        [_delegate pictureBrowser:self imageDidLoadAtIndex:index withError:error];
     }
 }
 

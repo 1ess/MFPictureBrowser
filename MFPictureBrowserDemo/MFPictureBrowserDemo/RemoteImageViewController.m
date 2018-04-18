@@ -35,11 +35,11 @@ MFPictureBrowserDelegate
 - (NSMutableArray *)picList {
     if (!_picList) {
         _picList = @[
-                     [[PictureModel alloc] initWithURL:@"https://cdn.dribbble.com/users/571755/screenshots/4479924/captainjet-app.jpg" isLoad:NO imageType:MFImageTypeOther],
-                     [[PictureModel alloc] initWithURL:@"https://pic4.zhimg.com/v2-fd1ed42848c7887efb60c3ab9927308b_b.gif" isLoad:NO imageType:MFImageTypeOther],
-                     [[PictureModel alloc] initWithURL:@"https://pic2.zhimg.com/v2-4429bf94b04e5e72a44a38387867a91d_b.gif" isLoad:NO imageType:MFImageTypeOther],
-                     [[PictureModel alloc] initWithURL:@"https://pic1.zhimg.com/6f19a4976f57c61e87507bc19f5d6c64_r.jpg" isLoad:NO imageType:MFImageTypeOther],
-                     [[PictureModel alloc] initWithURL:@"https://pic4.zhimg.com/v2-3f7510e46f5014e0373d769d5b9cfbeb_b.gif" isLoad:NO imageType:MFImageTypeOther]
+                     [[PictureModel alloc] initWithURL:@"https://cdn.dribbble.com/users/571755/screenshots/4479924/captainjet-app.jpg" imageType:MFImageTypeOther],
+                     [[PictureModel alloc] initWithURL:@"https://pic4.zhimg.com/v2-fd1ed42848c7887efb60c3ab9927308b_b.gif" imageType:MFImageTypeOther],
+                     [[PictureModel alloc] initWithURL:@"https://pic2.zhimg.com/v2-4429bf94b04e5e72a44a38387867a91d_b.gif" imageType:MFImageTypeOther],
+                     [[PictureModel alloc] initWithURL:@"https://pic1.zhimg.com/6f19a4976f57c61e87507bc19f5d6c64_r.jpg" imageType:MFImageTypeOther],
+                     [[PictureModel alloc] initWithURL:@"https://pic4.zhimg.com/v2-3f7510e46f5014e0373d769d5b9cfbeb_b.gif" imageType:MFImageTypeOther]
                      ].mutableCopy;
     }
     return _picList;
@@ -77,7 +77,6 @@ MFPictureBrowserDelegate
     NSURL *url = [NSURL URLWithString:picUrlString];
     [cell.displayImageView yy_setImageWithURL:url placeholder:[UIImage imageNamed:@"placeholder"] options:YYWebImageOptionProgressive completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
         if (!error) {
-            model.isLoad = YES;
             NSData *data = [self contentDataWithImage:image andURL:url];
             CFDataRef dataRef = CFBridgingRetain(data);
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -100,8 +99,6 @@ MFPictureBrowserDelegate
                     cell.tagImageView.alpha = 1;
                 }
             });
-        }else {
-            model.isLoad = NO;
         }
     }];
     
@@ -150,13 +147,7 @@ minimumInteritemSpacingForSectionAtIndex: (NSInteger)section{
     MFPictureBrowser *brower = [[MFPictureBrowser alloc] init];
     brower.delegate = self;
     self.currentPictureIndex = indexPath.row;
-    cell.displayImageView.alpha = 0;
     [brower showFromView:cell.displayImageView picturesCount:self.picList.count currentPictureIndex:indexPath.row];
-}
-
-- (NSString *)pictureBrowser:(MFPictureBrowser *)pictureBrowser imageURLAtIndex:(NSInteger)index {
-    PictureModel *model = self.picList[index];
-    return model.imageURL;
 }
 
 - (UIImageView *)pictureBrowser:(MFPictureBrowser *)pictureBrowser imageViewAtIndex:(NSInteger)index {
@@ -165,27 +156,15 @@ minimumInteritemSpacingForSectionAtIndex: (NSInteger)section{
     return cell.displayImageView;
 }
 
-- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser didLoadImageAtIndex:(NSInteger)index withError:(NSError *)error{
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+- (NSString *)pictureBrowser:(MFPictureBrowser *)pictureBrowser imageURLAtIndex:(NSInteger)index {
     PictureModel *model = self.picList[index];
-    if (!error) {
-        if (!model.isLoad) {
-            [self.collectionView reloadItemsAtIndexPaths:@[indexPath]];
-        }
-        model.isLoad = YES;
-    }else {
-        model.isLoad = NO;
-    }
+    return model.imageURL;
 }
 
-- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser scrollToIndex:(NSInteger)index {
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.currentPictureIndex inSection:0];
-    MFDisplayPhotoCollectionViewCell *cell = (MFDisplayPhotoCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
-    cell.displayImageView.alpha = 1;
-    self.currentPictureIndex = index;
-    NSIndexPath *currentIndexPath = [NSIndexPath indexPathForRow:self.currentPictureIndex inSection:0];
-    MFDisplayPhotoCollectionViewCell *currentCell = (MFDisplayPhotoCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:currentIndexPath];
-    currentCell.displayImageView.alpha = 0;
+- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser imageDidLoadAtIndex:(NSInteger)index withError:(NSError *)error {
+    if (!error) {
+        [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]]];
+    }
 }
 
 @end
