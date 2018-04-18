@@ -12,6 +12,7 @@ MFPictureBrowserDelegate
 >
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) NSMutableArray *picList;
+@property (nonatomic, assign) NSInteger currentPictureIndex;
 @end
 
 @implementation LocalImageViewController
@@ -110,6 +111,8 @@ minimumInteritemSpacingForSectionAtIndex: (NSInteger)section{
     MFDisplayPhotoCollectionViewCell *cell = (MFDisplayPhotoCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
     MFPictureBrowser *brower = [[MFPictureBrowser alloc] init];
     brower.delegate = self;
+    self.currentPictureIndex = indexPath.row;
+    cell.displayImageView.alpha = 0;
     [brower showFromView:cell.displayImageView picturesCount:self.picList.count currentPictureIndex:indexPath.row];
 }
 
@@ -121,6 +124,16 @@ minimumInteritemSpacingForSectionAtIndex: (NSInteger)section{
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
     MFDisplayPhotoCollectionViewCell *cell = (MFDisplayPhotoCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
     return cell.displayImageView;
+}
+
+- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser scrollToIndex:(NSInteger)index {
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.currentPictureIndex inSection:0];
+    MFDisplayPhotoCollectionViewCell *cell = (MFDisplayPhotoCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+    cell.displayImageView.alpha = 1;
+    self.currentPictureIndex = index;
+    NSIndexPath *currentIndexPath = [NSIndexPath indexPathForRow:self.currentPictureIndex inSection:0];
+    MFDisplayPhotoCollectionViewCell *currentCell = (MFDisplayPhotoCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:currentIndexPath];
+    currentCell.displayImageView.alpha = 0;
 }
 
 @end
