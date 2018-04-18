@@ -79,10 +79,7 @@ MFPictureViewDelegate
     
     NSAssert(picturesCount > 0 && currentPictureIndex < picturesCount && picturesCount <= 9, @"Parameter is not correct");
     NSAssert(self.delegate != nil, @"Please set up delegate for pictureBrowser");
-    fromView.alpha = 0;
-    if ([_delegate respondsToSelector:@selector(pictureBrowser:scrollToIndex:)]) {
-        [_delegate pictureBrowser:self scrollToIndex:currentPictureIndex];
-    }
+    
     if (!currentPictureIndex && [_delegate respondsToSelector:@selector(pictureBrowser:imageViewAtIndex:)]) {
         _fromView = [_delegate pictureBrowser:self imageViewAtIndex:currentPictureIndex];
     }
@@ -274,11 +271,9 @@ MFPictureViewDelegate
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    _fromView.alpha = 1;
     NSUInteger page = (scrollView.contentOffset.x / scrollView.width + 0.5);
     if ([_delegate respondsToSelector:@selector(pictureBrowser:imageViewAtIndex:)]) {
         _fromView = [_delegate pictureBrowser:self imageViewAtIndex:page];
-        _fromView.alpha = 0;
     }
     if (self.currentPage != page) {
         if ([_delegate respondsToSelector:@selector(pictureBrowser:scrollToIndex:)]) {

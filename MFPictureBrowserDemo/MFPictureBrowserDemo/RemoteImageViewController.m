@@ -139,6 +139,8 @@ minimumInteritemSpacingForSectionAtIndex: (NSInteger)section{
     MFDisplayPhotoCollectionViewCell *cell = (MFDisplayPhotoCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
     MFPictureBrowser *brower = [[MFPictureBrowser alloc] init];
     brower.delegate = self;
+    self.currentPictureIndex = indexPath.row;
+    cell.displayImageView.alpha = 0;
     [brower showFromView:cell.displayImageView picturesCount:self.picList.count currentPictureIndex:indexPath.row];
 }
 
@@ -154,22 +156,19 @@ minimumInteritemSpacingForSectionAtIndex: (NSInteger)section{
 
 - (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser didLoadImageAtIndex:(NSInteger)index withError:(NSError *)error{
     if (!error) {
-        YYWebImageManager *manager = [YYWebImageManager sharedManager];
-        NSString *key = [manager cacheKeyForURL:[NSURL URLWithString:self.picList[index]]];
-        UIImage *image = [manager.cache getImageForKey:key];
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-        MFDisplayPhotoCollectionViewCell *cell = (MFDisplayPhotoCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
-        if (image != cell.displayImageView.image) {
-            [self.collectionView reloadItemsAtIndexPaths:@[indexPath]];
-            if (index == self.currentPictureIndex) {
-                cell.displayImageView.alpha = 0;
-            }
-        }
+        [self.collectionView reloadItemsAtIndexPaths:@[indexPath]];
     }
 }
 
 - (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser scrollToIndex:(NSInteger)index {
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.currentPictureIndex inSection:0];
+    MFDisplayPhotoCollectionViewCell *cell = (MFDisplayPhotoCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+    cell.displayImageView.alpha = 1;
     self.currentPictureIndex = index;
+    NSIndexPath *currentIndexPath = [NSIndexPath indexPathForRow:self.currentPictureIndex inSection:0];
+    MFDisplayPhotoCollectionViewCell *currentCell = (MFDisplayPhotoCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:currentIndexPath];
+    currentCell.displayImageView.alpha = 0;
 }
 
 @end
