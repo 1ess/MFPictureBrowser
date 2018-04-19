@@ -12,19 +12,12 @@ MFPictureViewDelegate
 >
 /// MFPictureView数组，最多保存9个MFPictureView
 @property (nonatomic, strong) NSMutableArray<MFPictureView *> *pictureViews;
-/// 图片张数
 @property (nonatomic, assign) NSInteger picturesCount;
-/// 当前页数
 @property (nonatomic, assign) NSInteger currentPage;
-/// 界面子控件
 @property (nonatomic, weak) UIScrollView *scrollView;
-/// 页码文字控件
 @property (nonatomic, weak) UILabel *pageTextLabel;
-/// 消失的 tap 手势
 @property (nonatomic, weak) UITapGestureRecognizer *dismissTapGesture;
-/// 结束时, 原来界面 image 所在
 @property (nonatomic, strong) UIImageView *endView;
-/// 开始时, 原来界面 image 所在
 @property (nonatomic, strong) UIImageView *fromView;
 @end
 
@@ -33,12 +26,12 @@ MFPictureViewDelegate
 - (instancetype)init {
     self = [super init];
     if (self) {
-        [self setupUI];
+        [self configuration];
     }
     return self;
 }
 
-- (void)setupUI {
+- (void)configuration {
     self.frame = [UIScreen mainScreen].bounds;
     self.backgroundColor = [UIColor clearColor];
     // 设置默认属性
@@ -74,46 +67,124 @@ MFPictureViewDelegate
     self.dismissTapGesture = tapGesture;
 }
 
+- (MFPictureView *)createLocalImagePictureViewAtIndex:(NSInteger)index fromView:(UIImageView *)fromView {
+    NSAssert([_delegate respondsToSelector:@selector(pictureBrowser:imageNameAtIndex:)], @"Please implement delegate method of pictureBrowser:imageNameAtIndex:");
+    NSAssert(![_delegate respondsToSelector:@selector(pictureBrowser:imageURLAtIndex:)], @"Please DO NOT implement delegate method of pictureBrowser:imageURLAtIndex:");
+    NSString *imageName = [_delegate pictureBrowser:self imageNameAtIndex:index];
+    MFPictureView *view = [[MFPictureView alloc] initWithImageName:imageName];
+    [self.dismissTapGesture requireGestureRecognizerToFail:view.imageView.gestureRecognizers.firstObject];
+    view.pictureDelegate = self;
+    [self.scrollView addSubview:view];
+    view.index = index;
+    view.size = self.size;
+    
+    UIImageView *v = [_delegate pictureBrowser:self imageViewAtIndex:index];
+    if (v.image) {
+        view.pictureSize = v.image.size;
+    }
+    // 并且设置占位图片
+    view.placeholderImage = v.image;
+    CGPoint center = view.center;
+    center.x = index * _scrollView.width + _scrollView.width * 0.5;
+    view.center = center;
+    return view;
+}
+
+- (MFPictureView *)createNetworkImagePictureViewAtIndex:(NSInteger)index fromView:(UIImageView *)fromView {
+    NSAssert(![_delegate respondsToSelector:@selector(pictureBrowser:imageNameAtIndex:)], @"Please DO NOT implement delegate method of pictureBrowser:imageNameAtIndex:");
+    NSAssert([_delegate respondsToSelector:@selector(pictureBrowser:imageURLAtIndex:)], @"Please implement delegate method of pictureBrowser:imageURLAtIndex:");
+    return nil;
+}
+
+
+//- (MFPictureView *)p_createPictureViewAtIndex:(NSInteger)index fromView:(UIImageView *)fromView {
+//    MFPictureView *view = [[MFPictureView alloc] init];
+//    [self.dismissTapGesture requireGestureRecognizerToFail:view.imageView.gestureRecognizers.firstObject];
+//    view.pictureDelegate = self;
+//    [self.scrollView addSubview:view];
+//    view.index = index;
+////    view.size = self.size;
+//    CGRect frame = view.frame;
+//    frame.size = self.frame.size;
+//    view.frame = frame;
+//    
+//    // 设置图片的大小<在下载完毕之后会根据下载的图片计算大小>
+//    
+//    if ([_delegate respondsToSelector:@selector(pictureBrowser:imageViewAtIndex:)]) {
+//        UIImageView *v = [_delegate pictureBrowser:self imageViewAtIndex:index];
+//        UIImage *image = ((UIImageView *)v).image;
+//        if (image != nil) {
+//            view.pictureSize = image.size;
+//        }
+//        // 并且设置占位图片
+//        view.placeholderImage = image;
+//    }
+//    
+//    NSAssert(([_delegate respondsToSelector:@selector(pictureBrowser:imageURLAtIndex:)] && ![_delegate respondsToSelector:@selector(pictureBrowser:imageNameAtIndex:)]) || (![_delegate respondsToSelector:@selector(pictureBrowser:imageURLAtIndex:)] && [_delegate respondsToSelector:@selector(pictureBrowser:imageNameAtIndex:)]), @"You can not implement both methods!");
+//    
+//    if ([_delegate respondsToSelector:@selector(pictureBrowser:imageURLAtIndex:)]) {
+//        view.imageURL = [_delegate pictureBrowser:self imageURLAtIndex:index];
+//        view.localImage = false;
+//    }
+//    if ([_delegate respondsToSelector:@selector(pictureBrowser:imageNameAtIndex:)]) {
+//        view.imageName = [_delegate pictureBrowser:self imageNameAtIndex:index];
+//        view.localImage = true;
+//    }
+//    CGPoint center = view.center;
+//    center.x = index * _scrollView.width + _scrollView.width * 0.5;
+//    view.center = center;
+//    return view;
+//}
+
+- (void)showLocalImageFromView:(UIImageView *)fromView picturesCount:(NSInteger)picturesCount currentPictureIndex:(NSInteger)currentPictureIndex {
+    [self showFromView:fromView picturesCount:picturesCount currentPictureIndex:currentPictureIndex];
+    for (NSInteger i = 0; i < picturesCount; i++) {
+        MFPictureView *pictureView = [self createLocalImagePictureViewAtIndex:i fromView:nil];
+        [_pictureViews addObject:pictureView];
+    }
+    MFPictureView *pictureView = self.pictureViews[currentPictureIndex];
+    [self showPictureView:pictureView fromView:fromView];
+}
+
+- (void)showNetworkImageFromView:(UIImageView *)fromView picturesCount:(NSInteger)picturesCount currentPictureIndex:(NSInteger)currentPictureIndex {
+    [self showFromView:fromView picturesCount:picturesCount currentPictureIndex:currentPictureIndex];
+    for (NSInteger i = 0; i < picturesCount; i++) {
+        MFPictureView *pictureView = [self createNetworkImagePictureViewAtIndex:i fromView:nil];
+        [_pictureViews addObject:pictureView];
+    }
+    MFPictureView *pictureView = self.pictureViews[currentPictureIndex];
+    [self showPictureView:pictureView fromView:fromView];
+    
+}
+
+- (void)showPictureView:(MFPictureView *)pictureView fromView:(UIImageView *)fromView{
+    CGRect rect = [fromView convertRect:fromView.bounds toView:nil];
+    [pictureView animationShowWithFromRect:rect animationBlock:^{
+        self.backgroundColor = [UIColor blackColor];
+        if (self.picturesCount != 1) {
+            self.pageTextLabel.alpha = 1;
+        }else {
+            self.pageTextLabel.alpha = 0;
+        }
+    } completionBlock:nil];
+}
+
 - (void)showFromView:(UIImageView *)fromView picturesCount:(NSInteger)picturesCount currentPictureIndex:(NSInteger)currentPictureIndex {
     [self hideStautsBar];
-    
     NSAssert(picturesCount > 0 && currentPictureIndex < picturesCount && picturesCount <= 9, @"Parameter is not correct");
     NSAssert(self.delegate != nil, @"Please set up delegate for pictureBrowser");
-    
-    if (!currentPictureIndex && [_delegate respondsToSelector:@selector(pictureBrowser:imageViewAtIndex:)]) {
-        self.fromView = [_delegate pictureBrowser:self imageViewAtIndex:currentPictureIndex];
-        self.fromView.alpha = 0;
-    }
+    NSAssert([_delegate respondsToSelector:@selector(pictureBrowser:imageViewAtIndex:)], @"Please implement delegate method of pictureBrowser:imageViewAtIndex:");
+    self.fromView = [_delegate pictureBrowser:self imageViewAtIndex:currentPictureIndex];
+    self.fromView.alpha = 0;
     // 记录值并设置位置
-    self.currentPage = currentPictureIndex;
     self.picturesCount = picturesCount;
-    
+    self.currentPage = currentPictureIndex;
     // 添加到 window 上
     [[UIApplication sharedApplication].keyWindow addSubview:self];
     // 计算 scrollView 的 contentSize
     self.scrollView.contentSize = CGSizeMake(picturesCount * _scrollView.width, _scrollView.height);
     // 滚动到指定位置
     [self.scrollView setContentOffset:CGPointMake(currentPictureIndex * _scrollView.width, 0) animated:false];
-    // 设置当前展示的MFPictureView的位置以及大小
-    for (NSInteger i = 0; i < picturesCount; i++) {
-        MFPictureView *pictureView = [self p_setPictureViewForIndex:i fromView: nil];
-        [_pictureViews addObject:pictureView];
-    }
-
-    MFPictureView *pictureView = _pictureViews[currentPictureIndex];
-    // 获取来源图片在屏幕上的位置
-    CGRect rect = [fromView convertRect:fromView.bounds toView:nil];
-
-    [pictureView animationShowWithFromRect:rect animationBlock:^{
-        self.backgroundColor = [UIColor blackColor];
-        if (picturesCount != 1) {
-            self.pageTextLabel.alpha = 1;
-        }else {
-            self.pageTextLabel.alpha = 0;
-        }
-    } completionBlock:^{
-
-    }];
 }
 
 - (void)dismiss {
@@ -121,13 +192,11 @@ MFPictureViewDelegate
     CGFloat x = [UIScreen mainScreen].bounds.size.width * 0.5;
     CGFloat y = [UIScreen mainScreen].bounds.size.height * 0.5;
     CGRect rect = CGRectMake(x, y, 0, 0);
-    if ([_delegate respondsToSelector:@selector(pictureBrowser:imageViewAtIndex:)]) {
-        self.endView = [_delegate pictureBrowser:self imageViewAtIndex:_currentPage];
-        if (self.endView.superview != nil) {
-            rect = [_endView convertRect:_endView.bounds toView:nil];
-        }else {
-            rect = _endView.frame;
-        }
+    self.endView = [_delegate pictureBrowser:self imageViewAtIndex:_currentPage];
+    if (self.endView.superview != nil) {
+        rect = [_endView convertRect:_endView.bounds toView:nil];
+    }else {
+        rect = _endView.frame;
     }
     
     // 取到当前显示的 pictureView
@@ -177,8 +246,6 @@ MFPictureViewDelegate
     statusBar.alpha = 1;
 }
 
-#pragma mark - 私有方法
-
 - (void)setPageTextFont:(UIFont *)pageTextFont {
     _pageTextFont = pageTextFont;
     self.pageTextLabel.font = pageTextFont;
@@ -205,62 +272,6 @@ MFPictureViewDelegate
     [self p_setPageText:currentPage];
 }
 
-/**
- 设置pitureView到指定位置
- 
- @param index 索引
- @param fromView 从哪个控件显示
- 
- @return 当前设置的控件
- */
-- (MFPictureView *)p_setPictureViewForIndex:(NSInteger)index fromView:(UIImageView *)fromView {
-    MFPictureView *view = [self p_createPictureView];
-    view.index = index;
-    CGRect frame = view.frame;
-    frame.size = self.frame.size;
-    view.frame = frame;
-    
-    // 设置图片的大小<在下载完毕之后会根据下载的图片计算大小>
-   
-    void(^setImageSizeBlock)(UIImage *) = ^(UIImage *image) {
-        if (image != nil) {
-            view.pictureSize = image.size;
-        }
-    };
-    
-    if ([_delegate respondsToSelector:@selector(pictureBrowser:imageViewAtIndex:)]) {
-        UIImageView *v = [_delegate pictureBrowser:self imageViewAtIndex:index];
-        UIImage *image = ((UIImageView *)v).image;
-        setImageSizeBlock(image);
-        // 并且设置占位图片
-        view.placeholderImage = image;
-    }
-    
-    NSAssert(([_delegate respondsToSelector:@selector(pictureBrowser:imageURLAtIndex:)] && ![_delegate respondsToSelector:@selector(pictureBrowser:imageNameAtIndex:)]) || (![_delegate respondsToSelector:@selector(pictureBrowser:imageURLAtIndex:)] && [_delegate respondsToSelector:@selector(pictureBrowser:imageNameAtIndex:)]), @"You can not implement both methods!");
-    
-    if ([_delegate respondsToSelector:@selector(pictureBrowser:imageURLAtIndex:)]) {
-        view.imageURL = [_delegate pictureBrowser:self imageURLAtIndex:index];
-        view.localImage = false;
-    }
-    if ([_delegate respondsToSelector:@selector(pictureBrowser:imageNameAtIndex:)]) {
-        view.imageName = [_delegate pictureBrowser:self imageNameAtIndex:index];
-        view.localImage = true;
-    }
-    CGPoint center = view.center;
-    center.x = index * _scrollView.width + _scrollView.width * 0.5;
-    view.center = center;
-    return view;
-}
-
-- (MFPictureView *)p_createPictureView {
-    MFPictureView *view = [[MFPictureView alloc] init];
-    [self.dismissTapGesture requireGestureRecognizerToFail:view.imageView.gestureRecognizers.firstObject];
-    view.pictureDelegate = self;
-    [_scrollView addSubview:view];
-//    [_pictureViews addObject:view];
-    return view;
-}
-
 - (void)p_setPageText:(NSUInteger)index {
     _pageTextLabel.text = [NSString stringWithFormat:@"%zd / %zd", index + 1, self.picturesCount];
     [_pageTextLabel sizeToFit];
@@ -270,25 +281,22 @@ MFPictureViewDelegate
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    
     NSUInteger page = (scrollView.contentOffset.x / scrollView.width + 0.5);
-    
     if (self.currentPage != page) {
         self.fromView.alpha = 1;
         if ([_delegate respondsToSelector:@selector(pictureBrowser:scrollToIndex:)]) {
             [_delegate pictureBrowser:self scrollToIndex:page];
         }
-        if ([_delegate respondsToSelector:@selector(pictureBrowser:imageViewAtIndex:)]) {
-            self.fromView = [_delegate pictureBrowser:self imageViewAtIndex:page];
-            self.fromView.alpha = 0;
-        }
+        self.fromView = [_delegate pictureBrowser:self imageViewAtIndex:page];
+        self.fromView.alpha = 0;
+        self.currentPage = page;
     }
-    self.currentPage = page;
+    
 }
 
 #pragma mark - MFPictureViewDelegate
 
-- (void)pictureViewTouch:(MFPictureView *)pictureView {
+- (void)pictureView:(MFPictureView *)pictureView didClickAtIndex:(NSInteger)index{
     [self dismiss];
 }
 

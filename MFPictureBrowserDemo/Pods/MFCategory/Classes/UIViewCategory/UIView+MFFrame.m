@@ -32,4 +32,16 @@
 - (void)setHeight:(CGFloat)height {
     self.frame = CGRectMake(self.x, self.y, self.width, height);
 }
+- (CGSize)size {
+    return self.frame.size;
+}
+- (void)setSize:(CGSize)size {
+    self.frame = CGRectMake(self.x, self.y, size.width, size.height);
+}
+- (CGPoint)origin {
+    return self.frame.origin;
+}
+- (void)setOrigin:(CGPoint)origin {
+    self.frame = CGRectMake(origin.x, origin.y, self.width, self.height);
+}
 @end

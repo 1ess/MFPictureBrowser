@@ -144,10 +144,10 @@ minimumInteritemSpacingForSectionAtIndex: (NSInteger)section{
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
     MFDisplayPhotoCollectionViewCell *cell = (MFDisplayPhotoCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    MFPictureBrowser *brower = [[MFPictureBrowser alloc] init];
-    brower.delegate = self;
+    MFPictureBrowser *browser = [[MFPictureBrowser alloc] init];
+    browser.delegate = self;
     self.currentPictureIndex = indexPath.row;
-    [brower showFromView:cell.displayImageView picturesCount:self.picList.count currentPictureIndex:indexPath.row];
+    [browser showNetworkImageFromView:cell.displayImageView picturesCount:self.picList.count currentPictureIndex:indexPath.row];
 }
 
 - (UIImageView *)pictureBrowser:(MFPictureBrowser *)pictureBrowser imageViewAtIndex:(NSInteger)index {

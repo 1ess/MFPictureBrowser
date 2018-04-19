@@ -5,7 +5,7 @@
 #import <YYWebImage/YYWebImage.h>
 @class MFPictureView;
 @protocol MFPictureViewDelegate <NSObject>
-- (void)pictureViewTouch:(MFPictureView *)pictureView;
+- (void)pictureView:(MFPictureView *)pictureView didClickAtIndex:(NSInteger)index;
 - (void)pictureView:(MFPictureView *)pictureView scale:(CGFloat)scale;
 - (void)pictureView:(MFPictureView *)pictureView imageDidLoadAtIndex:(NSInteger)index withError:(NSError *)error;
 @end
@@ -21,12 +21,15 @@
 @property (nonatomic, strong) NSString *imageURL;
 // 本地图片名
 @property (nonatomic, strong) NSString *imageName;
-// 本地图片?
-@property (nonatomic, assign) BOOL localImage;
 // 当前显示图片的控件
 @property (nonatomic, strong, readonly) YYAnimatedImageView *imageView;
 // 代理
 @property (nonatomic, weak) id<MFPictureViewDelegate> pictureDelegate;
+
+- (instancetype)init NS_UNAVAILABLE;
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)initWithImageName:(NSString *)imageName;
+- (instancetype)initWithImageURL:(NSString *)imageURL placeholderImage:(UIImage *)placeholderImage;
 
 /**
  动画显示

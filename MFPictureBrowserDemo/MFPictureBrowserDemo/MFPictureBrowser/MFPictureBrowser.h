@@ -46,7 +46,7 @@
 - (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser scrollToIndex:(NSInteger)index;
 
 /**
- imageView加载完毕的回调
+ 网络图片加载完毕的回调
  
  @param pictureBrowser 图片浏览器
  @param index          索引
@@ -86,13 +86,21 @@
 @property (nonatomic, strong) UIColor *pageTextColor;
 
 /**
- 显示图片浏览器
+ 显示本地图片浏览器
  
  @param fromView            用户点击的视图
  @param picturesCount       图片的张数
  @param currentPictureIndex 当前用户点击的图片索引
  */
-- (void)showFromView:(UIImageView *)fromView picturesCount:(NSInteger)picturesCount currentPictureIndex:(NSInteger)currentPictureIndex;
+- (void)showLocalImageFromView:(UIImageView *)fromView picturesCount:(NSInteger)picturesCount currentPictureIndex:(NSInteger)currentPictureIndex;
+/**
+ 显示网络图片浏览器
+ 
+ @param fromView            用户点击的视图
+ @param picturesCount       图片的张数
+ @param currentPictureIndex 当前用户点击的图片索引
+ */
+- (void)showNetworkImageFromView:(UIImageView *)fromView picturesCount:(NSInteger)picturesCount currentPictureIndex:(NSInteger)currentPictureIndex;
 
 /**
  让图片浏览器消失

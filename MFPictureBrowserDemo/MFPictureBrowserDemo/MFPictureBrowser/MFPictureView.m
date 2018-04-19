@@ -13,22 +13,38 @@ UIScrollViewDelegate
 @property (nonatomic, assign) CGFloat scale;
 @property (nonatomic, assign) CGFloat offsetY;
 @property (nonatomic, assign, getter = isShowingAnimation) BOOL showingAnimation;
-@property (nonatomic, strong) UIProgressView *progressView;
+
 @property (nonatomic, assign) BOOL loadingFinished;
+@property (nonatomic, assign, getter = isLocalImage) BOOL localImage;
 @end
 
 @implementation MFPictureView
 
-- (instancetype)init {
+- (instancetype)initWithImageName:(NSString *)imageName {
     self = [super init];
     if (self) {
+        self.localImage = true;
         [self setupUI];
+        self.imageName = imageName;
+        self.imageURL = nil;
+        self.placeholderImage = nil;
+    }
+    return self;
+}
+- (instancetype)initWithImageURL:(NSString *)imageURL placeholderImage:(UIImage *)placeholderImage {
+    self = [super init];
+    if (self) {
+        self.localImage = false;
+        [self setupUI];
+        self.imageName = nil;
+        self.imageURL = imageURL;
+        self.placeholderImage = placeholderImage;
+        
     }
     return self;
 }
 
 - (void)setupUI {
-    
     self.delegate = self;
     self.alwaysBounceVertical = true;
     self.backgroundColor = [UIColor clearColor];
@@ -46,15 +62,8 @@ UIScrollViewDelegate
     _imageView = imageView;
     [self addSubview:imageView];
     
-    if (!self.localImage) {
-        self.progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height - 3, [UIScreen mainScreen].bounds.size.width, 3)];
-        self.progressView.progressViewStyle = UIProgressViewStyleDefault;
-        self.progressView.tintColor = [UIColor colorWithWhite:1 alpha:0.6];
-        self.progressView.trackTintColor = [UIColor colorWithWhite:0 alpha:0.2];
-        [self addSubview:self.progressView];
-        self.progressView.alpha = 0;
-        CGAffineTransform transform = CGAffineTransformMakeScale(1.0f, 3.0f);
-        self.progressView.transform = transform;
+    if (!self.isLocalImage) {
+        //进度条
     }
     
     // 添加监听事件
@@ -68,7 +77,6 @@ UIScrollViewDelegate
 - (void)animationShowWithFromRect:(CGRect)rect animationBlock:(void (^)(void))animationBlock completionBlock:(void (^)(void))completionBlock {
     self.imageView.frame = rect;
     self.showingAnimation = true;
-    self.progressView.alpha = 0;
     [UIView animateWithDuration:0.25 delay:0 options:7 << 16 animations:^{
         if (animationBlock) {
             animationBlock();
@@ -77,7 +85,6 @@ UIScrollViewDelegate
     } completion:^(BOOL finished) {
         if (finished && completionBlock) {
             self.showingAnimation = false;
-            self.progressView.alpha = self.progressView.progress != 1 ? 1 : 0;
             completionBlock();
         }
         
@@ -85,8 +92,7 @@ UIScrollViewDelegate
 }
 
 - (void)animationDismissWithToRect:(CGRect)rect animationBlock:(void (^)(void))animationBlock completionBlock:(void (^)(void))completionBlock {
-    // 隐藏进度视图
-    self.progressView.alpha = 0;
+
     [UIView animateWithDuration:0.25 delay:0 options:7 << 16 animations:^{
         if (animationBlock) {
             animationBlock();
@@ -106,17 +112,13 @@ UIScrollViewDelegate
 
 #pragma mark - 私有方法
 
-- (void)layoutSubviews {
-    [super layoutSubviews];
-}
-
-
 - (void)setImageName:(NSString *)imageName {
     if (!imageName) {
         return;
     }
     _imageName = imageName;
     self.userInteractionEnabled = true;
+    self.loadingFinished = true;
     UIImage *image = nil;
     if ([imageName.pathExtension isEqualToString:@"gif"]) {
         image = [YYImage imageNamed:imageName];
@@ -141,7 +143,7 @@ UIScrollViewDelegate
     [self.imageView yy_setImageWithURL:[NSURL URLWithString:imageURL] placeholder:self.placeholderImage options:0 progress:^(NSInteger receivedSize, NSInteger expectedSize) {
         CGFloat progress = 1.0 * receivedSize / expectedSize ;
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.progressView setProgress:progress animated:true];
+            //更新进度
         });
     } transform:nil completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
         __strong __typeof(weakSelf)strongSelf = weakSelf;
@@ -157,8 +159,6 @@ UIScrollViewDelegate
                 // 计算图片的大小
                 [strongSelf setPictureSize:image.size];
             }
-            strongSelf.progressView.progress = 1;
-            
         }
     }];
 }
@@ -167,11 +167,11 @@ UIScrollViewDelegate
 - (void)setContentSize:(CGSize)contentSize {
     [super setContentSize:contentSize];
     if (self.zoomScale == 1) {
-        [UIView animateWithDuration:0.25 animations:^{
+        [UIView animateWithDuration:0.25 delay:0 options:7 << 16  animations:^{
             CGPoint center = self.imageView.center;
             center.x = self.contentSize.width * 0.5;
             self.imageView.center = center;
-        }];
+        } completion:nil];
     }
 }
 
@@ -196,7 +196,7 @@ UIScrollViewDelegate
 
 - (void)setShowPictureSize:(CGSize)showPictureSize {
     _showPictureSize = showPictureSize;
-    self.imageView.frame = [self getImageActualFrame:_showPictureSize];
+    self.imageView.frame = [self getImageActualFrame:showPictureSize];
     self.contentSize = self.imageView.frame.size;
 }
 
@@ -283,7 +283,7 @@ UIScrollViewDelegate
     if (scrollView.dragging == false) {
         if (_scale > 0.08 && _scale <= 1) {
             // 关闭
-            [_pictureDelegate pictureViewTouch:self];
+            [_pictureDelegate pictureView:self didClickAtIndex:self.index];
             // 设置 contentOffset
             [scrollView setContentOffset:_lastContentOffset animated:false];
         }
