@@ -94,12 +94,13 @@ MFPictureViewDelegate
     NSString *imageURL = [_delegate pictureBrowser:self imageURLAtIndex:index];
     UIImageView *imageView = [_delegate pictureBrowser:self imageViewAtIndex:index];
     UIImage *placeholderImage = nil;
+    NSLog(@"%@---%@",@(index) ,imageView.image);
     if (imageView.image) {
         placeholderImage = imageView.image;
     }else {
         placeholderImage = [UIImage imageNamed:@"placeholder"];
     }
-    MFPictureView *view = [[MFPictureView alloc] initWithImageURL:imageURL placeholderImage:imageView.image];
+    MFPictureView *view = [[MFPictureView alloc] initWithImageURL:imageURL placeholderImage:placeholderImage];
     [self.dismissTapGesture requireGestureRecognizerToFail:view.imageView.gestureRecognizers.firstObject];
     view.pictureDelegate = self;
     [self.scrollView addSubview:view];
@@ -114,46 +115,6 @@ MFPictureViewDelegate
     view.center = center;
     return view;
 }
-
-
-//- (MFPictureView *)p_createPictureViewAtIndex:(NSInteger)index fromView:(UIImageView *)fromView {
-//    MFPictureView *view = [[MFPictureView alloc] init];
-//    [self.dismissTapGesture requireGestureRecognizerToFail:view.imageView.gestureRecognizers.firstObject];
-//    view.pictureDelegate = self;
-//    [self.scrollView addSubview:view];
-//    view.index = index;
-////    view.size = self.size;
-//    CGRect frame = view.frame;
-//    frame.size = self.frame.size;
-//    view.frame = frame;
-//    
-//    // 设置图片的大小<在下载完毕之后会根据下载的图片计算大小>
-//    
-//    if ([_delegate respondsToSelector:@selector(pictureBrowser:imageViewAtIndex:)]) {
-//        UIImageView *v = [_delegate pictureBrowser:self imageViewAtIndex:index];
-//        UIImage *image = ((UIImageView *)v).image;
-//        if (image != nil) {
-//            view.pictureSize = image.size;
-//        }
-//        // 并且设置占位图片
-//        view.placeholderImage = image;
-//    }
-//    
-//    NSAssert(([_delegate respondsToSelector:@selector(pictureBrowser:imageURLAtIndex:)] && ![_delegate respondsToSelector:@selector(pictureBrowser:imageNameAtIndex:)]) || (![_delegate respondsToSelector:@selector(pictureBrowser:imageURLAtIndex:)] && [_delegate respondsToSelector:@selector(pictureBrowser:imageNameAtIndex:)]), @"You can not implement both methods!");
-//    
-//    if ([_delegate respondsToSelector:@selector(pictureBrowser:imageURLAtIndex:)]) {
-//        view.imageURL = [_delegate pictureBrowser:self imageURLAtIndex:index];
-//        view.localImage = false;
-//    }
-//    if ([_delegate respondsToSelector:@selector(pictureBrowser:imageNameAtIndex:)]) {
-//        view.imageName = [_delegate pictureBrowser:self imageNameAtIndex:index];
-//        view.localImage = true;
-//    }
-//    CGPoint center = view.center;
-//    center.x = index * _scrollView.width + _scrollView.width * 0.5;
-//    view.center = center;
-//    return view;
-//}
 
 - (void)showLocalImageFromView:(UIImageView *)fromView picturesCount:(NSInteger)picturesCount currentPictureIndex:(NSInteger)currentPictureIndex {
     [self showFromView:fromView picturesCount:picturesCount currentPictureIndex:currentPictureIndex];
@@ -207,7 +168,6 @@ MFPictureViewDelegate
 }
 
 - (void)dismiss {
-    
     CGFloat x = [UIScreen mainScreen].bounds.size.width * 0.5;
     CGFloat y = [UIScreen mainScreen].bounds.size.height * 0.5;
     CGRect rect = CGRectMake(x, y, 0, 0);

@@ -14,7 +14,6 @@ MFPictureBrowserDelegate
 >
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) NSMutableArray *picList;
-@property (nonatomic, assign) NSInteger currentPictureIndex;
 @end
 
 @implementation RemoteImageViewController
@@ -36,10 +35,10 @@ MFPictureBrowserDelegate
     if (!_picList) {
         _picList = @[
                      [[PictureModel alloc] initWithURL:@"https://cdn.dribbble.com/users/571755/screenshots/4479924/captainjet-app.jpg" imageType:MFImageTypeOther],
-                     [[PictureModel alloc] initWithURL:@"https://pic4.zhimg.com/v2-fd1ed42848c7887efb60c3ab9927308b_b.gif" imageType:MFImageTypeOther],
-                     [[PictureModel alloc] initWithURL:@"https://pic2.zhimg.com/v2-4429bf94b04e5e72a44a38387867a91d_b.gif" imageType:MFImageTypeOther],
-                     [[PictureModel alloc] initWithURL:@"https://pic1.zhimg.com/6f19a4976f57c61e87507bc19f5d6c64_r.jpg" imageType:MFImageTypeOther],
-                     [[PictureModel alloc] initWithURL:@"https://pic4.zhimg.com/v2-3f7510e46f5014e0373d769d5b9cfbeb_b.gif" imageType:MFImageTypeOther]
+                     [[PictureModel alloc] initWithURL:@"https://pic4.zhimg.com/v2-fd1ed42848c7887efb60c3ab9927308b_b.gif" imageType:MFImageTypeGIF],
+                     [[PictureModel alloc] initWithURL:@"https://pic2.zhimg.com/v2-4429bf94b04e5e72a44a38387867a91d_b.gif" imageType:MFImageTypeGIF],
+                     [[PictureModel alloc] initWithURL:@"https://pic1.zhimg.com/6f19a4976f57c61e87507bc19f5d6c64_r.jpg" imageType:MFImageTypeLongImage],
+                     [[PictureModel alloc] initWithURL:@"https://pic4.zhimg.com/v2-3f7510e46f5014e0373d769d5b9cfbeb_b.gif" imageType:MFImageTypeGIF]
                      ].mutableCopy;
     }
     return _picList;
@@ -76,47 +75,24 @@ MFPictureBrowserDelegate
     NSString *picUrlString = model.imageURL;
     NSURL *url = [NSURL URLWithString:picUrlString];
     [cell.displayImageView yy_setImageWithURL:url placeholder:[UIImage imageNamed:@"placeholder"] options:YYWebImageOptionProgressive completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
-        if (!error) {
-            NSData *data = [self contentDataWithImage:image andURL:url];
-            CFDataRef dataRef = CFBridgingRetain(data);
+        if (!error && stage == YYWebImageStageFinished) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                YYImageType type = YYImageDetectType(dataRef);
-                CFBridgingRelease(dataRef);
-                CGFloat height = image.size.height * 320 / image.size.width;
-                if (height > [UIScreen mainScreen].bounds.size.height) {
-                    model.imageType = MFImageTypeLongImage;
-                    cell.tagImageView.image = [UIImage imageNamed:@"ic_messages_pictype_long_pic_30x30_"];
-                }
-                else if (type == YYImageTypeGIF) {
-                    model.imageType = MFImageTypeGIF;
+                if (model.imageType == MFImageTypeGIF) {
                     cell.tagImageView.image = [UIImage imageNamed:@"ic_messages_pictype_gif_30x30_"];
-                }else {
-                    model.imageType = MFImageTypeOther;
-                    cell.tagImageView.image = nil;
-                }
-                cell.tagImageView.alpha = 0;
-                if (cell.tagImageView.image) {
                     cell.tagImageView.alpha = 1;
+                }else if (model.imageType == MFImageTypeLongImage) {
+                    cell.tagImageView.image = [UIImage imageNamed:@"ic_messages_pictype_long_pic_30x30_"];
+                    cell.tagImageView.alpha = 1;
+                }else {
+                    cell.tagImageView.image = nil;
+                    cell.tagImageView.alpha = 0;
                 }
+                
             });
         }
     }];
     
     return cell;
-}
-
-- (NSData *)contentDataWithImage:(UIImage *)image andURL:(NSURL *)url {
-    NSData *data = nil;
-    if ([image isKindOfClass:[YYImage class]]) {
-        data = ((YYImage *)image).animatedImageData;
-    }
-    if (!data) {
-        YYWebImageManager *manager = [YYWebImageManager sharedManager];
-        NSString *key = [manager cacheKeyForURL:url];
-        data = [manager.cache getImageDataForKey:key];
-    }
-    
-    return data;
 }
 
 - (CGSize)collectionView: (UICollectionView *)collectionView
@@ -146,7 +122,6 @@ minimumInteritemSpacingForSectionAtIndex: (NSInteger)section{
     MFDisplayPhotoCollectionViewCell *cell = (MFDisplayPhotoCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
     MFPictureBrowser *browser = [[MFPictureBrowser alloc] init];
     browser.delegate = self;
-    self.currentPictureIndex = indexPath.row;
     [browser showNetworkImageFromView:cell.displayImageView picturesCount:self.picList.count currentPictureIndex:indexPath.row];
 }
 
@@ -163,11 +138,7 @@ minimumInteritemSpacingForSectionAtIndex: (NSInteger)section{
 
 - (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser imageDidLoadAtIndex:(NSInteger)index withError:(NSError *)error {
     if (!error) {
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-        MFDisplayPhotoCollectionViewCell *cell = (MFDisplayPhotoCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
         [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]]];
-        NSLog(@"%@--%@", @(index), @(cell.alpha));
-        NSLog(@"%@--%@", @(index), @(cell.displayImageView.alpha));
     }
 }
 

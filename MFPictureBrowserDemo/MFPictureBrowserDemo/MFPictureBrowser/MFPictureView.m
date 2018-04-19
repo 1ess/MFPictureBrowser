@@ -37,9 +37,8 @@ UIScrollViewDelegate
         self.localImage = false;
         [self setupUI];
         self.imageName = nil;
-        self.imageURL = imageURL;
         self.placeholderImage = placeholderImage;
-        
+        self.imageURL = imageURL;
     }
     return self;
 }

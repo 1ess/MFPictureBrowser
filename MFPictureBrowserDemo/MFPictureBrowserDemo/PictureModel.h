@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 typedef NS_ENUM(NSInteger, MFImageType) {
+    MFImageTypeUnknown,
     MFImageTypeOther,
     MFImageTypeGIF,
     MFImageTypeLongImage
