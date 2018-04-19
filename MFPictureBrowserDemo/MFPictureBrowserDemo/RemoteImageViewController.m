@@ -163,7 +163,11 @@ minimumInteritemSpacingForSectionAtIndex: (NSInteger)section{
 
 - (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser imageDidLoadAtIndex:(NSInteger)index withError:(NSError *)error {
     if (!error) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+        MFDisplayPhotoCollectionViewCell *cell = (MFDisplayPhotoCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
         [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]]];
+        NSLog(@"%@--%@", @(index), @(cell.alpha));
+        NSLog(@"%@--%@", @(index), @(cell.displayImageView.alpha));
     }
 }
 

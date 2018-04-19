@@ -82,8 +82,6 @@ MFPictureViewDelegate
     if (v.image) {
         view.pictureSize = v.image.size;
     }
-    // 并且设置占位图片
-    view.placeholderImage = v.image;
     CGPoint center = view.center;
     center.x = index * _scrollView.width + _scrollView.width * 0.5;
     view.center = center;
@@ -93,7 +91,28 @@ MFPictureViewDelegate
 - (MFPictureView *)createNetworkImagePictureViewAtIndex:(NSInteger)index fromView:(UIImageView *)fromView {
     NSAssert(![_delegate respondsToSelector:@selector(pictureBrowser:imageNameAtIndex:)], @"Please DO NOT implement delegate method of pictureBrowser:imageNameAtIndex:");
     NSAssert([_delegate respondsToSelector:@selector(pictureBrowser:imageURLAtIndex:)], @"Please implement delegate method of pictureBrowser:imageURLAtIndex:");
-    return nil;
+    NSString *imageURL = [_delegate pictureBrowser:self imageURLAtIndex:index];
+    UIImageView *imageView = [_delegate pictureBrowser:self imageViewAtIndex:index];
+    UIImage *placeholderImage = nil;
+    if (imageView.image) {
+        placeholderImage = imageView.image;
+    }else {
+        placeholderImage = [UIImage imageNamed:@"placeholder"];
+    }
+    MFPictureView *view = [[MFPictureView alloc] initWithImageURL:imageURL placeholderImage:imageView.image];
+    [self.dismissTapGesture requireGestureRecognizerToFail:view.imageView.gestureRecognizers.firstObject];
+    view.pictureDelegate = self;
+    [self.scrollView addSubview:view];
+    view.index = index;
+    view.size = self.size;
+
+    if (imageView.image) {
+        view.pictureSize = imageView.image.size;
+    }
+    CGPoint center = view.center;
+    center.x = index * _scrollView.width + _scrollView.width * 0.5;
+    view.center = center;
+    return view;
 }
 
 
