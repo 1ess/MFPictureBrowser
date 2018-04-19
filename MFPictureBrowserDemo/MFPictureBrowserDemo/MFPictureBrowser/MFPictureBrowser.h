@@ -50,9 +50,10 @@
  
  @param pictureBrowser 图片浏览器
  @param index          索引
+ @param image          加载成功返回的image
  @param error          error信息
  */
-- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser imageDidLoadAtIndex:(NSInteger)index withError:(NSError *)error;
+- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser imageDidLoadAtIndex:(NSInteger)index image:(UIImage *)image error:(NSError *)error;
 
 /**
  长按会调用此方法

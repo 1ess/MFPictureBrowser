@@ -7,7 +7,7 @@
 @protocol MFPictureViewDelegate <NSObject>
 - (void)pictureView:(MFPictureView *)pictureView didClickAtIndex:(NSInteger)index;
 - (void)pictureView:(MFPictureView *)pictureView scale:(CGFloat)scale;
-- (void)pictureView:(MFPictureView *)pictureView imageDidLoadAtIndex:(NSInteger)index withError:(NSError *)error;
+- (void)pictureView:(MFPictureView *)pictureView imageDidLoadAtIndex:(NSInteger)index image:(UIImage *)image error:(NSError *)error;
 @end
 
 @interface MFPictureView : UIScrollView

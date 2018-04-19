@@ -150,8 +150,8 @@ UIScrollViewDelegate
         if (!error && stage == YYWebImageStageFinished) {
             strongSelf.userInteractionEnabled = true;
             if (!data) {
-                if ([_pictureDelegate respondsToSelector:@selector(pictureView:imageDidLoadAtIndex:withError:)]) {
-                    [_pictureDelegate pictureView:strongSelf imageDidLoadAtIndex:strongSelf.index withError:error];
+                if ([_pictureDelegate respondsToSelector:@selector(pictureView:imageDidLoadAtIndex:image:error:)]) {
+                    [_pictureDelegate pictureView:strongSelf imageDidLoadAtIndex:strongSelf.index image:image error:error];
                 }
             }
             if (image) {

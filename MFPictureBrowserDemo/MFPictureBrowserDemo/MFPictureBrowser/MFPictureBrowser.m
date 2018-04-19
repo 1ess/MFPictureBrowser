@@ -177,7 +177,6 @@ MFPictureViewDelegate
     }else {
         rect = _endView.frame;
     }
-    
     // 取到当前显示的 pictureView
     MFPictureView *pictureView = [[_pictureViews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"index == %d", _currentPage]] firstObject];
     // 取消所有的下载
@@ -283,9 +282,9 @@ MFPictureViewDelegate
     self.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1 - scale];
 }
 
-- (void)pictureView:(MFPictureView *)pictureView imageDidLoadAtIndex:(NSInteger)index withError:(NSError *)error {
-    if ([_delegate respondsToSelector:@selector(pictureBrowser:imageDidLoadAtIndex:withError:)]) {
-        [_delegate pictureBrowser:self imageDidLoadAtIndex:index withError:error];
+- (void)pictureView:(MFPictureView *)pictureView imageDidLoadAtIndex:(NSInteger)index image:(UIImage *)image error:(NSError *)error {
+    if ([_delegate respondsToSelector:@selector(pictureBrowser:imageDidLoadAtIndex:image:error:)]) {
+        [_delegate pictureBrowser:self imageDidLoadAtIndex:index image:image error:error];
     }
 }
 

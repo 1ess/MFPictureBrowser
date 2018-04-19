@@ -7,7 +7,7 @@
 
 ## 效果图
 
-<img src="https://github.com/GodzzZZZ/MFPictureBrowser/blob/master/Snapshot/1.gif" width="50%"/><img src="https://github.com/GodzzZZZ/MFPictureBrowser/blob/master/Snapshot/2.gif" width="50%"/>
+<img src="https://github.com/GodzzZZZ/MFPictureBrowser/blob/master/Snapshot/3.gif" width="50%"/><img src="https://github.com/GodzzZZZ/MFPictureBrowser/blob/master/Snapshot/4.gif" width="50%"/>
 
 ## 集成方式
 - cocoapod
