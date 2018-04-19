@@ -281,7 +281,7 @@ UIScrollViewDelegate
     
     // 如果用户松手
     if (scrollView.dragging == false) {
-        if (_scale > 0.15 && _scale <= 1) {
+        if (_scale > 0.08 && _scale <= 1) {
             // 关闭
             [_pictureDelegate pictureViewTouch:self];
             // 设置 contentOffset
