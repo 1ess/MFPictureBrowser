@@ -16,6 +16,7 @@ UIScrollViewDelegate
 
 @property (nonatomic, assign) BOOL loadingFinished;
 @property (nonatomic, assign, getter = isLocalImage) BOOL localImage;
+@property (nonatomic, strong) UIProgressView *progressView;
 @end
 
 @implementation MFPictureView
@@ -63,6 +64,13 @@ UIScrollViewDelegate
     
     if (!self.isLocalImage) {
         //进度条
+        UIProgressView *progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height - 3, [UIScreen mainScreen].bounds.size.width, 3)];
+        progressView.backgroundColor = [UIColor redColor];
+        progressView.progressViewStyle = UIProgressViewStyleDefault;
+        progressView.progressTintColor = [UIColor colorWithWhite:1 alpha:0.2];
+        progressView.trackTintColor = [UIColor blackColor];
+        [self addSubview:progressView];
+        _progressView = progressView;
     }
     
     // 添加监听事件
@@ -90,7 +98,7 @@ UIScrollViewDelegate
 }
 
 - (void)animationDismissWithToRect:(CGRect)rect animationBlock:(void (^)(void))animationBlock completionBlock:(void (^)(void))completionBlock {
-
+    self.progressView.alpha = 0;
     [UIView animateWithDuration:0.25 delay:0 options:7 << 16 animations:^{
         if (animationBlock) {
             animationBlock();
@@ -136,15 +144,23 @@ UIScrollViewDelegate
     NSData *data = [manager.cache getImageDataForKey:key];
     self.userInteractionEnabled = true;
 //    self.userInteractionEnabled = false;
+    self.progressView.alpha = 1;
     __weak __typeof(self)weakSelf = self;
     [self.imageView yy_setImageWithURL:[NSURL URLWithString:imageURL] placeholder:self.placeholderImage options:0 progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
         CGFloat progress = 1.0 * receivedSize / expectedSize ;
         dispatch_async(dispatch_get_main_queue(), ^{
             //更新进度
+            [strongSelf.progressView setProgress:progress animated:true];
         });
     } transform:nil completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         strongSelf.loadingFinished = true;
+        if (stage == YYWebImageStageProgress) {
+            strongSelf.progressView.alpha = 1;
+        }else {
+            strongSelf.progressView.alpha = 0;
+        }
         if (!error && stage == YYWebImageStageFinished) {
             strongSelf.userInteractionEnabled = true;
             if (!data) {

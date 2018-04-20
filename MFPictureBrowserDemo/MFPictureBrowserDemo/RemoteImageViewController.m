@@ -14,7 +14,6 @@ MFPictureBrowserDelegate
 >
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) NSMutableArray *picList;
-@property (nonatomic, assign) NSInteger currentIndex;
 @end
 
 @implementation RemoteImageViewController
@@ -36,20 +35,15 @@ MFPictureBrowserDelegate
     if (!_picList) {
         _picList = @[
                      [[PictureModel alloc] initWithURL:@"https://pic2.zhimg.com/80/v2-9d0d69e867ed790715fa11d1c55f3151_hd.jpg"
-                                             imageType:MFImageTypeOther
-                                              isHidden:false],
+                                             imageType:MFImageTypeOther],
                      [[PictureModel alloc] initWithURL:@"https://cdn.dribbble.com/users/5031/screenshots/3713646/mikaelgustafsson_mklgustafsson.gif"
-                                             imageType:MFImageTypeGIF
-                                              isHidden:false],
+                                             imageType:MFImageTypeGIF],
                      [[PictureModel alloc] initWithURL:@"https://cdn.dribbble.com/users/469578/screenshots/2597126/404-drib23.gif"
-                                             imageType:MFImageTypeGIF
-                                              isHidden:false],
+                                             imageType:MFImageTypeGIF],
                      [[PictureModel alloc] initWithURL:@"https://cdn.dribbble.com/users/107759/screenshots/3963668/link-final.gif"
-                                             imageType:MFImageTypeGIF
-                                              isHidden:false],
+                                             imageType:MFImageTypeGIF],
                      [[PictureModel alloc] initWithURL:@"https://pic2.zhimg.com/e336f051665a796be2d86ab37aa1ffb9_r.jpg"
-                                             imageType:MFImageTypeLongImage
-                                              isHidden:false]
+                                             imageType:MFImageTypeLongImage]
                      ].mutableCopy;
     }
     return _picList;
@@ -85,11 +79,6 @@ MFPictureBrowserDelegate
     PictureModel *model = self.picList[indexPath.row];
     NSString *picUrlString = model.imageURL;
     NSURL *url = [NSURL URLWithString:picUrlString];
-    if (model.hidden) {
-        cell.displayImageView.alpha = 0;
-    }else {
-        cell.displayImageView.alpha = 1;
-    }
     [cell.displayImageView yy_setImageWithURL:url placeholder:[UIImage imageNamed:@"placeholder"] options:YYWebImageOptionProgressive completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
         if (!error && stage == YYWebImageStageFinished) {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -133,14 +122,12 @@ minimumInteritemSpacingForSectionAtIndex: (NSInteger)section{
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    [collectionView deselectItemAtIndexPath:indexPath animated:YES];
     MFDisplayPhotoCollectionViewCell *cell = (MFDisplayPhotoCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    [collectionView deselectItemAtIndexPath:indexPath animated:YES];
+    NSLog(@"%@", cell.displayImageView.image);
+    
     MFPictureBrowser *browser = [[MFPictureBrowser alloc] init];
     browser.delegate = self;
-    self.currentIndex = indexPath.row;
-    PictureModel *model = self.picList[indexPath.row];
-    model.hidden = true;
-    [collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.currentIndex inSection:0]]];
     [browser showNetworkImageFromView:cell.displayImageView picturesCount:self.picList.count currentPictureIndex:indexPath.row];
 }
 
@@ -161,30 +148,9 @@ minimumInteritemSpacingForSectionAtIndex: (NSInteger)section{
     return cell.displayImageView.image ?: [UIImage imageNamed:@"placeholder"];
 }
 
-- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser scrollToIndex:(NSInteger)index {
-    PictureModel *model = self.picList[self.currentIndex];
-    model.hidden = false;
-    [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.currentIndex inSection:0]]];
-    self.currentIndex = index;
-    PictureModel *currentModel = self.picList[self.currentIndex];
-    currentModel.hidden = true;
-    [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.currentIndex inSection:0]]];
-}
-
 - (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser imageDidLoadAtIndex:(NSInteger)index image:(UIImage *)image error:(NSError *)error {
-    if (!error) {
-        [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]]];
-    }
+    [self.collectionView reloadData];
 }
 
-- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser dimissAtIndex:(NSInteger)index {
-    PictureModel *model = self.picList[index];
-    model.hidden = false;
-    [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]]];
-}
-
-- (void)dealloc {
-    NSLog(@"remote dealloc");
-}
 
 @end
