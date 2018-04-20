@@ -7,5 +7,6 @@ target 'MFPictureBrowserDemo' do
 
   # Pods for MFPictureBrowserDemo
 pod ‘YYWebImage’
+pod 'YYImage/WebP'
 pod ‘MFCategory’
 end

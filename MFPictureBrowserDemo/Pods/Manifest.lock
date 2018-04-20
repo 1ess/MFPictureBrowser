@@ -4,12 +4,15 @@ PODS:
   - YYImage (1.0.4):
     - YYImage/Core (= 1.0.4)
   - YYImage/Core (1.0.4)
+  - YYImage/WebP (1.0.4):
+    - YYImage/Core
   - YYWebImage (1.0.5):
     - YYCache
     - YYImage
 
 DEPENDENCIES:
   - MFCategory
+  - YYImage/WebP
   - YYWebImage
 
 SPEC REPOS:
@@ -25,6 +28,6 @@ SPEC CHECKSUMS:
   YYImage: 1e1b62a9997399593e4b9c4ecfbbabbf1d3f3b54
   YYWebImage: 5f7f36aee2ae293f016d418c7d6ba05c4863e928
 
-PODFILE CHECKSUM: ee52b6176b2308b0036d8e19c2bf37d021c7c768
+PODFILE CHECKSUM: 4136981ae09322b267103f620e869d5b12472054
 
 COCOAPODS: 1.5.0

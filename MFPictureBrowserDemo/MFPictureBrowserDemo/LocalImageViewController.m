@@ -3,6 +3,7 @@
 #import "LocalImageViewController.h"
 #import "MFPictureBrowser.h"
 #import "MFDisplayPhotoCollectionViewCell.h"
+#import <WebP/demux.h>
 @interface LocalImageViewController ()
 <
 UICollectionViewDelegate,
@@ -33,8 +34,8 @@ MFPictureBrowserDelegate
 - (NSMutableArray *)picList {
     if (!_picList) {
         _picList = @[
-                     @"1.gif",
-                     @"2.gif",
+                     @"1.webp",
+                     @"2.webp",
                      @"3.jpg",
                      @"4.jpg",
                      @"5.jpg"
@@ -65,7 +66,7 @@ MFPictureBrowserDelegate
     MFDisplayPhotoCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"reuseCell" forIndexPath:indexPath];
     NSString *imageName = self.picList[indexPath.row];
     UIImage *image = nil;
-    if ([imageName.pathExtension isEqualToString:@"gif"]) {
+    if ([imageName.pathExtension isEqualToString:@"gif"] || [imageName.pathExtension isEqualToString:@"webp"]) {
         image = [YYImage imageNamed:imageName];
     }else {
         image = [UIImage imageNamed:imageName];
@@ -74,7 +75,7 @@ MFPictureBrowserDelegate
     CGFloat height = image.size.height * 320 / image.size.width;
     if (height > [UIScreen mainScreen].bounds.size.height) {
         cell.tagImageView.image = [UIImage imageNamed:@"ic_messages_pictype_long_pic_30x30_"];
-    }else if ([imageName.pathExtension isEqualToString:@"gif"]) {
+    }else if ([imageName.pathExtension isEqualToString:@"gif"] || [imageName.pathExtension isEqualToString:@"webp"]) {
         cell.tagImageView.image = [UIImage imageNamed:@"ic_messages_pictype_gif_30x30_"];
     }
     if (cell.tagImageView.image) {

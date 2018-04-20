@@ -14,13 +14,13 @@
 		4A5AEE9D2085A87600EBFF88 /* MFPictureBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5AEE9C2085A87600EBFF88 /* MFPictureBrowser.m */; };
 		4A5AEEA02085BC7500EBFF88 /* MFPictureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5AEE9F2085BC7500EBFF88 /* MFPictureView.m */; };
 		4A5AEEA32085C11B00EBFF88 /* MFDisplayPhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5AEEA22085C11B00EBFF88 /* MFDisplayPhotoCollectionViewCell.m */; };
+		4AA906AF2089DF6000C99D77 /* 2.webp in Resources */ = {isa = PBXBuildFile; fileRef = 4AA906AD2089DF5F00C99D77 /* 2.webp */; };
+		4AA906B02089DF6000C99D77 /* 1.webp in Resources */ = {isa = PBXBuildFile; fileRef = 4AA906AE2089DF6000C99D77 /* 1.webp */; };
 		4AF206982087274300FED429 /* PictureModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AF206972087274300FED429 /* PictureModel.m */; };
 		5E53B83F20863DD5007480C7 /* ListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E53B83E20863DD5007480C7 /* ListViewController.m */; };
 		5E53B84220863F0B007480C7 /* RemoteImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E53B84120863F0B007480C7 /* RemoteImageViewController.m */; };
 		5E53B84520863F14007480C7 /* LocalImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E53B84420863F14007480C7 /* LocalImageViewController.m */; };
 		5E53B849208642AE007480C7 /* Image.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5E53B848208642AE007480C7 /* Image.xcassets */; };
-		5E53B84C208644EC007480C7 /* 2.gif in Resources */ = {isa = PBXBuildFile; fileRef = 5E53B84A208644EB007480C7 /* 2.gif */; };
-		5E53B84D208644EC007480C7 /* 1.gif in Resources */ = {isa = PBXBuildFile; fileRef = 5E53B84B208644EB007480C7 /* 1.gif */; };
 		C343AF5E55FDB1C04384A8C5 /* libPods-MFPictureBrowserDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3403644A2EFF9B61054AEB2 /* libPods-MFPictureBrowserDemo.a */; };
 /* End PBXBuildFile section */
 
@@ -39,6 +39,8 @@
 		4A5AEE9F2085BC7500EBFF88 /* MFPictureView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MFPictureView.m; sourceTree = "<group>"; };
 		4A5AEEA12085C11B00EBFF88 /* MFDisplayPhotoCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFDisplayPhotoCollectionViewCell.h; sourceTree = "<group>"; };
 		4A5AEEA22085C11B00EBFF88 /* MFDisplayPhotoCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFDisplayPhotoCollectionViewCell.m; sourceTree = "<group>"; };
+		4AA906AD2089DF5F00C99D77 /* 2.webp */ = {isa = PBXFileReference; lastKnownFileType = file; path = 2.webp; sourceTree = "<group>"; };
+		4AA906AE2089DF6000C99D77 /* 1.webp */ = {isa = PBXFileReference; lastKnownFileType = file; path = 1.webp; sourceTree = "<group>"; };
 		4AF206962087274300FED429 /* PictureModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PictureModel.h; sourceTree = "<group>"; };
 		4AF206972087274300FED429 /* PictureModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PictureModel.m; sourceTree = "<group>"; };
 		5E53B83D20863DD5007480C7 /* ListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ListViewController.h; sourceTree = "<group>"; };
@@ -48,8 +50,6 @@
 		5E53B84320863F14007480C7 /* LocalImageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocalImageViewController.h; sourceTree = "<group>"; };
 		5E53B84420863F14007480C7 /* LocalImageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocalImageViewController.m; sourceTree = "<group>"; };
 		5E53B848208642AE007480C7 /* Image.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Image.xcassets; sourceTree = "<group>"; };
-		5E53B84A208644EB007480C7 /* 2.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = 2.gif; sourceTree = "<group>"; };
-		5E53B84B208644EB007480C7 /* 1.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = 1.gif; sourceTree = "<group>"; };
 		8E2D0E105573B85353E3FBA2 /* Pods-MFPictureBrowserDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MFPictureBrowserDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-MFPictureBrowserDemo/Pods-MFPictureBrowserDemo.release.xcconfig"; sourceTree = "<group>"; };
 		A3403644A2EFF9B61054AEB2 /* libPods-MFPictureBrowserDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MFPictureBrowserDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -113,8 +113,8 @@
 				4A5AEE8F2085987300EBFF88 /* LaunchScreen.storyboard */,
 				4A5AEE922085987300EBFF88 /* Info.plist */,
 				4A5AEE932085987300EBFF88 /* main.m */,
-				5E53B84B208644EB007480C7 /* 1.gif */,
-				5E53B84A208644EB007480C7 /* 2.gif */,
+				4AA906AE2089DF6000C99D77 /* 1.webp */,
+				4AA906AD2089DF5F00C99D77 /* 2.webp */,
 				5E53B848208642AE007480C7 /* Image.xcassets */,
 			);
 			path = MFPictureBrowserDemo;
@@ -198,11 +198,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4AA906B02089DF6000C99D77 /* 1.webp in Resources */,
 				4A5AEE912085987300EBFF88 /* LaunchScreen.storyboard in Resources */,
 				5E53B849208642AE007480C7 /* Image.xcassets in Resources */,
+				4AA906AF2089DF6000C99D77 /* 2.webp in Resources */,
 				4A5AEE8C2085987300EBFF88 /* Main.storyboard in Resources */,
-				5E53B84D208644EC007480C7 /* 1.gif in Resources */,
-				5E53B84C208644EC007480C7 /* 2.gif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

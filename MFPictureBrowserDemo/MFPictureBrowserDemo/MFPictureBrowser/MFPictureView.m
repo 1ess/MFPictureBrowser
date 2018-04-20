@@ -117,7 +117,7 @@ UIScrollViewDelegate
     self.userInteractionEnabled = true;
     self.loadingFinished = true;
     UIImage *image = nil;
-    if ([imageName.pathExtension isEqualToString:@"gif"]) {
+    if ([imageName.pathExtension isEqualToString:@"gif"] || [imageName.pathExtension isEqualToString:@"webp"]) {
         image = [YYImage imageNamed:imageName];
     }else {
         image = [UIImage imageNamed:imageName];

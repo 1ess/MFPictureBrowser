@@ -35,11 +35,21 @@ MFPictureBrowserDelegate
 - (NSMutableArray *)picList {
     if (!_picList) {
         _picList = @[
-                     [[PictureModel alloc] initWithURL:@"https://cdn.dribbble.com/users/571755/screenshots/4479924/captainjet-app.jpg" imageType:MFImageTypeOther isHidden:false],
-                     [[PictureModel alloc] initWithURL:@"https://pic4.zhimg.com/v2-fd1ed42848c7887efb60c3ab9927308b_b.gif" imageType:MFImageTypeGIF isHidden:false],
-                     [[PictureModel alloc] initWithURL:@"https://pic2.zhimg.com/v2-4429bf94b04e5e72a44a38387867a91d_b.gif" imageType:MFImageTypeGIF isHidden:false],
-                     [[PictureModel alloc] initWithURL:@"https://pic1.zhimg.com/6f19a4976f57c61e87507bc19f5d6c64_r.jpg" imageType:MFImageTypeLongImage isHidden:false],
-                     [[PictureModel alloc] initWithURL:@"https://pic4.zhimg.com/v2-3f7510e46f5014e0373d769d5b9cfbeb_b.gif" imageType:MFImageTypeGIF isHidden:false]
+                     [[PictureModel alloc] initWithURL:@"https://pic2.zhimg.com/80/v2-9d0d69e867ed790715fa11d1c55f3151_hd.jpg"
+                                             imageType:MFImageTypeOther
+                                              isHidden:false],
+                     [[PictureModel alloc] initWithURL:@"https://cdn.dribbble.com/users/5031/screenshots/3713646/mikaelgustafsson_mklgustafsson.gif"
+                                             imageType:MFImageTypeGIF
+                                              isHidden:false],
+                     [[PictureModel alloc] initWithURL:@"https://cdn.dribbble.com/users/469578/screenshots/2597126/404-drib23.gif"
+                                             imageType:MFImageTypeGIF
+                                              isHidden:false],
+                     [[PictureModel alloc] initWithURL:@"https://cdn.dribbble.com/users/107759/screenshots/3963668/link-final.gif"
+                                             imageType:MFImageTypeGIF
+                                              isHidden:false],
+                     [[PictureModel alloc] initWithURL:@"https://pic2.zhimg.com/e336f051665a796be2d86ab37aa1ffb9_r.jpg"
+                                             imageType:MFImageTypeLongImage
+                                              isHidden:false]
                      ].mutableCopy;
     }
     return _picList;
