@@ -145,6 +145,12 @@ minimumInteritemSpacingForSectionAtIndex: (NSInteger)section{
     return model.imageURL;
 }
 
+- (UIImage *)pictureBrowser:(MFPictureBrowser *)pictureBrowser placeholderImageAtIndex:(NSInteger)index {
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+    MFDisplayPhotoCollectionViewCell *cell = (MFDisplayPhotoCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+    return cell.displayImageView.image ?: [UIImage imageNamed:@"placeholder"];
+}
+
 - (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser scrollToIndex:(NSInteger)index {
     PictureModel *model = self.picList[self.currentIndex];
     model.hidden = false;
@@ -165,6 +171,10 @@ minimumInteritemSpacingForSectionAtIndex: (NSInteger)section{
     PictureModel *model = self.picList[index];
     model.hidden = false;
     [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]]];
+}
+
+- (void)dealloc {
+    NSLog(@"remote dealloc");
 }
 
 @end

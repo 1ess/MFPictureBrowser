@@ -95,10 +95,14 @@ MFPictureViewDelegate
     NSString *imageURL = [_delegate pictureBrowser:self imageURLAtIndex:index];
     UIImageView *imageView = [_delegate pictureBrowser:self imageViewAtIndex:index];
     UIImage *placeholderImage = nil;
-    if (imageView.image) {
-        placeholderImage = imageView.image;
+    if ([_delegate respondsToSelector:@selector(pictureBrowser:placeholderImageAtIndex:)]) {
+        placeholderImage = [_delegate pictureBrowser:self placeholderImageAtIndex:index];
     }else {
-        placeholderImage = [UIImage imageNamed:@"placeholder"];
+        if (imageView.image) {
+            placeholderImage = imageView.image;
+        }else {
+            placeholderImage = [UIImage imageNamed:@"placeholder"];
+        }
     }
     MFPictureView *view = [[MFPictureView alloc] initWithImageURL:imageURL placeholderImage:placeholderImage];
     [self.dismissTapGesture requireGestureRecognizerToFail:view.imageView.gestureRecognizers.firstObject];
@@ -184,9 +188,9 @@ MFPictureViewDelegate
     // 取到当前显示的 pictureView
     MFPictureView *pictureView = [[_pictureViews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"index == %d", _currentPage]] firstObject];
     // 取消所有的下载
-    for (MFPictureView *pictureView in _pictureViews) {
-        [pictureView.imageView yy_cancelCurrentImageRequest];
-    }
+//    for (MFPictureView *pictureView in _pictureViews) {
+//        [pictureView.imageView yy_cancelCurrentImageRequest];
+//    }
 
     // 执行关闭动画
     __weak __typeof(self)weakSelf = self;
