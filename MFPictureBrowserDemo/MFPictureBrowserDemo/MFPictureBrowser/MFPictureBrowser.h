@@ -56,6 +56,14 @@
 - (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser imageDidLoadAtIndex:(NSInteger)index image:(UIImage *)image error:(NSError *)error;
 
 /**
+ browser dimiss时的回调
+ 
+ @param pictureBrowser 图片浏览器
+ @param index          索引
+ */
+- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser dimissAtIndex:(NSInteger)index;
+
+/**
  长按会调用此方法
  @param pictureBrowser 图片浏览器
  @param index          索引

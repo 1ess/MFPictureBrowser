@@ -19,6 +19,7 @@ MFPictureViewDelegate
 @property (nonatomic, weak) UITapGestureRecognizer *dismissTapGesture;
 @property (nonatomic, strong) UIImageView *endView;
 @property (nonatomic, strong) UIImageView *fromView;
+@property (nonatomic, assign) BOOL localImage;
 @end
 
 @implementation MFPictureBrowser
@@ -94,7 +95,6 @@ MFPictureViewDelegate
     NSString *imageURL = [_delegate pictureBrowser:self imageURLAtIndex:index];
     UIImageView *imageView = [_delegate pictureBrowser:self imageViewAtIndex:index];
     UIImage *placeholderImage = nil;
-    NSLog(@"%@---%@",@(index) ,imageView.image);
     if (imageView.image) {
         placeholderImage = imageView.image;
     }else {
@@ -117,6 +117,7 @@ MFPictureViewDelegate
 }
 
 - (void)showLocalImageFromView:(UIImageView *)fromView picturesCount:(NSInteger)picturesCount currentPictureIndex:(NSInteger)currentPictureIndex {
+    self.localImage = true;
     [self showFromView:fromView picturesCount:picturesCount currentPictureIndex:currentPictureIndex];
     for (NSInteger i = 0; i < picturesCount; i++) {
         MFPictureView *pictureView = [self createLocalImagePictureViewAtIndex:i fromView:nil];
@@ -127,6 +128,7 @@ MFPictureViewDelegate
 }
 
 - (void)showNetworkImageFromView:(UIImageView *)fromView picturesCount:(NSInteger)picturesCount currentPictureIndex:(NSInteger)currentPictureIndex {
+    self.localImage = false;
     [self showFromView:fromView picturesCount:picturesCount currentPictureIndex:currentPictureIndex];
     for (NSInteger i = 0; i < picturesCount; i++) {
         MFPictureView *pictureView = [self createNetworkImagePictureViewAtIndex:i fromView:nil];
@@ -149,13 +151,15 @@ MFPictureViewDelegate
     } completionBlock:nil];
 }
 
-- (void)showFromView:(UIImageView *)fromView picturesCount:(NSInteger)picturesCount currentPictureIndex:(NSInteger)currentPictureIndex {
+- (void)showFromView:(UIImageView *)fromView picturesCount:(NSInteger)picturesCount currentPictureIndex:(NSInteger)currentPictureIndex  {
     [self hideStautsBar];
     NSAssert(picturesCount > 0 && currentPictureIndex < picturesCount && picturesCount <= 9, @"Parameter is not correct");
     NSAssert(self.delegate != nil, @"Please set up delegate for pictureBrowser");
     NSAssert([_delegate respondsToSelector:@selector(pictureBrowser:imageViewAtIndex:)], @"Please implement delegate method of pictureBrowser:imageViewAtIndex:");
-    self.fromView = [_delegate pictureBrowser:self imageViewAtIndex:currentPictureIndex];
-    self.fromView.alpha = 0;
+    if (self.localImage) {
+        self.fromView = [_delegate pictureBrowser:self imageViewAtIndex:currentPictureIndex];
+        self.fromView.alpha = 0;
+    }
     // 记录值并设置位置
     self.picturesCount = picturesCount;
     self.currentPage = currentPictureIndex;
@@ -195,7 +199,12 @@ MFPictureViewDelegate
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         [strongSelf removeFromSuperview];
         [strongSelf.pictureViews removeAllObjects];
-        strongSelf.endView.alpha = 1;
+        if (strongSelf.localImage) {
+            strongSelf.endView.alpha = 1;
+        }
+        if ([_delegate respondsToSelector:@selector(pictureBrowser:dimissAtIndex:)]) {
+            [_delegate pictureBrowser:strongSelf dimissAtIndex:strongSelf.currentPage];
+        }
     }];
 }
 
@@ -261,15 +270,18 @@ MFPictureViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     NSUInteger page = (scrollView.contentOffset.x / scrollView.width + 0.5);
     if (self.currentPage != page) {
-        self.fromView.alpha = 1;
+        if (self.localImage) {
+            self.fromView.alpha = 1;
+        }
         if ([_delegate respondsToSelector:@selector(pictureBrowser:scrollToIndex:)]) {
             [_delegate pictureBrowser:self scrollToIndex:page];
         }
-        self.fromView = [_delegate pictureBrowser:self imageViewAtIndex:page];
-        self.fromView.alpha = 0;
+        if (self.localImage) {
+            self.fromView = [_delegate pictureBrowser:self imageViewAtIndex:page];
+            self.fromView.alpha = 0;
+        }
         self.currentPage = page;
     }
-    
 }
 
 #pragma mark - MFPictureViewDelegate

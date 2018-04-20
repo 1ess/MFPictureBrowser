@@ -9,12 +9,13 @@
 #import "PictureModel.h"
 
 @implementation PictureModel
-- (instancetype)initWithURL:(NSString *)imageURL imageType:(MFImageType)imageType
+- (instancetype)initWithURL:(NSString *)imageURL imageType:(MFImageType)imageType isHidden:(BOOL)hidden
 {
     self = [super init];
     if (self) {
         _imageURL = imageURL;
         _imageType = imageType;
+        _hidden = hidden;
     }
     return self;
 }

@@ -86,7 +86,6 @@ UIScrollViewDelegate
             self.showingAnimation = false;
             completionBlock();
         }
-        
     }];
 }
 
@@ -105,7 +104,6 @@ UIScrollViewDelegate
         if (finished && completionBlock) {
             completionBlock();
         }
-        
     }];
 }
 
@@ -136,8 +134,8 @@ UIScrollViewDelegate
     YYWebImageManager *manager = [YYWebImageManager sharedManager];
     NSString *key = [manager cacheKeyForURL:[NSURL URLWithString:imageURL]];
     NSData *data = [manager.cache getImageDataForKey:key];
-    
-    self.userInteractionEnabled = false;
+    self.userInteractionEnabled = true;
+//    self.userInteractionEnabled = false;
     __weak __typeof(self)weakSelf = self;
     [self.imageView yy_setImageWithURL:[NSURL URLWithString:imageURL] placeholder:self.placeholderImage options:0 progress:^(NSInteger receivedSize, NSInteger expectedSize) {
         CGFloat progress = 1.0 * receivedSize / expectedSize ;
