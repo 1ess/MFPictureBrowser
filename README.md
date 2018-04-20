@@ -32,7 +32,11 @@ brower.delegate = self;
 - 展示
 
 ```objc
-[brower showFromView:(view) picturesCount:(count) currentPictureIndex:(index)];
+//展示本地图片
+[brower showLocalImageFromView:(fromView) picturesCount:(picturesCount) currentPictureIndex:(currentPictureIndex)];
+
+//展示网络图片
+[brower showNetworkImageFromView:(fromView) picturesCount:(picturesCount) currentPictureIndex:(currentPictureIndex)];
 ```
 
 - 实现代理方法
