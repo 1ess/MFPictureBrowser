@@ -155,7 +155,8 @@ UIScrollViewDelegate
     __weak __typeof(self)weakSelf = self;
     [self.imageView pin_setImageFromURL:[NSURL URLWithString:imageURL] placeholderImage:self.placeholderImage completion:^(PINRemoteImageManagerResult * _Nonnull result) {
         __strong __typeof(weakSelf)strongSelf = weakSelf;
-        if (!result.error && result.resultType == PINRemoteImageResultTypeDownload) {
+        if (!result.error && (result.resultType == PINRemoteImageResultTypeDownload || result.resultType == PINRemoteImageResultTypeMemoryCache || result.resultType == PINRemoteImageResultTypeCache)) {
+            strongSelf.loadingFinished = true;
             strongSelf.userInteractionEnabled = true;
             if (!imageAvailable) {
                 if ([_pictureDelegate respondsToSelector:@selector(pictureView:imageDidLoadAtIndex:image:animatedImage:error:)]) {
@@ -181,7 +182,6 @@ UIScrollViewDelegate
             });
         } completion:^(PINRemoteImageManagerResult * _Nonnull result) {
             __strong __typeof(weakSelf)strongSelf = weakSelf;
-            strongSelf.loadingFinished = true;
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (result.resultType == PINRemoteImageResultTypeProgress) {
                     strongSelf.progressView.alpha = 1;
@@ -191,36 +191,6 @@ UIScrollViewDelegate
             });
         }];
     }
-    
-//    __weak __typeof(self)weakSelf = self;
-//    [self.imageView yy_setImageWithURL:[NSURL URLWithString:imageURL] placeholder:self.placeholderImage options:YYWebImageOptionProgressiveBlur | YYWebImageOptionSetImageWithFadeAnimation progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-//        __strong __typeof(weakSelf)strongSelf = weakSelf;
-//        CGFloat progress = 1.0 * receivedSize / expectedSize ;
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            //更新进度
-//            [strongSelf.progressView setProgress:progress animated:true];
-//        });
-//    } transform:nil completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
-//        __strong __typeof(weakSelf)strongSelf = weakSelf;
-//        strongSelf.loadingFinished = true;
-//        if (stage == YYWebImageStageProgress) {
-//            strongSelf.progressView.alpha = 1;
-//        }else {
-//            strongSelf.progressView.alpha = 0;
-//        }
-//        if (!error && stage == YYWebImageStageFinished) {
-//            strongSelf.userInteractionEnabled = true;
-//            if (!data) {
-//                if ([_pictureDelegate respondsToSelector:@selector(pictureView:imageDidLoadAtIndex:image:error:)]) {
-//                    [_pictureDelegate pictureView:strongSelf imageDidLoadAtIndex:strongSelf.index image:image error:error];
-//                }
-//            }
-//            if (image) {
-//                // 计算图片的大小
-//                [strongSelf setPictureSize:image.size];
-//            }
-//        }
-//    }];
 }
 
 
@@ -300,7 +270,7 @@ UIScrollViewDelegate
     self.lastContentOffset = scrollView.contentOffset;
     // 保存 offsetY
     _offsetY = scrollView.contentOffset.y;
-    
+    self.progressView.alpha = 0;
     // 正在动画
     if ([self.imageView.layer animationForKey:@"transform"] != nil) {
         return;
@@ -346,6 +316,12 @@ UIScrollViewDelegate
             [_pictureDelegate pictureView:self didClickAtIndex:self.index];
             // 设置 contentOffset
             [scrollView setContentOffset:_lastContentOffset animated:false];
+        }else {
+            if (!_scale) {
+                [UIView animateWithDuration:0.1 animations:^{
+                    self.progressView.alpha = 1;
+                }];
+            }
         }
     }
 }
@@ -359,7 +335,11 @@ UIScrollViewDelegate
     CGFloat offsetY = (scrollView.bounds.size.height > scrollView.contentSize.height) ? (scrollView.bounds.size.height - scrollView.contentSize.height) * 0.5 : 0.0;
     center.y = scrollView.contentSize.height * 0.5 + offsetY;
     _imageView.center = center;
-    
+    if (scrollView.zoomScale == 1) {
+        [UIView animateWithDuration:0.1 animations:^{
+            self.progressView.alpha = 1;
+        }];
+    }
     // 如果是缩小，保证在屏幕中间
     if (scrollView.zoomScale < scrollView.minimumZoomScale) {
         CGFloat offsetX = (scrollView.bounds.size.width > scrollView.contentSize.width) ? (scrollView.bounds.size.width - scrollView.contentSize.width) * 0.5 : 0.0;
