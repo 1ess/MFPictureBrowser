@@ -65,7 +65,6 @@ UIScrollViewDelegate
     if (!self.isLocalImage) {
         //进度条
         UIProgressView *progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height - 3, [UIScreen mainScreen].bounds.size.width, 3)];
-        progressView.backgroundColor = [UIColor redColor];
         progressView.progressViewStyle = UIProgressViewStyleDefault;
         progressView.progressTintColor = [UIColor colorWithWhite:1 alpha:0.2];
         progressView.trackTintColor = [UIColor blackColor];

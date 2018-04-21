@@ -34,7 +34,7 @@ MFPictureBrowserDelegate
 - (NSMutableArray *)picList {
     if (!_picList) {
         _picList = @[
-                     @"1.webp",
+                     @"1.gif",
                      @"2.webp",
                      @"3.jpg",
                      @"4.jpg",
