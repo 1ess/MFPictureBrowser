@@ -2,7 +2,9 @@
 //  Copyright © 2018年 GodzzZZZ. All rights reserved.
 
 #import "MFPictureView.h"
-
+#import <PINRemoteImage/PINImageView+PINRemoteImage.h>
+#import <PINRemoteImage/PINRemoteImage.h>
+#import <PINCache/PINCache.h>
 @interface MFPictureView()
 <
 UIScrollViewDelegate
@@ -53,7 +55,7 @@ UIScrollViewDelegate
     self.maximumZoomScale = 2;
 
     // 添加 imageView
-    YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] init];
+    FLAnimatedImageView *imageView = [[FLAnimatedImageView alloc] init];
     imageView.clipsToBounds = true;
     imageView.layer.cornerRadius = 3;
     imageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -123,14 +125,19 @@ UIScrollViewDelegate
     _imageName = imageName;
     self.userInteractionEnabled = true;
     self.loadingFinished = true;
-    UIImage *image = nil;
+    
     if ([imageName.pathExtension isEqualToString:@"gif"] || [imageName.pathExtension isEqualToString:@"webp"]) {
-        image = [YYImage imageNamed:imageName];
+        NSURL *imageUrl = [[NSBundle mainBundle] URLForResource:imageName withExtension:nil];
+        FLAnimatedImage *animatedImage = [FLAnimatedImage animatedImageWithGIFData:[NSData dataWithContentsOfURL:imageUrl]];
+        [self setPictureSize:animatedImage.size];
+        self.imageView.animatedImage = animatedImage;
     }else {
-        image = [UIImage imageNamed:imageName];
+        UIImage *image = [UIImage imageNamed:imageName];
+        [self setPictureSize:image.size];
+        self.imageView.image = image;
     }
-    [self setPictureSize:image.size];
-    self.imageView.image = image;
+    
+    
 }
 
 - (void)setImageURL:(NSString *)imageURL {
@@ -138,41 +145,82 @@ UIScrollViewDelegate
         return;
     }
     _imageURL = imageURL;
-    YYWebImageManager *manager = [YYWebImageManager sharedManager];
-    NSString *key = [manager cacheKeyForURL:[NSURL URLWithString:imageURL]];
-    NSData *data = [manager.cache getImageDataForKey:key];
+    NSString *cacheKey = [[PINRemoteImageManager sharedImageManager] cacheKeyForURL:[NSURL URLWithString:imageURL] processorKey:nil];
+    PINCache *cache = [PINRemoteImageManager sharedImageManager].cache;
+    BOOL imageAvailable = [cache containsObjectForKey:cacheKey];
+    
     self.userInteractionEnabled = true;
-//    self.userInteractionEnabled = false;
     self.progressView.alpha = 1;
+    [self.imageView setPin_updateWithProgress:YES];
     __weak __typeof(self)weakSelf = self;
-    [self.imageView yy_setImageWithURL:[NSURL URLWithString:imageURL] placeholder:self.placeholderImage options:0 progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+    [self.imageView pin_setImageFromURL:[NSURL URLWithString:imageURL] placeholderImage:self.placeholderImage completion:^(PINRemoteImageManagerResult * _Nonnull result) {
         __strong __typeof(weakSelf)strongSelf = weakSelf;
-        CGFloat progress = 1.0 * receivedSize / expectedSize ;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            //更新进度
-            [strongSelf.progressView setProgress:progress animated:true];
-        });
-    } transform:nil completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
-        __strong __typeof(weakSelf)strongSelf = weakSelf;
-        strongSelf.loadingFinished = true;
-        if (stage == YYWebImageStageProgress) {
-            strongSelf.progressView.alpha = 1;
-        }else {
-            strongSelf.progressView.alpha = 0;
-        }
-        if (!error && stage == YYWebImageStageFinished) {
+        if (!result.error && result.resultType == PINRemoteImageResultTypeDownload) {
             strongSelf.userInteractionEnabled = true;
-            if (!data) {
-                if ([_pictureDelegate respondsToSelector:@selector(pictureView:imageDidLoadAtIndex:image:error:)]) {
-                    [_pictureDelegate pictureView:strongSelf imageDidLoadAtIndex:strongSelf.index image:image error:error];
+            if (!imageAvailable) {
+                if ([_pictureDelegate respondsToSelector:@selector(pictureView:imageDidLoadAtIndex:image:animatedImage:error:)]) {
+                    [_pictureDelegate pictureView:strongSelf imageDidLoadAtIndex:strongSelf.index image:result.image animatedImage:result.animatedImage error:result.error];
                 }
             }
-            if (image) {
+            if (result.image) {
                 // 计算图片的大小
-                [strongSelf setPictureSize:image.size];
+                [strongSelf setPictureSize:result.image.size];
+            }else if (result.animatedImage) {
+                [strongSelf setPictureSize:result.animatedImage.size];
             }
         }
     }];
+    
+    if (!imageAvailable) {
+        [[PINRemoteImageManager sharedImageManager] downloadImageWithURL:[NSURL URLWithString:imageURL] options:(PINRemoteImageManagerDownloadOptionsNone) progressDownload:^(int64_t completedBytes, int64_t totalBytes) {
+            CGFloat progress = 1.0 * completedBytes / totalBytes ;
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                //更新进度
+                [strongSelf.progressView setProgress:progress animated:true];
+            });
+        } completion:^(PINRemoteImageManagerResult * _Nonnull result) {
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            strongSelf.loadingFinished = true;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (result.resultType == PINRemoteImageResultTypeProgress) {
+                    strongSelf.progressView.alpha = 1;
+                }else {
+                    strongSelf.progressView.alpha = 0;
+                }
+            });
+        }];
+    }
+    
+//    __weak __typeof(self)weakSelf = self;
+//    [self.imageView yy_setImageWithURL:[NSURL URLWithString:imageURL] placeholder:self.placeholderImage options:YYWebImageOptionProgressiveBlur | YYWebImageOptionSetImageWithFadeAnimation progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+//        __strong __typeof(weakSelf)strongSelf = weakSelf;
+//        CGFloat progress = 1.0 * receivedSize / expectedSize ;
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            //更新进度
+//            [strongSelf.progressView setProgress:progress animated:true];
+//        });
+//    } transform:nil completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
+//        __strong __typeof(weakSelf)strongSelf = weakSelf;
+//        strongSelf.loadingFinished = true;
+//        if (stage == YYWebImageStageProgress) {
+//            strongSelf.progressView.alpha = 1;
+//        }else {
+//            strongSelf.progressView.alpha = 0;
+//        }
+//        if (!error && stage == YYWebImageStageFinished) {
+//            strongSelf.userInteractionEnabled = true;
+//            if (!data) {
+//                if ([_pictureDelegate respondsToSelector:@selector(pictureView:imageDidLoadAtIndex:image:error:)]) {
+//                    [_pictureDelegate pictureView:strongSelf imageDidLoadAtIndex:strongSelf.index image:image error:error];
+//                }
+//            }
+//            if (image) {
+//                // 计算图片的大小
+//                [strongSelf setPictureSize:image.size];
+//            }
+//        }
+//    }];
 }
 
 

@@ -2,7 +2,7 @@
 //  Copyright © 2018年 GodzzZZZ. All rights reserved.
 
 #import <UIKit/UIKit.h>
-
+#import <FLAnimatedImage/FLAnimatedImage.h>
 @class MFPictureBrowser;
 @protocol MFPictureBrowserDelegate <NSObject>
 /**
@@ -61,7 +61,7 @@
  @param image          加载成功返回的image
  @param error          error信息
  */
-- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser imageDidLoadAtIndex:(NSInteger)index image:(UIImage *)image error:(NSError *)error;
+- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser imageDidLoadAtIndex:(NSInteger)index image:(UIImage *)image animatedImage:(FLAnimatedImage *)animatedImage error:(NSError *)error;
 
 /**
  browser dimiss时的回调

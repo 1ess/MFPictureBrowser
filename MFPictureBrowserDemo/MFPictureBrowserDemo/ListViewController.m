@@ -52,7 +52,6 @@ UITableViewDataSource
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:(UITableViewCellStyleDefault) reuseIdentifier:@"cell"];
     }
-    
     cell.textLabel.text = self.list[indexPath.row];
     return cell;
 }

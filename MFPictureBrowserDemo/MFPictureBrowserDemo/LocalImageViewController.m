@@ -3,7 +3,7 @@
 #import "LocalImageViewController.h"
 #import "MFPictureBrowser.h"
 #import "MFDisplayPhotoCollectionViewCell.h"
-#import <WebP/demux.h>
+#import <PINRemoteImage/PINImageView+PINRemoteImage.h>
 @interface LocalImageViewController ()
 <
 UICollectionViewDelegate,
@@ -35,7 +35,7 @@ MFPictureBrowserDelegate
     if (!_picList) {
         _picList = @[
                      @"1.gif",
-                     @"2.webp",
+                     @"2.gif",
                      @"3.jpg",
                      @"4.jpg",
                      @"5.jpg"
@@ -65,24 +65,33 @@ MFPictureBrowserDelegate
     
     MFDisplayPhotoCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"reuseCell" forIndexPath:indexPath];
     NSString *imageName = self.picList[indexPath.row];
-    UIImage *image = nil;
+    
     if ([imageName.pathExtension isEqualToString:@"gif"] || [imageName.pathExtension isEqualToString:@"webp"]) {
-        image = [YYImage imageNamed:imageName];
+        NSURL *imageUrl = [[NSBundle mainBundle] URLForResource:imageName withExtension:nil];
+        FLAnimatedImage *animatedImage = [FLAnimatedImage animatedImageWithGIFData:[NSData dataWithContentsOfURL:imageUrl]];
+        cell.displayImageView.animatedImage = animatedImage;
+        [self configTagImageView:cell.tagImageView size:animatedImage.size pathExtension:imageName.pathExtension];
     }else {
-        image = [UIImage imageNamed:imageName];
-    }
-    cell.displayImageView.image = image;
-    CGFloat height = image.size.height * 320 / image.size.width;
-    if (height > [UIScreen mainScreen].bounds.size.height) {
-        cell.tagImageView.image = [UIImage imageNamed:@"ic_messages_pictype_long_pic_30x30_"];
-    }else if ([imageName.pathExtension isEqualToString:@"gif"] || [imageName.pathExtension isEqualToString:@"webp"]) {
-        cell.tagImageView.image = [UIImage imageNamed:@"ic_messages_pictype_gif_30x30_"];
-    }
-    if (cell.tagImageView.image) {
-        cell.tagImageView.alpha = 1;
+        UIImage *image = [UIImage imageNamed:imageName];
+        cell.displayImageView.image = image;
+        [self configTagImageView:cell.tagImageView size:image.size pathExtension:imageName.pathExtension];
     }
     
+    
     return cell;
+}
+
+- (void)configTagImageView:(UIImageView *)tagImageView size:(CGSize)size pathExtension:(NSString *)pathExtension {
+    CGFloat height = size.height * 320 / size.width;
+    if (height > [UIScreen mainScreen].bounds.size.height) {
+        tagImageView.image = [UIImage imageNamed:@"ic_messages_pictype_long_pic_30x30_"];
+    }else if ([pathExtension isEqualToString:@"gif"] || [pathExtension isEqualToString:@"webp"]) {
+        tagImageView.image = [UIImage imageNamed:@"ic_messages_pictype_gif_30x30_"];
+    }
+    tagImageView.alpha = 0;
+    if (tagImageView.image) {
+        tagImageView.alpha = 1;
+    }
 }
 
 - (CGSize)collectionView: (UICollectionView *)collectionView

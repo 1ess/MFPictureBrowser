@@ -2,12 +2,12 @@
 //  Copyright © 2018年 GodzzZZZ. All rights reserved.
 
 #import <UIKit/UIKit.h>
-#import <YYWebImage/YYWebImage.h>
+#import <FLAnimatedImage/FLAnimatedImageView.h>
 @class MFPictureView;
 @protocol MFPictureViewDelegate <NSObject>
 - (void)pictureView:(MFPictureView *)pictureView didClickAtIndex:(NSInteger)index;
 - (void)pictureView:(MFPictureView *)pictureView scale:(CGFloat)scale;
-- (void)pictureView:(MFPictureView *)pictureView imageDidLoadAtIndex:(NSInteger)index image:(UIImage *)image error:(NSError *)error;
+- (void)pictureView:(MFPictureView *)pictureView imageDidLoadAtIndex:(NSInteger)index image:(UIImage *)image animatedImage:(FLAnimatedImage *)animatedImage error:(NSError *)error;
 @end
 
 @interface MFPictureView : UIScrollView
@@ -22,7 +22,7 @@
 // 本地图片名
 @property (nonatomic, strong) NSString *imageName;
 // 当前显示图片的控件
-@property (nonatomic, strong, readonly) YYAnimatedImageView *imageView;
+@property (nonatomic, strong, readonly) FLAnimatedImageView *imageView;
 // 代理
 @property (nonatomic, weak) id<MFPictureViewDelegate> pictureDelegate;
 

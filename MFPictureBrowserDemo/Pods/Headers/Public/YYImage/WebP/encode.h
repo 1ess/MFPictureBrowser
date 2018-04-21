@@ -1,1 +1,0 @@
-../../../../YYImage/Vendor/WebP.framework/Headers/encode.h

@@ -3,8 +3,9 @@
 #import "RemoteImageViewController.h"
 #import "MFPictureBrowser.h"
 #import "MFDisplayPhotoCollectionViewCell.h"
-#import <YYWebImage.h>
 #import "PictureModel.h"
+#import <PINRemoteImage/PINImageView+PINRemoteImage.h>
+#import <PINCache/PINCache.h>
 @interface RemoteImageViewController ()
 <
 UICollectionViewDelegate,
@@ -59,9 +60,7 @@ MFPictureBrowserDelegate
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    YYImageCache *cache = [YYWebImageManager sharedManager].cache;
-    [cache.memoryCache removeAllObjects];
-    [cache.diskCache removeAllObjects];
+    [[[PINRemoteImageManager sharedImageManager] cache] removeAllObjects];
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -79,8 +78,18 @@ MFPictureBrowserDelegate
     PictureModel *model = self.picList[indexPath.row];
     NSString *picUrlString = model.imageURL;
     NSURL *url = [NSURL URLWithString:picUrlString];
-    [cell.displayImageView yy_setImageWithURL:url placeholder:[UIImage imageNamed:@"placeholder"] options:YYWebImageOptionProgressive completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
-        if (!error && stage == YYWebImageStageFinished) {
+    [cell.displayImageView setPin_updateWithProgress:YES];
+    cell.displayImageView.alpha = 0.0f;
+    __weak MFDisplayPhotoCollectionViewCell *weakCell = cell;
+    [cell.displayImageView pin_setImageFromURL:url placeholderImage:[UIImage imageNamed:@"placeholder"] completion:^(PINRemoteImageManagerResult * _Nonnull result) {
+        if (result.requestDuration > 0.25) {
+            [UIView animateWithDuration:0.3 animations:^{
+                weakCell.displayImageView.alpha = 1.0f;
+            }];
+        } else {
+            weakCell.displayImageView.alpha = 1.0f;
+        }
+        if (!result.error && (result.resultType == PINRemoteImageResultTypeDownload || result.resultType == PINRemoteImageResultTypeMemoryCache || result.resultType == PINRemoteImageResultTypeCache)) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (model.imageType == MFImageTypeGIF) {
                     cell.tagImageView.image = [UIImage imageNamed:@"ic_messages_pictype_gif_30x30_"];
@@ -124,8 +133,6 @@ minimumInteritemSpacingForSectionAtIndex: (NSInteger)section{
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     MFDisplayPhotoCollectionViewCell *cell = (MFDisplayPhotoCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
-    NSLog(@"%@", cell.displayImageView.image);
-    
     MFPictureBrowser *browser = [[MFPictureBrowser alloc] init];
     browser.delegate = self;
     [browser showNetworkImageFromView:cell.displayImageView picturesCount:self.picList.count currentPictureIndex:indexPath.row];

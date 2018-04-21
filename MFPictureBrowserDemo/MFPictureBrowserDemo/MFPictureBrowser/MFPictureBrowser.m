@@ -3,7 +3,6 @@
 
 #import "MFPictureBrowser.h"
 #import "MFPictureView.h"
-#import <YYWebImage/YYWebImage.h>
 #import <MFCategory/UIView+MFFrame.h>
 @interface MFPictureBrowser()
 <
@@ -125,9 +124,11 @@ MFPictureViewDelegate
     [self showFromView:fromView picturesCount:picturesCount currentPictureIndex:currentPictureIndex];
     for (NSInteger i = 0; i < picturesCount; i++) {
         MFPictureView *pictureView = [self createLocalImagePictureViewAtIndex:i fromView:nil];
+        [pictureView.imageView stopAnimating];
         [_pictureViews addObject:pictureView];
     }
     MFPictureView *pictureView = self.pictureViews[currentPictureIndex];
+    [pictureView.imageView startAnimating];
     [self showPictureView:pictureView fromView:fromView];
 }
 
@@ -136,9 +137,11 @@ MFPictureViewDelegate
     [self showFromView:fromView picturesCount:picturesCount currentPictureIndex:currentPictureIndex];
     for (NSInteger i = 0; i < picturesCount; i++) {
         MFPictureView *pictureView = [self createNetworkImagePictureViewAtIndex:i fromView:nil];
+        [pictureView.imageView stopAnimating];
         [_pictureViews addObject:pictureView];
     }
     MFPictureView *pictureView = self.pictureViews[currentPictureIndex];
+    [pictureView.imageView startAnimating];
     [self showPictureView:pictureView fromView:fromView];
     
 }
@@ -274,6 +277,14 @@ MFPictureViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     NSUInteger page = (scrollView.contentOffset.x / scrollView.width + 0.5);
     if (self.currentPage != page) {
+        MFPictureView *view = self.pictureViews[self.currentPage];
+        if (view.imageView.animatedImage) {
+            [view.imageView stopAnimating];
+        }
+        MFPictureView *currentView = self.pictureViews[page];
+        if (currentView.imageView.animatedImage) {
+            [currentView.imageView startAnimating];
+        }
         if (self.localImage) {
             self.fromView.alpha = 1;
         }
@@ -285,6 +296,7 @@ MFPictureViewDelegate
             self.fromView.alpha = 0;
         }
         self.currentPage = page;
+        
     }
 }
 
@@ -298,9 +310,9 @@ MFPictureViewDelegate
     self.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1 - scale];
 }
 
-- (void)pictureView:(MFPictureView *)pictureView imageDidLoadAtIndex:(NSInteger)index image:(UIImage *)image error:(NSError *)error {
-    if ([_delegate respondsToSelector:@selector(pictureBrowser:imageDidLoadAtIndex:image:error:)]) {
-        [_delegate pictureBrowser:self imageDidLoadAtIndex:index image:image error:error];
+- (void)pictureView:(MFPictureView *)pictureView imageDidLoadAtIndex:(NSInteger)index image:(UIImage *)image animatedImage:(FLAnimatedImage *)animatedImage error:(NSError *)error {
+    if ([_delegate respondsToSelector:@selector(pictureBrowser:imageDidLoadAtIndex:image:animatedImage:error:)]) {
+        [_delegate pictureBrowser:self imageDidLoadAtIndex:index image:image animatedImage:animatedImage error:error];
     }
 }
 
