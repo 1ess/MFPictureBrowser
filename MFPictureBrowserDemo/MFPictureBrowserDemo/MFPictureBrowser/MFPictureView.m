@@ -155,6 +155,13 @@ UIScrollViewDelegate
     __weak __typeof(self)weakSelf = self;
     [self.imageView pin_setImageFromURL:[NSURL URLWithString:imageURL] placeholderImage:self.placeholderImage completion:^(PINRemoteImageManagerResult * _Nonnull result) {
         __strong __typeof(weakSelf)strongSelf = weakSelf;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (result.resultType == PINRemoteImageResultTypeProgress) {
+                strongSelf.progressView.alpha = 1;
+            }else {
+                strongSelf.progressView.alpha = 0;
+            }
+        });
         if (!result.error && (result.resultType == PINRemoteImageResultTypeDownload || result.resultType == PINRemoteImageResultTypeMemoryCache || result.resultType == PINRemoteImageResultTypeCache)) {
             strongSelf.loadingFinished = true;
             strongSelf.userInteractionEnabled = true;
@@ -181,14 +188,6 @@ UIScrollViewDelegate
                 [strongSelf.progressView setProgress:progress animated:true];
             });
         } completion:^(PINRemoteImageManagerResult * _Nonnull result) {
-            __strong __typeof(weakSelf)strongSelf = weakSelf;
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (result.resultType == PINRemoteImageResultTypeProgress) {
-                    strongSelf.progressView.alpha = 1;
-                }else {
-                    strongSelf.progressView.alpha = 0;
-                }
-            });
         }];
     }
 }
