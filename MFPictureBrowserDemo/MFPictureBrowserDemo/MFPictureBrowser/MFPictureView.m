@@ -317,7 +317,7 @@ UIScrollViewDelegate
             // 设置 contentOffset
             [scrollView setContentOffset:_lastContentOffset animated:false];
         }else {
-            if (!_scale) {
+            if (!_scale && !self.loadingFinished) {
                 [UIView animateWithDuration:0.1 animations:^{
                     self.progressView.alpha = 1;
                 }];
@@ -335,7 +335,7 @@ UIScrollViewDelegate
     CGFloat offsetY = (scrollView.bounds.size.height > scrollView.contentSize.height) ? (scrollView.bounds.size.height - scrollView.contentSize.height) * 0.5 : 0.0;
     center.y = scrollView.contentSize.height * 0.5 + offsetY;
     _imageView.center = center;
-    if (scrollView.zoomScale == 1) {
+    if (scrollView.zoomScale == 1 && !self.loadingFinished) {
         [UIView animateWithDuration:0.1 animations:^{
             self.progressView.alpha = 1;
         }];
