@@ -169,6 +169,7 @@ minimumInteritemSpacingForSectionAtIndex: (NSInteger)section{
 }
 
 - (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser scrollToIndex:(NSInteger)index {
+    //卡顿，待解决
     PictureModel *model = self.picList[self.currentIndex];
     model.hidden = false;
     [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.currentIndex inSection:0]]];

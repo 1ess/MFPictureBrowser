@@ -61,6 +61,7 @@ UIScrollViewDelegate
     imageView.contentMode = UIViewContentModeScaleAspectFill;
     imageView.frame = self.bounds;
     imageView.userInteractionEnabled = true;
+    imageView.runLoopMode = NSDefaultRunLoopMode;
     _imageView = imageView;
     [self addSubview:imageView];
     
