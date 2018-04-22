@@ -15,6 +15,7 @@ MFPictureBrowserDelegate
 >
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) NSMutableArray *picList;
+@property (nonatomic, assign) NSInteger currentIndex;
 @end
 
 @implementation RemoteImageViewController
@@ -37,15 +38,27 @@ MFPictureBrowserDelegate
         _picList = @[
                      [[PictureModel alloc] initWithURL:@"https://pic2.zhimg.com/80/v2-9d0d69e867ed790715fa11d1c55f3151_hd.jpg"
                                              imageType:MFImageTypeOther],
-                     [[PictureModel alloc] initWithURL:@"https://cdn.dribbble.com/users/5031/screenshots/3713646/mikaelgustafsson_mklgustafsson.gif"
+                     [[PictureModel alloc] initWithURL:@"https://pic3.zhimg.com/v2-544673b9c734ddd75d8a4f4763409ab1_b.gif"
                                              imageType:MFImageTypeGIF],
-                     [[PictureModel alloc] initWithURL:@"https://cdn.dribbble.com/users/469578/screenshots/2597126/404-drib23.gif"
+                     [[PictureModel alloc] initWithURL:@"https://pic2.zhimg.com/v2-d21413edd7d15e2e4b2eaf1e465fdbe6_b.gif"
                                              imageType:MFImageTypeGIF],
-                     [[PictureModel alloc] initWithURL:@"https://cdn.dribbble.com/users/107759/screenshots/3963668/link-final.gif"
+                     [[PictureModel alloc] initWithURL:@"https://pic4.zhimg.com/v2-b04f21fd45e1263b4d346e7137c52947_b.gif"
                                              imageType:MFImageTypeGIF],
                      [[PictureModel alloc] initWithURL:@"https://pic2.zhimg.com/e336f051665a796be2d86ab37aa1ffb9_r.jpg"
                                              imageType:MFImageTypeLongImage]
                      ].mutableCopy;
+        
+//                     [[PictureModel alloc] initWithURL:@"https://pic2.zhimg.com/80/v2-9d0d69e867ed790715fa11d1c55f3151_hd.jpg"
+//                                             imageType:MFImageTypeOther],
+//                     [[PictureModel alloc] initWithURL:@"https://cdn.dribbble.com/users/5031/screenshots/3713646/mikaelgustafsson_mklgustafsson.gif"
+//                                             imageType:MFImageTypeGIF],
+//                     [[PictureModel alloc] initWithURL:@"https://cdn.dribbble.com/users/469578/screenshots/2597126/404-drib23.gif"
+//                                             imageType:MFImageTypeGIF],
+//                     [[PictureModel alloc] initWithURL:@"https://cdn.dribbble.com/users/107759/screenshots/3963668/link-final.gif"
+//                                             imageType:MFImageTypeGIF],
+//                     [[PictureModel alloc] initWithURL:@"https://pic2.zhimg.com/e336f051665a796be2d86ab37aa1ffb9_r.jpg"
+//                                             imageType:MFImageTypeLongImage]
+//                     ].mutableCopy;
     }
     return _picList;
 }
@@ -82,12 +95,16 @@ MFPictureBrowserDelegate
     cell.displayImageView.alpha = 0.0f;
     __weak MFDisplayPhotoCollectionViewCell *weakCell = cell;
     [cell.displayImageView pin_setImageFromURL:url placeholderImage:[UIImage imageNamed:@"placeholder"] completion:^(PINRemoteImageManagerResult * _Nonnull result) {
-        if (result.requestDuration > 0.25) {
-            [UIView animateWithDuration:0.3 animations:^{
+        if (!model.hidden) {
+            if (result.requestDuration > 0.25) {
+                [UIView animateWithDuration:0.3 animations:^{
+                    weakCell.displayImageView.alpha = 1.0f;
+                }];
+            } else {
                 weakCell.displayImageView.alpha = 1.0f;
-            }];
-        } else {
-            weakCell.displayImageView.alpha = 1.0f;
+            }
+        }else {
+            weakCell.displayImageView.alpha = 0.f;
         }
         if (!result.error && (result.resultType == PINRemoteImageResultTypeDownload || result.resultType == PINRemoteImageResultTypeMemoryCache || result.resultType == PINRemoteImageResultTypeCache)) {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -133,8 +150,12 @@ minimumInteritemSpacingForSectionAtIndex: (NSInteger)section{
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     MFDisplayPhotoCollectionViewCell *cell = (MFDisplayPhotoCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
+    PictureModel *model = self.picList[indexPath.row];
     MFPictureBrowser *browser = [[MFPictureBrowser alloc] init];
     browser.delegate = self;
+    self.currentIndex = indexPath.row;
+    model.hidden = true;
+    [collectionView reloadItemsAtIndexPaths:@[indexPath]];
     [browser showNetworkImageFromView:cell.displayImageView picturesCount:self.picList.count currentPictureIndex:indexPath.row];
 }
 
@@ -155,8 +176,24 @@ minimumInteritemSpacingForSectionAtIndex: (NSInteger)section{
     return cell.displayImageView.image ?: [UIImage imageNamed:@"placeholder"];
 }
 
-- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser imageDidLoadAtIndex:(NSInteger)index image:(UIImage *)image error:(NSError *)error {
-    [self.collectionView reloadData];
+- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser imageDidLoadAtIndex:(NSInteger)index image:(UIImage *)image animatedImage:(FLAnimatedImage *)animatedImage error:(NSError *)error {
+    [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]]];
+}
+
+- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser scrollToIndex:(NSInteger)index {
+    PictureModel *model = self.picList[self.currentIndex];
+    model.hidden = false;
+    [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.currentIndex inSection:0]]];
+    self.currentIndex = index;
+    PictureModel *currentModel = self.picList[self.currentIndex];
+    currentModel.hidden = true;
+    [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.currentIndex inSection:0]]];
+}
+
+- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser dimissAtIndex:(NSInteger)index {
+    PictureModel *model = self.picList[self.currentIndex];
+    model.hidden = false;
+    [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.currentIndex inSection:0]]];
 }
 
 

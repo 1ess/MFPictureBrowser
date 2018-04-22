@@ -14,6 +14,7 @@
     if (self) {
         _imageURL = imageURL;
         _imageType = imageType;
+        _hidden = false;
     }
     return self;
 }
