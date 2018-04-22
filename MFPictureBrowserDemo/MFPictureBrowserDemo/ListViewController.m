@@ -3,6 +3,7 @@
 #import "ListViewController.h"
 #import "RemoteImageViewController.h"
 #import "LocalImageViewController.h"
+#import "WelfareViewController.h"
 @interface ListViewController ()
 <
 UITableViewDelegate,
@@ -19,7 +20,8 @@ UITableViewDataSource
     if (!_list) {
         _list = @[
                   @"网络图片",
-                  @"本地图片"
+                  @"本地图片",
+                  @"福利",
                   ];
     }
     return _list;
@@ -61,11 +63,13 @@ UITableViewDataSource
     if (!indexPath.row) {
         RemoteImageViewController *remote = [[RemoteImageViewController alloc] init];
         [self.navigationController pushViewController:remote animated:true];
-    }else {
+    }else if (indexPath.row == 1) {
         LocalImageViewController *local = [[LocalImageViewController alloc] init];
         [self.navigationController pushViewController:local animated:true];
+    }else {
+        WelfareViewController *welfare = [[WelfareViewController alloc] init];
+        [self.navigationController pushViewController:welfare animated:YES];
     }
-    
 }
 
 @end

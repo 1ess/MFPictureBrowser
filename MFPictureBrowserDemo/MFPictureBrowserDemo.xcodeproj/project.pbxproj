@@ -15,6 +15,7 @@
 		4A5AEEA02085BC7500EBFF88 /* MFPictureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5AEE9F2085BC7500EBFF88 /* MFPictureView.m */; };
 		4A5AEEA32085C11B00EBFF88 /* MFDisplayPhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5AEEA22085C11B00EBFF88 /* MFDisplayPhotoCollectionViewCell.m */; };
 		4AF206982087274300FED429 /* PictureModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AF206972087274300FED429 /* PictureModel.m */; };
+		5E4F795B208C7A670036E0B2 /* WelfareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E4F795A208C7A670036E0B2 /* WelfareViewController.m */; };
 		5E53B83F20863DD5007480C7 /* ListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E53B83E20863DD5007480C7 /* ListViewController.m */; };
 		5E53B84220863F0B007480C7 /* RemoteImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E53B84120863F0B007480C7 /* RemoteImageViewController.m */; };
 		5E53B84520863F14007480C7 /* LocalImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E53B84420863F14007480C7 /* LocalImageViewController.m */; };
@@ -41,6 +42,8 @@
 		4A5AEEA22085C11B00EBFF88 /* MFDisplayPhotoCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFDisplayPhotoCollectionViewCell.m; sourceTree = "<group>"; };
 		4AF206962087274300FED429 /* PictureModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PictureModel.h; sourceTree = "<group>"; };
 		4AF206972087274300FED429 /* PictureModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PictureModel.m; sourceTree = "<group>"; };
+		5E4F7959208C7A670036E0B2 /* WelfareViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WelfareViewController.h; sourceTree = "<group>"; };
+		5E4F795A208C7A670036E0B2 /* WelfareViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WelfareViewController.m; sourceTree = "<group>"; };
 		5E53B83D20863DD5007480C7 /* ListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ListViewController.h; sourceTree = "<group>"; };
 		5E53B83E20863DD5007480C7 /* ListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ListViewController.m; sourceTree = "<group>"; };
 		5E53B84020863F0B007480C7 /* RemoteImageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RemoteImageViewController.h; sourceTree = "<group>"; };
@@ -107,6 +110,8 @@
 				4AF206972087274300FED429 /* PictureModel.m */,
 				5E53B84320863F14007480C7 /* LocalImageViewController.h */,
 				5E53B84420863F14007480C7 /* LocalImageViewController.m */,
+				5E4F7959208C7A670036E0B2 /* WelfareViewController.h */,
+				5E4F795A208C7A670036E0B2 /* WelfareViewController.m */,
 				4A5AEEA12085C11B00EBFF88 /* MFDisplayPhotoCollectionViewCell.h */,
 				4A5AEEA22085C11B00EBFF88 /* MFDisplayPhotoCollectionViewCell.m */,
 				4A5AEE8A2085987300EBFF88 /* Main.storyboard */,
@@ -273,6 +278,7 @@
 				4A5AEEA02085BC7500EBFF88 /* MFPictureView.m in Sources */,
 				5E53B84220863F0B007480C7 /* RemoteImageViewController.m in Sources */,
 				4A5AEE942085987300EBFF88 /* main.m in Sources */,
+				5E4F795B208C7A670036E0B2 /* WelfareViewController.m in Sources */,
 				5E53B84520863F14007480C7 /* LocalImageViewController.m in Sources */,
 				4A5AEE862085987300EBFF88 /* AppDelegate.m in Sources */,
 			);
