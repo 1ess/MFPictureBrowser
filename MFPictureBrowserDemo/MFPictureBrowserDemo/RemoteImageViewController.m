@@ -38,27 +38,15 @@ MFPictureBrowserDelegate
         _picList = @[
                      [[PictureModel alloc] initWithURL:@"https://pic2.zhimg.com/80/v2-9d0d69e867ed790715fa11d1c55f3151_hd.jpg"
                                              imageType:MFImageTypeOther],
-                     [[PictureModel alloc] initWithURL:@"https://pic3.zhimg.com/v2-544673b9c734ddd75d8a4f4763409ab1_b.gif"
+                     [[PictureModel alloc] initWithURL:@"https://cdn.dribbble.com/users/5031/screenshots/3713646/mikaelgustafsson_mklgustafsson.gif"
                                              imageType:MFImageTypeGIF],
-                     [[PictureModel alloc] initWithURL:@"https://pic2.zhimg.com/v2-d21413edd7d15e2e4b2eaf1e465fdbe6_b.gif"
+                     [[PictureModel alloc] initWithURL:@"https://cdn.dribbble.com/users/469578/screenshots/2597126/404-drib23.gif"
                                              imageType:MFImageTypeGIF],
-                     [[PictureModel alloc] initWithURL:@"https://pic4.zhimg.com/v2-b04f21fd45e1263b4d346e7137c52947_b.gif"
+                     [[PictureModel alloc] initWithURL:@"https://cdn.dribbble.com/users/107759/screenshots/3963668/link-final.gif"
                                              imageType:MFImageTypeGIF],
                      [[PictureModel alloc] initWithURL:@"https://pic2.zhimg.com/e336f051665a796be2d86ab37aa1ffb9_r.jpg"
                                              imageType:MFImageTypeLongImage]
                      ].mutableCopy;
-        
-//                     [[PictureModel alloc] initWithURL:@"https://pic2.zhimg.com/80/v2-9d0d69e867ed790715fa11d1c55f3151_hd.jpg"
-//                                             imageType:MFImageTypeOther],
-//                     [[PictureModel alloc] initWithURL:@"https://cdn.dribbble.com/users/5031/screenshots/3713646/mikaelgustafsson_mklgustafsson.gif"
-//                                             imageType:MFImageTypeGIF],
-//                     [[PictureModel alloc] initWithURL:@"https://cdn.dribbble.com/users/469578/screenshots/2597126/404-drib23.gif"
-//                                             imageType:MFImageTypeGIF],
-//                     [[PictureModel alloc] initWithURL:@"https://cdn.dribbble.com/users/107759/screenshots/3963668/link-final.gif"
-//                                             imageType:MFImageTypeGIF],
-//                     [[PictureModel alloc] initWithURL:@"https://pic2.zhimg.com/e336f051665a796be2d86ab37aa1ffb9_r.jpg"
-//                                             imageType:MFImageTypeLongImage]
-//                     ].mutableCopy;
     }
     return _picList;
 }
