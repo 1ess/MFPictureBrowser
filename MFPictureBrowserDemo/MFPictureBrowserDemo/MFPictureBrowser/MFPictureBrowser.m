@@ -16,8 +16,8 @@ MFPictureViewDelegate
 @property (nonatomic, weak) UIScrollView *scrollView;
 @property (nonatomic, weak) UILabel *pageTextLabel;
 @property (nonatomic, weak) UITapGestureRecognizer *dismissTapGesture;
-@property (nonatomic, strong) UIImageView *endView;
-@property (nonatomic, strong) UIImageView *fromView;
+@property (nonatomic, strong) FLAnimatedImageView *endView;
+@property (nonatomic, strong) FLAnimatedImageView *fromView;
 @property (nonatomic, assign) BOOL localImage;
 @end
 
@@ -71,7 +71,8 @@ MFPictureViewDelegate
     NSAssert([_delegate respondsToSelector:@selector(pictureBrowser:imageNameAtIndex:)], @"Please implement delegate method of pictureBrowser:imageNameAtIndex:");
     NSAssert(![_delegate respondsToSelector:@selector(pictureBrowser:imageURLAtIndex:)], @"Please DO NOT implement delegate method of pictureBrowser:imageURLAtIndex:");
     NSString *imageName = [_delegate pictureBrowser:self imageNameAtIndex:index];
-    MFPictureView *view = [[MFPictureView alloc] initWithImageName:imageName];
+    FLAnimatedImageView *imageView = [_delegate pictureBrowser:self imageViewAtIndex:index];
+    MFPictureView *view = [[MFPictureView alloc] initWithImageName:imageName decodedAnimatedImage:imageView.animatedImage];
     [self.dismissTapGesture requireGestureRecognizerToFail:view.imageView.gestureRecognizers.firstObject];
     view.pictureDelegate = self;
     [self.scrollView addSubview:view];
@@ -124,11 +125,14 @@ MFPictureViewDelegate
     [self showFromView:fromView picturesCount:picturesCount currentPictureIndex:currentPictureIndex];
     for (NSInteger i = 0; i < picturesCount; i++) {
         MFPictureView *pictureView = [self createLocalImagePictureViewAtIndex:i fromView:nil];
-        [pictureView.imageView stopAnimating];
+        if (i != currentPictureIndex) {
+            [pictureView.imageView stopAnimating];
+        }else {
+            [pictureView.imageView startAnimating];
+        }
         [_pictureViews addObject:pictureView];
     }
     MFPictureView *pictureView = self.pictureViews[currentPictureIndex];
-    [pictureView.imageView startAnimating];
     [self showPictureView:pictureView fromView:fromView];
 }
 
@@ -137,11 +141,14 @@ MFPictureViewDelegate
     [self showFromView:fromView picturesCount:picturesCount currentPictureIndex:currentPictureIndex];
     for (NSInteger i = 0; i < picturesCount; i++) {
         MFPictureView *pictureView = [self createNetworkImagePictureViewAtIndex:i fromView:nil];
-        [pictureView.imageView stopAnimating];
+        if (i != currentPictureIndex) {
+            [pictureView.imageView stopAnimating];
+        }else {
+            [pictureView.imageView startAnimating];
+        }
         [_pictureViews addObject:pictureView];
     }
     MFPictureView *pictureView = self.pictureViews[currentPictureIndex];
-    [pictureView.imageView startAnimating];
     [self showPictureView:pictureView fromView:fromView];
     
 }
@@ -196,6 +203,9 @@ MFPictureViewDelegate
 //    }
 
     // 执行关闭动画
+    if ([_delegate respondsToSelector:@selector(pictureBrowser:willDimissAtIndex:)]) {
+        [_delegate pictureBrowser:self willDimissAtIndex:self.currentPage];
+    }
     __weak __typeof(self)weakSelf = self;
     [pictureView animationDismissWithToRect:rect animationBlock:^{
         __strong __typeof(weakSelf)strongSelf = weakSelf;
@@ -209,8 +219,8 @@ MFPictureViewDelegate
         if (strongSelf.localImage) {
             strongSelf.endView.alpha = 1;
         }
-        if ([_delegate respondsToSelector:@selector(pictureBrowser:dimissAtIndex:)]) {
-            [_delegate pictureBrowser:strongSelf dimissAtIndex:strongSelf.currentPage];
+        if ([_delegate respondsToSelector:@selector(pictureBrowser:didDimissAtIndex:)]) {
+            [_delegate pictureBrowser:strongSelf didDimissAtIndex:strongSelf.currentPage];
         }
     }];
 }
@@ -275,6 +285,8 @@ MFPictureViewDelegate
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [self performSelector:@selector(scrollViewDidEndScrollingAnimation:) withObject:nil afterDelay:0.1];
     NSUInteger page = (scrollView.contentOffset.x / scrollView.width + 0.5);
     if (self.currentPage != page) {
         MFPictureView *view = self.pictureViews[self.currentPage];
@@ -296,7 +308,14 @@ MFPictureViewDelegate
             self.fromView.alpha = 0;
         }
         self.currentPage = page;
-        
+    }
+}
+
+//注意: 👇这个方法, 手指滑动而触发滚动的话, 是不会调用的, 所以我就用这种方法来做的.
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView{
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    if ([_delegate respondsToSelector:@selector(pictureBrowser:didEndScrollingAnimationAtIndex:)]) {
+        [_delegate pictureBrowser:self didEndScrollingAnimationAtIndex:self.currentPage];
     }
 }
 
@@ -313,6 +332,18 @@ MFPictureViewDelegate
 - (void)pictureView:(MFPictureView *)pictureView imageDidLoadAtIndex:(NSInteger)index image:(UIImage *)image animatedImage:(FLAnimatedImage *)animatedImage error:(NSError *)error {
     if ([_delegate respondsToSelector:@selector(pictureBrowser:imageDidLoadAtIndex:image:animatedImage:error:)]) {
         [_delegate pictureBrowser:self imageDidLoadAtIndex:index image:image animatedImage:animatedImage error:error];
+    }
+}
+
+- (void)pictureView:(MFPictureView *)pictureView willDismissAtIndex:(NSInteger)index {
+    if ([_delegate respondsToSelector:@selector(pictureBrowser:willDimissAtIndex:)]) {
+        [_delegate pictureBrowser:self willDimissAtIndex:index];
+    }
+}
+
+- (void)pictureView:(MFPictureView *)pictureView didDismissAtIndex:(NSInteger)index {
+    if ([_delegate respondsToSelector:@selector(pictureBrowser:didDimissAtIndex:)]) {
+        [_delegate pictureBrowser:self didDimissAtIndex:index];
     }
 }
 

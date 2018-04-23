@@ -13,7 +13,7 @@
  
  @return 视图
  */
-- (UIImageView *)pictureBrowser:(MFPictureBrowser *)pictureBrowser imageViewAtIndex:(NSInteger)index;
+- (FLAnimatedImageView *)pictureBrowser:(MFPictureBrowser *)pictureBrowser imageViewAtIndex:(NSInteger)index;
 @optional
 
 /**
@@ -46,6 +46,14 @@
 - (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser scrollToIndex:(NSInteger)index;
 
 /**
+ 滚动动画结束时会调用该方法
+ 
+ @param pictureBrowser 图片浏览器
+ @param index          索引
+ */
+- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser didEndScrollingAnimationAtIndex:(NSInteger)index;
+
+/**
  占位图
  
  @param pictureBrowser 图片浏览器
@@ -64,12 +72,20 @@
 - (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser imageDidLoadAtIndex:(NSInteger)index image:(UIImage *)image animatedImage:(FLAnimatedImage *)animatedImage error:(NSError *)error;
 
 /**
- browser dimiss时的回调
+ browser will dimiss时的回调
  
  @param pictureBrowser 图片浏览器
  @param index          索引
  */
-- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser dimissAtIndex:(NSInteger)index;
+- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser willDimissAtIndex:(NSInteger)index;
+
+/**
+ browser did dimiss时的回调
+ 
+ @param pictureBrowser 图片浏览器
+ @param index          索引
+ */
+- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser didDimissAtIndex:(NSInteger)index;
 
 /**
  长按会调用此方法
@@ -109,7 +125,7 @@
  @param picturesCount       图片的张数
  @param currentPictureIndex 当前用户点击的图片索引
  */
-- (void)showLocalImageFromView:(UIImageView *)fromView picturesCount:(NSInteger)picturesCount currentPictureIndex:(NSInteger)currentPictureIndex;
+- (void)showLocalImageFromView:(FLAnimatedImageView *)fromView picturesCount:(NSInteger)picturesCount currentPictureIndex:(NSInteger)currentPictureIndex;
 /**
  显示网络图片浏览器
  
@@ -117,7 +133,7 @@
  @param picturesCount       图片的张数
  @param currentPictureIndex 当前用户点击的图片索引
  */
-- (void)showNetworkImageFromView:(UIImageView *)fromView picturesCount:(NSInteger)picturesCount currentPictureIndex:(NSInteger)currentPictureIndex;
+- (void)showNetworkImageFromView:(FLAnimatedImageView *)fromView picturesCount:(NSInteger)picturesCount currentPictureIndex:(NSInteger)currentPictureIndex;
 
 /**
  让图片浏览器消失

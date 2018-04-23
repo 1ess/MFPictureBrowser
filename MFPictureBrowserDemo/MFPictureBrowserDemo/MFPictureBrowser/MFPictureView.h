@@ -17,6 +17,8 @@
 @property (nonatomic, assign) CGSize pictureSize;
 // 显示的默认图片
 @property (nonatomic, strong) UIImage *placeholderImage;
+// 已经解码完的 animatedImage
+@property (nonatomic, strong) FLAnimatedImage *animatedImage;
 // 图片的地址 URL
 @property (nonatomic, strong) NSString *imageURL;
 // 本地图片名
@@ -28,7 +30,7 @@
 
 - (instancetype)init NS_UNAVAILABLE;
 + (instancetype)new NS_UNAVAILABLE;
-- (instancetype)initWithImageName:(NSString *)imageName;
+- (instancetype)initWithImageName:(NSString *)imageName decodedAnimatedImage:(FLAnimatedImage *)decodedAnimatedImage;
 - (instancetype)initWithImageURL:(NSString *)imageURL placeholderImage:(UIImage *)placeholderImage;
 
 /**

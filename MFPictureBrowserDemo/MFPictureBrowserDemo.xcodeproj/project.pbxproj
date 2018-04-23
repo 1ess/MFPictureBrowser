@@ -14,6 +14,7 @@
 		4A5AEE9D2085A87600EBFF88 /* MFPictureBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5AEE9C2085A87600EBFF88 /* MFPictureBrowser.m */; };
 		4A5AEEA02085BC7500EBFF88 /* MFPictureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5AEE9F2085BC7500EBFF88 /* MFPictureView.m */; };
 		4A5AEEA32085C11B00EBFF88 /* MFDisplayPhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5AEEA22085C11B00EBFF88 /* MFDisplayPhotoCollectionViewCell.m */; };
+		4AA906B6208DAD4C00C99D77 /* FLAnimatedImageView+TransitionImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AA906B5208DAD4C00C99D77 /* FLAnimatedImageView+TransitionImage.m */; };
 		4AF206982087274300FED429 /* PictureModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AF206972087274300FED429 /* PictureModel.m */; };
 		5E4F795B208C7A670036E0B2 /* WelfareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E4F795A208C7A670036E0B2 /* WelfareViewController.m */; };
 		5E53B83F20863DD5007480C7 /* ListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E53B83E20863DD5007480C7 /* ListViewController.m */; };
@@ -40,6 +41,8 @@
 		4A5AEE9F2085BC7500EBFF88 /* MFPictureView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MFPictureView.m; sourceTree = "<group>"; };
 		4A5AEEA12085C11B00EBFF88 /* MFDisplayPhotoCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFDisplayPhotoCollectionViewCell.h; sourceTree = "<group>"; };
 		4A5AEEA22085C11B00EBFF88 /* MFDisplayPhotoCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFDisplayPhotoCollectionViewCell.m; sourceTree = "<group>"; };
+		4AA906B4208DAD4C00C99D77 /* FLAnimatedImageView+TransitionImage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FLAnimatedImageView+TransitionImage.h"; sourceTree = "<group>"; };
+		4AA906B5208DAD4C00C99D77 /* FLAnimatedImageView+TransitionImage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "FLAnimatedImageView+TransitionImage.m"; sourceTree = "<group>"; };
 		4AF206962087274300FED429 /* PictureModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PictureModel.h; sourceTree = "<group>"; };
 		4AF206972087274300FED429 /* PictureModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PictureModel.m; sourceTree = "<group>"; };
 		5E4F7959208C7A670036E0B2 /* WelfareViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WelfareViewController.h; sourceTree = "<group>"; };
@@ -132,6 +135,8 @@
 				4A5AEE9C2085A87600EBFF88 /* MFPictureBrowser.m */,
 				4A5AEE9E2085BC7500EBFF88 /* MFPictureView.h */,
 				4A5AEE9F2085BC7500EBFF88 /* MFPictureView.m */,
+				4AA906B4208DAD4C00C99D77 /* FLAnimatedImageView+TransitionImage.h */,
+				4AA906B5208DAD4C00C99D77 /* FLAnimatedImageView+TransitionImage.m */,
 			);
 			path = MFPictureBrowser;
 			sourceTree = "<group>";
@@ -277,6 +282,7 @@
 				5E53B83F20863DD5007480C7 /* ListViewController.m in Sources */,
 				4A5AEEA02085BC7500EBFF88 /* MFPictureView.m in Sources */,
 				5E53B84220863F0B007480C7 /* RemoteImageViewController.m in Sources */,
+				4AA906B6208DAD4C00C99D77 /* FLAnimatedImageView+TransitionImage.m in Sources */,
 				4A5AEE942085987300EBFF88 /* main.m in Sources */,
 				5E4F795B208C7A670036E0B2 /* WelfareViewController.m in Sources */,
 				5E53B84520863F14007480C7 /* LocalImageViewController.m in Sources */,

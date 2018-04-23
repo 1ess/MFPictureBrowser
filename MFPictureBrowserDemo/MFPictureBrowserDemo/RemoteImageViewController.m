@@ -35,14 +35,26 @@ MFPictureBrowserDelegate
 
 - (NSMutableArray *)picList {
     if (!_picList) {
+//        _picList = @[
+//                     [[PictureModel alloc] initWithURL:@"https://pic2.zhimg.com/80/v2-9d0d69e867ed790715fa11d1c55f3151_hd.jpg"
+//                                             imageType:MFImageTypeOther],
+//                     [[PictureModel alloc] initWithURL:@"https://cdn.dribbble.com/users/5031/screenshots/3713646/mikaelgustafsson_mklgustafsson.gif"
+//                                             imageType:MFImageTypeGIF],
+//                     [[PictureModel alloc] initWithURL:@"https://cdn.dribbble.com/users/469578/screenshots/2597126/404-drib23.gif"
+//                                             imageType:MFImageTypeGIF],
+//                     [[PictureModel alloc] initWithURL:@"https://cdn.dribbble.com/users/107759/screenshots/3963668/link-final.gif"
+//                                             imageType:MFImageTypeGIF],
+//                     [[PictureModel alloc] initWithURL:@"https://pic2.zhimg.com/e336f051665a796be2d86ab37aa1ffb9_r.jpg"
+//                                             imageType:MFImageTypeLongImage]
+//                     ].mutableCopy;
         _picList = @[
                      [[PictureModel alloc] initWithURL:@"https://pic2.zhimg.com/80/v2-9d0d69e867ed790715fa11d1c55f3151_hd.jpg"
                                              imageType:MFImageTypeOther],
-                     [[PictureModel alloc] initWithURL:@"https://cdn.dribbble.com/users/5031/screenshots/3713646/mikaelgustafsson_mklgustafsson.gif"
+                     [[PictureModel alloc] initWithURL:@"https://pic4.zhimg.com/v2-bf1e1318f065abc23611b4e8e34af86c_b.gif"
                                              imageType:MFImageTypeGIF],
-                     [[PictureModel alloc] initWithURL:@"https://cdn.dribbble.com/users/469578/screenshots/2597126/404-drib23.gif"
+                     [[PictureModel alloc] initWithURL:@"https://pic3.zhimg.com/v2-de5260f1e31f23ecb2ba08cd47534b58_b.gif"
                                              imageType:MFImageTypeGIF],
-                     [[PictureModel alloc] initWithURL:@"https://cdn.dribbble.com/users/107759/screenshots/3963668/link-final.gif"
+                     [[PictureModel alloc] initWithURL:@"https://pic4.zhimg.com/v2-bedf2b2b67e03c5ee5f9b0f9ffe35aa7_b.gif"
                                              imageType:MFImageTypeGIF],
                      [[PictureModel alloc] initWithURL:@"https://pic2.zhimg.com/e336f051665a796be2d86ab37aa1ffb9_r.jpg"
                                              imageType:MFImageTypeLongImage]
@@ -179,7 +191,11 @@ minimumInteritemSpacingForSectionAtIndex: (NSInteger)section{
     [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.currentIndex inSection:0]]];
 }
 
-- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser dimissAtIndex:(NSInteger)index {
+- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser didEndScrollingAnimationAtIndex:(NSInteger)index {
+
+}
+
+- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser didDimissAtIndex:(NSInteger)index {
     PictureModel *model = self.picList[self.currentIndex];
     model.hidden = false;
     [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.currentIndex inSection:0]]];

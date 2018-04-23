@@ -4,6 +4,7 @@
 #import "MFPictureBrowser.h"
 #import "MFDisplayPhotoCollectionViewCell.h"
 #import <PINRemoteImage/PINImageView+PINRemoteImage.h>
+#import "MFPictureBrowser/FLAnimatedImageView+TransitionImage.h"
 @interface WelfareViewController ()
 <
 UICollectionViewDelegate,
@@ -68,10 +69,16 @@ MFPictureBrowserDelegate
     NSString *imageName = self.picList[indexPath.row];
     
     if ([imageName.pathExtension isEqualToString:@"gif"] || [imageName.pathExtension isEqualToString:@"webp"]) {
-        NSURL *imageUrl = [[NSBundle mainBundle] URLForResource:imageName withExtension:nil];
-        FLAnimatedImage *animatedImage = [FLAnimatedImage animatedImageWithGIFData:[NSData dataWithContentsOfURL:imageUrl]];
-        cell.displayImageView.animatedImage = animatedImage;
-        [self configTagImageView:cell.tagImageView size:animatedImage.size pathExtension:imageName.pathExtension];
+        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+            NSURL *imageUrl = [[NSBundle mainBundle] URLForResource:imageName withExtension:nil];
+            FLAnimatedImage *animatedImage = [FLAnimatedImage animatedImageWithGIFData:[NSData dataWithContentsOfURL:imageUrl]];
+            if (animatedImage) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [cell.displayImageView animatedTransitionAnimatedImage:animatedImage];
+                    [self configTagImageView:cell.tagImageView size:animatedImage.size pathExtension:imageName.pathExtension];
+                });
+            }
+        });
     }else {
         UIImage *image = [UIImage imageNamed:imageName];
         cell.displayImageView.image = image;
