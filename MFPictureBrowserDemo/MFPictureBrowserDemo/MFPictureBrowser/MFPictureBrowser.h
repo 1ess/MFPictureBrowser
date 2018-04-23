@@ -46,22 +46,6 @@
 - (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser scrollToIndex:(NSInteger)index;
 
 /**
- 滚动动画结束时会调用该方法
- 
- @param pictureBrowser 图片浏览器
- @param index          索引
- */
-- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser didEndScrollingAnimationAtIndex:(NSInteger)index;
-
-/**
- 占位图
- 
- @param pictureBrowser 图片浏览器
- @param index          索引
- */
-- (UIImage *)pictureBrowser:(MFPictureBrowser *)pictureBrowser placeholderImageAtIndex:(NSInteger)index;
-
-/**
  网络图片加载完毕的回调
  
  @param pictureBrowser 图片浏览器

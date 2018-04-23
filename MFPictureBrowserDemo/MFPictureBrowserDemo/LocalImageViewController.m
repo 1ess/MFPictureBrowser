@@ -78,7 +78,6 @@ MFPictureBrowserDelegate
             }
         });
     }else {
-        
         UIImage *image = [UIImage imageNamed:imageName];
         cell.displayImageView.image = image;
         [self configTagImageView:cell.tagImageView size:image.size pathExtension:imageName.pathExtension];
