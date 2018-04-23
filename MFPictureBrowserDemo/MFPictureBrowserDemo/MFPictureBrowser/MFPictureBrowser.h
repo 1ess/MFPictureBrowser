@@ -49,19 +49,11 @@
  网络图片加载完毕的回调
  
  @param pictureBrowser 图片浏览器
- @param index          索引
  @param image          加载成功返回的image
- @param error          error信息
- */
-- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser imageDidLoadAtIndex:(NSInteger)index image:(UIImage *)image animatedImage:(FLAnimatedImage *)animatedImage error:(NSError *)error;
-
-/**
- browser will dimiss时的回调
- 
- @param pictureBrowser 图片浏览器
+ @param animatedImage  加载成功返回的animatedImage
  @param index          索引
  */
-- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser willDimissAtIndex:(NSInteger)index;
+- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser image:(UIImage *)image animatedImage:(FLAnimatedImage *)animatedImage didLoadAtIndex:(NSInteger)index;
 
 /**
  browser did dimiss时的回调
@@ -69,7 +61,7 @@
  @param pictureBrowser 图片浏览器
  @param index          索引
  */
-- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser didDimissAtIndex:(NSInteger)index;
+- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser dimissAtIndex:(NSInteger)index;
 
 /**
  长按会调用此方法

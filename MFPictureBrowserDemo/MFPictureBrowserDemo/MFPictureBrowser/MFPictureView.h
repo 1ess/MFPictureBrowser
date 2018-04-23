@@ -7,7 +7,7 @@
 @protocol MFPictureViewDelegate <NSObject>
 - (void)pictureView:(MFPictureView *)pictureView didClickAtIndex:(NSInteger)index;
 - (void)pictureView:(MFPictureView *)pictureView scale:(CGFloat)scale;
-- (void)pictureView:(MFPictureView *)pictureView imageDidLoadAtIndex:(NSInteger)index image:(UIImage *)image animatedImage:(FLAnimatedImage *)animatedImage error:(NSError *)error;
+- (void)pictureView:(MFPictureView *)pictureView image:(UIImage *)image animatedImage:(FLAnimatedImage *)animatedImage didLoadAtIndex:(NSInteger)index;
 @end
 
 @interface MFPictureView : UIScrollView
@@ -15,10 +15,8 @@
 @property (nonatomic, assign) NSInteger index;
 // 图片的大小
 @property (nonatomic, assign) CGSize pictureSize;
-// 已经解码完的 image
-@property (nonatomic, strong) UIImage *decodeImage;
 // 已经解码完的 animatedImage
-@property (nonatomic, strong) FLAnimatedImage *animatedImage;
+@property (nonatomic, strong) FLAnimatedImage *decodedAnimatedImage;
 // 图片的地址 URL
 @property (nonatomic, strong) NSString *imageURL;
 // 本地图片名
@@ -31,7 +29,7 @@
 - (instancetype)init NS_UNAVAILABLE;
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)initWithImageName:(NSString *)imageName decodedAnimatedImage:(FLAnimatedImage *)decodedAnimatedImage;
-- (instancetype)initWithImageURL:(NSString *)imageURL decodedAnimatedImage:(FLAnimatedImage *)decodedAnimatedImage decodedImage:(UIImage *)decodedImage;
+- (instancetype)initWithImageURL:(NSString *)imageURL decodedAnimatedImage:(FLAnimatedImage *)decodedAnimatedImage;
 
 /**
  动画显示

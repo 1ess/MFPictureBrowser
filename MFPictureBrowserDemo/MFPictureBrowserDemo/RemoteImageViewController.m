@@ -246,7 +246,7 @@ minimumInteritemSpacingForSectionAtIndex: (NSInteger)section{
     [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.currentIndex inSection:0]]];
 }
 
-- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser didDimissAtIndex:(NSInteger)index {
+- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser dimissAtIndex:(NSInteger)index {
     PictureModel *model = self.picList[self.currentIndex];
     model.hidden = false;
     [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.currentIndex inSection:0]]];

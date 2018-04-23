@@ -12,7 +12,7 @@ MFPictureViewDelegate
 /// MFPictureView数组，最多保存9个MFPictureView
 @property (nonatomic, strong) NSMutableArray<MFPictureView *> *pictureViews;
 @property (nonatomic, assign) NSInteger picturesCount;
-@property (nonatomic, assign) NSInteger currentPage;
+@property (nonatomic, assign) NSInteger currentIndex;
 @property (nonatomic, weak) UIScrollView *scrollView;
 @property (nonatomic, weak) UILabel *pageTextLabel;
 @property (nonatomic, weak) UITapGestureRecognizer *dismissTapGesture;
@@ -67,55 +67,12 @@ MFPictureViewDelegate
     self.dismissTapGesture = tapGesture;
 }
 
-- (MFPictureView *)createLocalImagePictureViewAtIndex:(NSInteger)index fromView:(UIImageView *)fromView {
-    NSAssert([_delegate respondsToSelector:@selector(pictureBrowser:imageNameAtIndex:)], @"Please implement delegate method of pictureBrowser:imageNameAtIndex:");
-    NSAssert(![_delegate respondsToSelector:@selector(pictureBrowser:imageURLAtIndex:)], @"Please DO NOT implement delegate method of pictureBrowser:imageURLAtIndex:");
-    NSString *imageName = [_delegate pictureBrowser:self imageNameAtIndex:index];
-    FLAnimatedImageView *imageView = [_delegate pictureBrowser:self imageViewAtIndex:index];
-    MFPictureView *view = [[MFPictureView alloc] initWithImageName:imageName decodedAnimatedImage:imageView.animatedImage];
-    [self.dismissTapGesture requireGestureRecognizerToFail:view.imageView.gestureRecognizers.firstObject];
-    view.pictureDelegate = self;
-    [self.scrollView addSubview:view];
-    view.index = index;
-    view.size = self.size;
-    if (imageView.image) {
-        view.pictureSize = imageView.image.size;
-    }else if (imageView.animatedImage) {
-        view.pictureSize = imageView.animatedImage.size;
-    }
-    CGPoint center = view.center;
-    center.x = index * _scrollView.width + _scrollView.width * 0.5;
-    view.center = center;
-    return view;
-}
-
-- (MFPictureView *)createNetworkImagePictureViewAtIndex:(NSInteger)index fromView:(UIImageView *)fromView {
-    NSAssert(![_delegate respondsToSelector:@selector(pictureBrowser:imageNameAtIndex:)], @"Please DO NOT implement delegate method of pictureBrowser:imageNameAtIndex:");
-    NSAssert([_delegate respondsToSelector:@selector(pictureBrowser:imageURLAtIndex:)], @"Please implement delegate method of pictureBrowser:imageURLAtIndex:");
-    NSString *imageURL = [_delegate pictureBrowser:self imageURLAtIndex:index];
-    FLAnimatedImageView *imageView = [_delegate pictureBrowser:self imageViewAtIndex:index];
-    MFPictureView *view = [[MFPictureView alloc] initWithImageURL:imageURL decodedAnimatedImage:imageView.animatedImage decodedImage:imageView.image];
-    [self.dismissTapGesture requireGestureRecognizerToFail:view.imageView.gestureRecognizers.firstObject];
-    view.pictureDelegate = self;
-    [self.scrollView addSubview:view];
-    view.index = index;
-    view.size = self.size;
-    if (imageView.image) {
-        view.pictureSize = imageView.image.size;
-    }else if (imageView.animatedImage) {
-        view.pictureSize = imageView.animatedImage.size;
-    }
-    CGPoint center = view.center;
-    center.x = index * _scrollView.width + _scrollView.width * 0.5;
-    view.center = center;
-    return view;
-}
-
+#pragma mark - 公共方法
 - (void)showLocalImageFromView:(UIImageView *)fromView picturesCount:(NSInteger)picturesCount currentPictureIndex:(NSInteger)currentPictureIndex {
     self.localImage = true;
     [self showFromView:fromView picturesCount:picturesCount currentPictureIndex:currentPictureIndex];
     for (NSInteger i = 0; i < picturesCount; i++) {
-        MFPictureView *pictureView = [self createLocalImagePictureViewAtIndex:i fromView:nil];
+        MFPictureView *pictureView = [self createLocalImagePictureViewAtIndex:i];
         if (i != currentPictureIndex) {
             [pictureView.imageView stopAnimating];
         }else {
@@ -131,7 +88,7 @@ MFPictureViewDelegate
     self.localImage = false;
     [self showFromView:fromView picturesCount:picturesCount currentPictureIndex:currentPictureIndex];
     for (NSInteger i = 0; i < picturesCount; i++) {
-        MFPictureView *pictureView = [self createNetworkImagePictureViewAtIndex:i fromView:nil];
+        MFPictureView *pictureView = [self createNetworkImagePictureViewAtIndex:i];
         if (i != currentPictureIndex) {
             [pictureView.imageView stopAnimating];
         }else {
@@ -142,6 +99,63 @@ MFPictureViewDelegate
     MFPictureView *pictureView = self.pictureViews[currentPictureIndex];
     [self showPictureView:pictureView fromView:fromView];
     
+}
+
+#pragma mark - 私有方法
+- (MFPictureView *)createLocalImagePictureViewAtIndex:(NSInteger)index{
+    NSAssert([_delegate respondsToSelector:@selector(pictureBrowser:imageNameAtIndex:)], @"Please implement delegate method of pictureBrowser:imageNameAtIndex:");
+    NSAssert(![_delegate respondsToSelector:@selector(pictureBrowser:imageURLAtIndex:)], @"Please DO NOT implement delegate method of pictureBrowser:imageURLAtIndex:");
+    NSString *imageName = [_delegate pictureBrowser:self imageNameAtIndex:index];
+    FLAnimatedImageView *imageView = [_delegate pictureBrowser:self imageViewAtIndex:index];
+    MFPictureView *view = [[MFPictureView alloc] initWithImageName:imageName decodedAnimatedImage:imageView.animatedImage];
+    [self configPictureView:view index:index animtedImageView:imageView];
+    return view;
+}
+
+- (MFPictureView *)createNetworkImagePictureViewAtIndex:(NSInteger)index {
+    NSAssert(![_delegate respondsToSelector:@selector(pictureBrowser:imageNameAtIndex:)], @"Please DO NOT implement delegate method of pictureBrowser:imageNameAtIndex:");
+    NSAssert([_delegate respondsToSelector:@selector(pictureBrowser:imageURLAtIndex:)], @"Please implement delegate method of pictureBrowser:imageURLAtIndex:");
+    NSString *imageURL = [_delegate pictureBrowser:self imageURLAtIndex:index];
+    FLAnimatedImageView *imageView = [_delegate pictureBrowser:self imageViewAtIndex:index];
+    MFPictureView *view = [[MFPictureView alloc] initWithImageURL:imageURL decodedAnimatedImage:imageView.animatedImage];
+    [self configPictureView:view index:index animtedImageView:imageView];
+    return view;
+}
+
+- (void)configPictureView:(MFPictureView *)pictureView index:(NSInteger)index animtedImageView:(FLAnimatedImageView *)animtedImageView {
+    [self.dismissTapGesture requireGestureRecognizerToFail:pictureView.imageView.gestureRecognizers.firstObject];
+    pictureView.pictureDelegate = self;
+    [self.scrollView addSubview:pictureView];
+    pictureView.index = index;
+    pictureView.size = self.size;
+    if (animtedImageView.image) {
+        pictureView.pictureSize = animtedImageView.image.size;
+    }else if (animtedImageView.animatedImage) {
+        pictureView.pictureSize = animtedImageView.animatedImage.size;
+    }
+    CGPoint center = pictureView.center;
+    center.x = index * _scrollView.width + _scrollView.width * 0.5;
+    pictureView.center = center;
+}
+
+- (void)showFromView:(UIImageView *)fromView picturesCount:(NSInteger)picturesCount currentPictureIndex:(NSInteger)currentPictureIndex  {
+    [self hideStautsBar];
+    NSAssert(picturesCount > 0 && currentPictureIndex < picturesCount && picturesCount <= 9, @"Parameter is not correct");
+    NSAssert(self.delegate != nil, @"Please set up delegate for pictureBrowser");
+    NSAssert([_delegate respondsToSelector:@selector(pictureBrowser:imageViewAtIndex:)], @"Please implement delegate method of pictureBrowser:imageViewAtIndex:");
+    if (self.localImage) {
+        self.fromView = [_delegate pictureBrowser:self imageViewAtIndex:currentPictureIndex];
+        self.fromView.alpha = 0;
+    }
+    // 记录值并设置位置
+    self.picturesCount = picturesCount;
+    self.currentIndex = currentPictureIndex;
+    // 添加到 window 上
+    [[UIApplication sharedApplication].keyWindow addSubview:self];
+    // 计算 scrollView 的 contentSize
+    self.scrollView.contentSize = CGSizeMake(picturesCount * _scrollView.width, _scrollView.height);
+    // 滚动到指定位置
+    [self.scrollView setContentOffset:CGPointMake(currentPictureIndex * _scrollView.width, 0) animated:false];
 }
 
 - (void)showPictureView:(MFPictureView *)pictureView fromView:(UIImageView *)fromView{
@@ -156,47 +170,24 @@ MFPictureViewDelegate
     } completionBlock:nil];
 }
 
-- (void)showFromView:(UIImageView *)fromView picturesCount:(NSInteger)picturesCount currentPictureIndex:(NSInteger)currentPictureIndex  {
-    [self hideStautsBar];
-    NSAssert(picturesCount > 0 && currentPictureIndex < picturesCount && picturesCount <= 9, @"Parameter is not correct");
-    NSAssert(self.delegate != nil, @"Please set up delegate for pictureBrowser");
-    NSAssert([_delegate respondsToSelector:@selector(pictureBrowser:imageViewAtIndex:)], @"Please implement delegate method of pictureBrowser:imageViewAtIndex:");
-    if (self.localImage) {
-        self.fromView = [_delegate pictureBrowser:self imageViewAtIndex:currentPictureIndex];
-        self.fromView.alpha = 0;
-    }
-    // 记录值并设置位置
-    self.picturesCount = picturesCount;
-    self.currentPage = currentPictureIndex;
-    // 添加到 window 上
-    [[UIApplication sharedApplication].keyWindow addSubview:self];
-    // 计算 scrollView 的 contentSize
-    self.scrollView.contentSize = CGSizeMake(picturesCount * _scrollView.width, _scrollView.height);
-    // 滚动到指定位置
-    [self.scrollView setContentOffset:CGPointMake(currentPictureIndex * _scrollView.width, 0) animated:false];
-}
-
 - (void)dismiss {
     CGFloat x = [UIScreen mainScreen].bounds.size.width * 0.5;
     CGFloat y = [UIScreen mainScreen].bounds.size.height * 0.5;
     CGRect rect = CGRectMake(x, y, 0, 0);
-    self.endView = [_delegate pictureBrowser:self imageViewAtIndex:_currentPage];
+    self.endView = [_delegate pictureBrowser:self imageViewAtIndex:self.currentIndex];
     if (self.endView.superview != nil) {
         rect = [_endView convertRect:_endView.bounds toView:nil];
     }else {
         rect = _endView.frame;
     }
     // 取到当前显示的 pictureView
-    MFPictureView *pictureView = [[_pictureViews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"index == %d", _currentPage]] firstObject];
+    MFPictureView *pictureView = [[_pictureViews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"index == %d", self.currentIndex]] firstObject];
     // 取消所有的下载
 //    for (MFPictureView *pictureView in _pictureViews) {
 //        [pictureView.imageView yy_cancelCurrentImageRequest];
 //    }
 
     // 执行关闭动画
-    if ([_delegate respondsToSelector:@selector(pictureBrowser:willDimissAtIndex:)]) {
-        [_delegate pictureBrowser:self willDimissAtIndex:self.currentPage];
-    }
     __weak __typeof(self)weakSelf = self;
     [pictureView animationDismissWithToRect:rect animationBlock:^{
         __strong __typeof(weakSelf)strongSelf = weakSelf;
@@ -210,8 +201,8 @@ MFPictureViewDelegate
         if (strongSelf.localImage) {
             strongSelf.endView.alpha = 1;
         }
-        if ([_delegate respondsToSelector:@selector(pictureBrowser:didDimissAtIndex:)]) {
-            [_delegate pictureBrowser:strongSelf didDimissAtIndex:strongSelf.currentPage];
+        if ([_delegate respondsToSelector:@selector(pictureBrowser:dimissAtIndex:)]) {
+            [_delegate pictureBrowser:strongSelf dimissAtIndex:strongSelf.currentIndex];
         }
     }];
 }
@@ -225,7 +216,7 @@ MFPictureViewDelegate
 - (void)longPressGesture:(UILongPressGestureRecognizer *)gesture {
     if (gesture.state == UIGestureRecognizerStateEnded) {
         if ([_delegate respondsToSelector:@selector(pictureBrowser:longPressAtIndex:)]) {
-            [_delegate pictureBrowser:self longPressAtIndex:self.currentPage];
+            [_delegate pictureBrowser:self longPressAtIndex:self.currentIndex];
         }
     }
 }
@@ -262,9 +253,9 @@ MFPictureViewDelegate
     self.scrollView.frame = CGRectMake(- _imagesSpacing * 0.5, 0, self.width + _imagesSpacing, self.height);
 }
 
-- (void)setCurrentPage:(NSInteger)currentPage {
-    _currentPage = currentPage;
-    [self p_setPageText:currentPage];
+- (void)setCurrentIndex:(NSInteger)currentIndex {
+    _currentIndex = currentIndex;
+    [self p_setPageText:currentIndex];
 }
 
 - (void)p_setPageText:(NSUInteger)index {
@@ -276,13 +267,13 @@ MFPictureViewDelegate
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    NSUInteger page = (scrollView.contentOffset.x / scrollView.width + 0.5);
-    if (self.currentPage != page) {
-        MFPictureView *view = self.pictureViews[self.currentPage];
+    NSUInteger index = (scrollView.contentOffset.x / scrollView.width + 0.5);
+    if (self.currentIndex != index) {
+        MFPictureView *view = self.pictureViews[self.currentIndex];
         if (view.imageView.animatedImage) {
             [view.imageView stopAnimating];
         }
-        MFPictureView *currentView = self.pictureViews[page];
+        MFPictureView *currentView = self.pictureViews[index];
         if (currentView.imageView.animatedImage) {
             [currentView.imageView startAnimating];
         }
@@ -290,13 +281,13 @@ MFPictureViewDelegate
             self.fromView.alpha = 1;
         }
         if ([_delegate respondsToSelector:@selector(pictureBrowser:scrollToIndex:)]) {
-            [_delegate pictureBrowser:self scrollToIndex:page];
+            [_delegate pictureBrowser:self scrollToIndex:index];
         }
         if (self.localImage) {
-            self.fromView = [_delegate pictureBrowser:self imageViewAtIndex:page];
+            self.fromView = [_delegate pictureBrowser:self imageViewAtIndex:index];
             self.fromView.alpha = 0;
         }
-        self.currentPage = page;
+        self.currentIndex = index;
     }
 }
 
@@ -310,21 +301,9 @@ MFPictureViewDelegate
     self.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1 - scale];
 }
 
-- (void)pictureView:(MFPictureView *)pictureView imageDidLoadAtIndex:(NSInteger)index image:(UIImage *)image animatedImage:(FLAnimatedImage *)animatedImage error:(NSError *)error {
-    if ([_delegate respondsToSelector:@selector(pictureBrowser:imageDidLoadAtIndex:image:animatedImage:error:)]) {
-        [_delegate pictureBrowser:self imageDidLoadAtIndex:index image:image animatedImage:animatedImage error:error];
-    }
-}
-
-- (void)pictureView:(MFPictureView *)pictureView willDismissAtIndex:(NSInteger)index {
-    if ([_delegate respondsToSelector:@selector(pictureBrowser:willDimissAtIndex:)]) {
-        [_delegate pictureBrowser:self willDimissAtIndex:index];
-    }
-}
-
-- (void)pictureView:(MFPictureView *)pictureView didDismissAtIndex:(NSInteger)index {
-    if ([_delegate respondsToSelector:@selector(pictureBrowser:didDimissAtIndex:)]) {
-        [_delegate pictureBrowser:self didDimissAtIndex:index];
+- (void)pictureView:(MFPictureView *)pictureView image:(UIImage *)image animatedImage:(FLAnimatedImage *)animatedImage didLoadAtIndex:(NSInteger)index {
+    if ([_delegate respondsToSelector:@selector(pictureBrowser:image:animatedImage:didLoadAtIndex:)]) {
+        [_delegate pictureBrowser:self image:image animatedImage:animatedImage didLoadAtIndex:index];
     }
 }
 

@@ -29,7 +29,8 @@ UIScrollViewDelegate
     self = [super init];
     if (self) {
         self.localImage = true;
-        if ([imageName.pathExtension isEqualToString:@"gif"] || [imageName.pathExtension isEqualToString:@"webp"]) {
+        if ([imageName.pathExtension isEqualToString:@"gif"] ||
+            [imageName.pathExtension isEqualToString:@"webp"]) {
             if (decodedAnimatedImage) {
                 self.localAnimatedImageDecoded = true;
             }else {
@@ -39,14 +40,14 @@ UIScrollViewDelegate
             self.localAnimatedImageDecoded = true;
         }
         [self setupUI];
-        self.animatedImage = decodedAnimatedImage;
+        self.decodedAnimatedImage = decodedAnimatedImage;
         self.imageName = imageName;
         self.imageURL = nil;
         
     }
     return self;
 }
-- (instancetype)initWithImageURL:(NSString *)imageURL decodedAnimatedImage:(FLAnimatedImage *)decodedAnimatedImage decodedImage:(UIImage *)decodedImage{
+- (instancetype)initWithImageURL:(NSString *)imageURL decodedAnimatedImage:(FLAnimatedImage *)decodedAnimatedImage {
     self = [super init];
     if (self) {
         self.localImage = false;
@@ -61,8 +62,7 @@ UIScrollViewDelegate
             self.localAnimatedImageDecoded = true;
         }
         [self setupUI];
-        self.animatedImage = decodedAnimatedImage;
-        self.decodeImage = decodedImage;
+        self.decodedAnimatedImage = decodedAnimatedImage;
         self.imageURL = imageURL;
         self.imageName = nil;
     }
@@ -77,7 +77,6 @@ UIScrollViewDelegate
     self.showsVerticalScrollIndicator = false;
     self.maximumZoomScale = 2;
 
-    // 添加 imageView
     FLAnimatedImageView *imageView = [[FLAnimatedImageView alloc] init];
     imageView.clipsToBounds = true;
     imageView.layer.cornerRadius = 3;
@@ -88,7 +87,6 @@ UIScrollViewDelegate
     [self addSubview:imageView];
     
     if (!self.isLocalImage || (self.isLocalImage && !self.isLocalAnimatedImageDecoded)) {
-        //进度条
         UIProgressView *progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height - 3, [UIScreen mainScreen].bounds.size.width, 3)];
         progressView.progressViewStyle = UIProgressViewStyleDefault;
         progressView.progressTintColor = [UIColor colorWithWhite:1 alpha:0.2];
@@ -96,8 +94,7 @@ UIScrollViewDelegate
         [self addSubview:progressView];
         _progressView = progressView;
     }
-    
-    // 添加监听事件
+
     UITapGestureRecognizer *doubleTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleClick:)];
     doubleTapGesture.numberOfTapsRequired = 2;
     [imageView addGestureRecognizer:doubleTapGesture];
@@ -114,9 +111,11 @@ UIScrollViewDelegate
         }
         self.imageView.frame = [self getImageActualFrame:self.showPictureSize];
     } completion:^(BOOL finished) {
-        if (finished && completionBlock) {
+        if (finished) {
+            if (completionBlock) {
+                completionBlock();
+            }
             self.showingAnimation = false;
-            completionBlock();
         }
     }];
 }
@@ -133,8 +132,10 @@ UIScrollViewDelegate
         toRect.origin.x += self.contentOffset.x;
         self.imageView.frame = toRect;
     } completion:^(BOOL finished) {
-        if (finished && completionBlock) {
-            completionBlock();
+        if (finished) {
+            if (completionBlock) {
+                completionBlock();
+            }
         }
     }];
 }
@@ -146,13 +147,12 @@ UIScrollViewDelegate
         return;
     }
     _imageName = imageName;
-    self.userInteractionEnabled = true;
-    
-    if ([imageName.pathExtension isEqualToString:@"gif"] || [imageName.pathExtension isEqualToString:@"webp"]) {
-        if (self.animatedImage) {
+    if ([imageName.pathExtension isEqualToString:@"gif"] ||
+        [imageName.pathExtension isEqualToString:@"webp"]) {
+        if (self.decodedAnimatedImage) {
             self.loadingFinished = true;
-            self.imageView.animatedImage = self.animatedImage;
             self.progressView.alpha = 0;
+            self.imageView.animatedImage = self.decodedAnimatedImage;
         }else {
             self.loadingFinished = false;
             self.progressView.alpha = 1;
@@ -198,19 +198,15 @@ UIScrollViewDelegate
     NSString *cacheKey = [[PINRemoteImageManager sharedImageManager] cacheKeyForURL:[NSURL URLWithString:imageURL] processorKey:nil];
     PINCache *cache = [PINRemoteImageManager sharedImageManager].cache;
     BOOL imageAvailable = [cache containsObjectForKey:cacheKey];
-    
-    self.userInteractionEnabled = true;
-    self.progressView.alpha = 1;
     [self.imageView setPin_updateWithProgress:YES];
     __weak __typeof(self)weakSelf = self;
-
     if (!imageAvailable) {
         //没加载完情况
+        self.progressView.alpha = 1;
         [[PINRemoteImageManager sharedImageManager] downloadImageWithURL:[NSURL URLWithString:imageURL] options:(PINRemoteImageManagerDownloadOptionsNone) progressDownload:^(int64_t completedBytes, int64_t totalBytes) {
             CGFloat progress = 1.0 * completedBytes / totalBytes ;
             __strong __typeof(weakSelf)strongSelf = weakSelf;
             dispatch_async(dispatch_get_main_queue(), ^{
-                //更新进度
                 [strongSelf.progressView setProgress:progress animated:true];
             });
         } completion:^(PINRemoteImageManagerResult * _Nonnull result) {
@@ -223,47 +219,43 @@ UIScrollViewDelegate
                 }
                 if (!result.error && (result.resultType == PINRemoteImageResultTypeDownload || result.resultType == PINRemoteImageResultTypeMemoryCache || result.resultType == PINRemoteImageResultTypeCache)) {
                     strongSelf.loadingFinished = true;
-                    strongSelf.userInteractionEnabled = true;
                     if (!imageAvailable) {
-                        if ([_pictureDelegate respondsToSelector:@selector(pictureView:imageDidLoadAtIndex:image:animatedImage:error:)]) {
-                            [_pictureDelegate pictureView:strongSelf imageDidLoadAtIndex:strongSelf.index image:result.image animatedImage:result.animatedImage error:result.error];
+                        if ([_pictureDelegate respondsToSelector:@selector(pictureView:image:animatedImage:didLoadAtIndex:)]) {
+                            [_pictureDelegate pictureView:strongSelf image:result.image animatedImage:result.animatedImage didLoadAtIndex:strongSelf.index];
                         }
                     }
                     if (result.image) {
-                        // 计算图片的大小
                         [strongSelf setPictureSize:result.image.size];
+                        strongSelf.imageView.image = result.image;
                     }else if (result.animatedImage) {
                         [strongSelf setPictureSize:result.animatedImage.size];
+                        [strongSelf.imageView animatedTransitionAnimatedImage:result.animatedImage];
                     }
                 }
             });
         }];
     }else {
-        self.userInteractionEnabled = true;
         self.progressView.alpha = 0;
-        if (self.animatedImage) {
+        NSLog(@"%@", self.decodedAnimatedImage);
+        if (self.decodedAnimatedImage) {
             self.loadingFinished = true;
-            [self setPictureSize:self.animatedImage.size];
-            self.imageView.animatedImage = self.animatedImage;
-        }else if (self.decodeImage) {
-            self.loadingFinished = true;
-            [self setPictureSize:self.decodeImage.size];
-            self.imageView.image = self.decodeImage;
+            [self setPictureSize:self.decodedAnimatedImage.size];
+            self.imageView.animatedImage = self.decodedAnimatedImage;
         }else {
             self.loadingFinished = false;
-            self.progressView.alpha = 1;
-            [UIView animateWithDuration:1 animations:^{
-                [self.progressView setProgress:0.8 animated:true];
-            }];
-            UIImage *image = self.imageView.image ?: [UIImage imageNamed:@"placeholder"];
-            [self setPictureSize:image.size];
-            self.imageView.image = image;
+            
             __strong __typeof(weakSelf)strongSelf = weakSelf;
             [cache objectForKey:cacheKey block:^(PINCache * _Nonnull cache, NSString * _Nonnull key, id  _Nullable object) {
                 if ([imageURL.lastPathComponent.pathExtension isEqualToString:@"gif"] ||
                     [imageURL.lastPathComponent.pathExtension isEqualToString:@"webp"]) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         self.progressView.alpha = 1;
+                        [UIView animateWithDuration:1 animations:^{
+                            [self.progressView setProgress:0.8 animated:true];
+                        }];
+                        UIImage *image = [UIImage imageNamed:@"placeholder"];
+                        [self setPictureSize:image.size];
+                        self.imageView.image = image;
                     });
                     FLAnimatedImage *animatedImage = [FLAnimatedImage animatedImageWithGIFData:object];
                     self.loadingFinished = true;
@@ -276,7 +268,7 @@ UIScrollViewDelegate
                         }];
                         if (animatedImage) {
                             [self setPictureSize:animatedImage.size];
-                            self.imageView.animatedImage = animatedImage;
+                            [self.imageView animatedTransitionAnimatedImage:animatedImage];
                         }
                     });
                 }else if ([object isKindOfClass:[NSData class]]) {
