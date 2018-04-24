@@ -10,6 +10,7 @@
         _imageURL = imageURL;
         _imageName = imageName;
         _imageType = imageType;
+        _posterImage = [UIImage imageNamed:@"placeholder"];
     }
     return self;
 }

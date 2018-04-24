@@ -12,4 +12,5 @@ typedef NS_ENUM(NSInteger, MFImageType) {
 @property (nonatomic, strong) NSString *imageName;
 @property (nonatomic, strong) NSString *imageURL;
 @property (nonatomic, assign) MFImageType imageType;
+@property (nonatomic, strong) UIImage *posterImage;
 @end

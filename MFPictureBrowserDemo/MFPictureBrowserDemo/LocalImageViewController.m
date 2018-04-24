@@ -22,7 +22,7 @@ MFPictureBrowserDelegate
 - (UICollectionView *)collectionView {
     if (!_collectionView) {
         UICollectionViewFlowLayout *flow = [[UICollectionViewFlowLayout alloc] init];
-        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(10, 0, [UIScreen mainScreen].bounds.size.width - 20, [UIScreen mainScreen].bounds.size.width - 20) collectionViewLayout:flow];
+        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(10, 10, [UIScreen mainScreen].bounds.size.width - 20, [UIScreen mainScreen].bounds.size.height - 20) collectionViewLayout:flow];
         
         _collectionView.delegate = self;
         _collectionView.dataSource = self;
@@ -72,6 +72,7 @@ MFPictureBrowserDelegate
             NSURL *imageURL = [[NSBundle mainBundle] URLForResource:pictureModel.imageName withExtension:nil];
             FLAnimatedImage *animatedImage = [FLAnimatedImage animatedImageWithGIFData:[NSData dataWithContentsOfURL:imageURL]];
             if (animatedImage) {
+                pictureModel.posterImage = animatedImage.posterImage;
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [cell.displayImageView animatedTransitionAnimatedImage:animatedImage];
                     [self configTagImageView:cell.tagImageView size:animatedImage.size imageType:MFImageTypeGIF];
@@ -143,6 +144,10 @@ minimumInteritemSpacingForSectionAtIndex: (NSInteger)section{
 
 - (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser imageDidLoadAtIndex:(NSInteger)index image:(UIImage *)image animatedImage:(FLAnimatedImage *)animatedImage error:(NSError *)error {
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+    MFPictureModel *pictureModel = self.picList[index];
+    if (animatedImage) {
+        pictureModel.posterImage = animatedImage.posterImage;
+    }
     [self.collectionView reloadItemsAtIndexPaths:@[indexPath]];
 }
 

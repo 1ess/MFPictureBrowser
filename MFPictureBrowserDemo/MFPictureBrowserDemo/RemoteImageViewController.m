@@ -24,7 +24,7 @@ MFPictureBrowserDelegate
 - (UICollectionView *)collectionView {
     if (!_collectionView) {
         UICollectionViewFlowLayout *flow = [[UICollectionViewFlowLayout alloc] init];
-        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(10, 0, [UIScreen mainScreen].bounds.size.width - 20, [UIScreen mainScreen].bounds.size.width - 20) collectionViewLayout:flow];
+        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(10, 10, [UIScreen mainScreen].bounds.size.width - 20, [UIScreen mainScreen].bounds.size.height - 20) collectionViewLayout:flow];
         
         _collectionView.delegate = self;
         _collectionView.dataSource = self;
@@ -99,16 +99,20 @@ MFPictureBrowserDelegate
         if (imageAvailable) {
             [cache objectForKey:cacheKey block:^(PINCache * _Nonnull cache, NSString * _Nonnull key, id  _Nullable object) {
                 FLAnimatedImage *animatedImage = [FLAnimatedImage animatedImageWithGIFData:object];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [weakCell.displayImageView animatedTransitionAnimatedImage:animatedImage];
-                    weakCell.tagImageView.image = [UIImage imageNamed:@"ic_messages_pictype_gif_30x30_"];
-                    weakCell.tagImageView.alpha = 1;
-                });
+                if (animatedImage) {
+                    pictureModel.posterImage = animatedImage.posterImage;
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [weakCell.displayImageView animatedTransitionAnimatedImage:animatedImage];
+                        weakCell.tagImageView.image = [UIImage imageNamed:@"ic_messages_pictype_gif_30x30_"];
+                        weakCell.tagImageView.alpha = 1;
+                    });
+                }
             }];
         }else {
             [[PINRemoteImageManager sharedImageManager] downloadImageWithURL:url options:(PINRemoteImageManagerDownloadOptionsNone) progressDownload:nil completion:^(PINRemoteImageManagerResult * _Nonnull result) {
                 if (!result.error && (result.resultType == PINRemoteImageResultTypeDownload || result.resultType == PINRemoteImageResultTypeMemoryCache || result.resultType == PINRemoteImageResultTypeCache)) {
                     dispatch_async(dispatch_get_main_queue(), ^{
+                        pictureModel.posterImage = result.animatedImage.posterImage;
                         if (result.requestDuration > 0.25) {
                             [weakCell.displayImageView animatedTransitionAnimatedImage:result.animatedImage];
                         } else {
@@ -210,6 +214,10 @@ minimumInteritemSpacingForSectionAtIndex: (NSInteger)section{
 
 - (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser imageDidLoadAtIndex:(NSInteger)index image:(UIImage *)image animatedImage:(FLAnimatedImage *)animatedImage error:(NSError *)error {
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+    MFPictureModel *pictureModel = self.picList[index];
+    if (animatedImage) {
+        pictureModel.posterImage = animatedImage.posterImage;
+    }
     [self.collectionView reloadItemsAtIndexPaths:@[indexPath]];
 }
 

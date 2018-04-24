@@ -128,7 +128,7 @@ UIScrollViewDelegate
             [UIView animateWithDuration:1 animations:^{
                 [self.progressView setProgress:0.8 animated:true];
             }];
-            UIImage *image = [UIImage imageNamed:@"placeholder"];
+            UIImage *image = pictureModel.posterImage;
             [self setPictureSize:image.size];
             self.imageView.image = image;
             dispatch_async(dispatch_get_global_queue(0, 0), ^{
@@ -173,7 +173,7 @@ UIScrollViewDelegate
             [self.imageView setPin_updateWithProgress:YES];
             if (!imageAvailable) {
                 self.progressView.alpha = 1;
-                UIImage *image = [UIImage imageNamed:@"placeholder"];
+                UIImage *image = pictureModel.posterImage;
                 [self setPictureSize:image.size];
                 self.imageView.image = image;
                 __weak __typeof(self)weakSelf = self;
@@ -207,7 +207,7 @@ UIScrollViewDelegate
                 [UIView animateWithDuration:1 animations:^{
                     [self.progressView setProgress:0.8 animated:true];
                 }];
-                UIImage *image = [UIImage imageNamed:@"placeholder"];
+                UIImage *image = pictureModel.posterImage;
                 [self setPictureSize:image.size];
                 self.imageView.image = image;
                 [cache objectForKey:cacheKey block:^(PINCache * _Nonnull cache, NSString * _Nonnull key, id  _Nullable object) {
@@ -237,7 +237,7 @@ UIScrollViewDelegate
             [self.imageView setPin_updateWithProgress:YES];
             if (!imageAvailable) {
                 self.progressView.alpha = 1;
-                UIImage *image = [UIImage imageNamed:@"placeholder"];
+                UIImage *image = pictureModel.posterImage;
                 [self setPictureSize:image.size];
                 self.imageView.image = image;
                 __weak __typeof(self)weakSelf = self;
@@ -271,7 +271,7 @@ UIScrollViewDelegate
                 [UIView animateWithDuration:1 animations:^{
                     [self.progressView setProgress:0.8 animated:true];
                 }];
-                UIImage *image = [UIImage imageNamed:@"placeholder"];
+                UIImage *image = pictureModel.posterImage;
                 [self setPictureSize:image.size];
                 self.imageView.image = image;
                 [cache objectForKey:cacheKey block:^(PINCache * _Nonnull cache, NSString * _Nonnull key, id  _Nullable object) {
