@@ -1,0 +1,1 @@
+../../../MFCategory/Classes/NSStringCategory/NSString+MFMD5Encoder.h
