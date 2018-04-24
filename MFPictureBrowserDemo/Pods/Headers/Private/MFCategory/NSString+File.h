@@ -1,1 +1,0 @@
-../../../MFCategory/Classes/NSStringCategory/NSString+File.h

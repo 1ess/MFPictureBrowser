@@ -1,1 +1,0 @@
-../../../MFCategory/Classes/Manager/MFREManager.h
