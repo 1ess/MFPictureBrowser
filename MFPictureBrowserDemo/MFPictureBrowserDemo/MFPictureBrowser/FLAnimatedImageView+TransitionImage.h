@@ -1,7 +1,7 @@
 
 //  Copyright © 2018年 GodzzZZZ. All rights reserved.
 
-#import "FLAnimatedImageView.h"
+#import <FLAnimatedImage/FLAnimatedImageView.h>
 
 @interface FLAnimatedImageView (TransitionImage)
 - (void)animatedTransitionAnimatedImage:(FLAnimatedImage *)animatedImage;
