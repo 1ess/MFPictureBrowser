@@ -1,4 +1,5 @@
 
+//  Copyright © 2018年 GodzzZZZ. All rights reserved.
 
 #import "FLAnimatedImageView.h"
 
