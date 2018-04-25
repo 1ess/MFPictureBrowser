@@ -12,4 +12,5 @@ MFPictureModelProtocol
 @property (nonatomic, assign) MFImageType imageType;
 @property (nonatomic, strong) UIImage *posterImage;
 - (instancetype)initWithURL:(NSString *)imageURL imageName:(NSString *)imageName imageType:(MFImageType)imageType;
+- (instancetype)initWithURL:(NSString *)imageURL imageName:(NSString *)imageName imageType:(MFImageType)imageType posterImage:(UIImage *)posterImage;
 @end

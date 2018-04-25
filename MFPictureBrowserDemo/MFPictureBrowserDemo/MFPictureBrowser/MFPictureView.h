@@ -22,12 +22,9 @@
 @property (nonatomic, strong, readonly) FLAnimatedImageView *imageView;
 // 代理
 @property (nonatomic, weak) id<MFPictureViewDelegate> pictureDelegate;
-
 - (instancetype)init NS_UNAVAILABLE;
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)initWithPictureModel:(id<MFPictureModelProtocol>)pictureModel;
-//- (instancetype)initWithImageName:(NSString *)imageName decodedAnimatedImage:(FLAnimatedImage *)decodedAnimatedImage;
-//- (instancetype)initWithImageURL:(NSString *)imageURL decodedAnimatedImage:(FLAnimatedImage *)decodedAnimatedImage;
 
 /**
  动画显示

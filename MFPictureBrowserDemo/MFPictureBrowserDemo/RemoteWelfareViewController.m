@@ -1,6 +1,6 @@
 
 
-#import "RemoteImageViewController.h"
+#import "RemoteWelfareViewController.h"
 #import "MFPictureBrowser.h"
 #import "MFDisplayPhotoCollectionViewCell.h"
 #import "MFPictureModel.h"
@@ -8,7 +8,7 @@
 #import <PINCache/PINCache.h>
 #import <PINRemoteImage/PINRemoteImage.h>
 #import "MFPictureBrowser/FLAnimatedImageView+TransitionImage.h"
-@interface RemoteImageViewController ()
+@interface RemoteWelfareViewController ()
 <
 UICollectionViewDelegate,
 UICollectionViewDataSource,
@@ -19,7 +19,7 @@ MFPictureBrowserDelegate
 @property (nonatomic, strong) NSMutableArray *picList;
 @end
 
-@implementation RemoteImageViewController
+@implementation RemoteWelfareViewController
 
 - (UICollectionView *)collectionView {
     if (!_collectionView) {
@@ -37,27 +37,33 @@ MFPictureBrowserDelegate
 - (NSMutableArray *)picList {
     if (!_picList) {
         _picList = @[
-                     [[MFPictureModel alloc] initWithURL:@"https://pic2.zhimg.com/80/v2-9d0d69e867ed790715fa11d1c55f3151_hd.jpg"
+                     [[MFPictureModel alloc] initWithURL:@"http://7xi8d6.com1.z0.glb.clouddn.com/20180122090204_A4hNiG_Screenshot.jpeg"
                                                imageName:nil
                                                imageType:MFImageTypeOther],
-                     [[MFPictureModel alloc] initWithURL:@"https://ww3.sinaimg.cn/mw690/79ba7be1jw1e5jdfqobcdg20bh06gwwz.gif"
+                     [[MFPictureModel alloc] initWithURL:@"http://7xi8d6.com1.z0.glb.clouddn.com/20171114101305_NIAzCK_rakukoo_14_11_2017_10_12_58_703.jpeg"
                                                imageName:nil
-                                               imageType:MFImageTypeGIF],
-                     [[MFPictureModel alloc] initWithURL:@"https://b-ssl.duitang.com/uploads/item/201609/03/20160903092531_ZTaFm.gif"
+                                               imageType:MFImageTypeOther],
+                     [[MFPictureModel alloc] initWithURL:@"https://ws1.sinaimg.cn/large/610dc034ly1fjndz4dh39j20u00u0ada.jpg"
                                                imageName:nil
-                                               imageType:MFImageTypeGIF],
-                     [[MFPictureModel alloc] initWithURL:@"https://b-ssl.duitang.com/uploads/item/201609/03/20160903092605_3KdcV.gif"
+                                               imageType:MFImageTypeOther],
+                     [[MFPictureModel alloc] initWithURL:@"https://ws1.sinaimg.cn/large/610dc034ly1fibksd2mbmj20u011iacx.jpg"
                                                imageName:nil
-                                               imageType:MFImageTypeGIF],
-                     [[MFPictureModel alloc] initWithURL:@"https://pic2.zhimg.com/e336f051665a796be2d86ab37aa1ffb9_r.jpg"
+                                               imageType:MFImageTypeOther],
+                     [[MFPictureModel alloc] initWithURL:@"http://7xi8d6.com1.z0.glb.clouddn.com/2017-05-12-18380140_455327614813449_854681840315793408_n.jpg"
                                                imageName:nil
-                                               imageType:MFImageTypeLongImage],
-                     [[MFPictureModel alloc] initWithURL:@"https://b-ssl.duitang.com/uploads/item/201609/03/20160903085932_PTrKh.gif"
+                                               imageType:MFImageTypeOther],
+                     [[MFPictureModel alloc] initWithURL:@"http://ww1.sinaimg.cn/large/61e74233ly1feuogwvg27j20p00zkqe7.jpg"
                                                imageName:nil
-                                               imageType:MFImageTypeGIF],
-                     [[MFPictureModel alloc] initWithURL:@"https://b-ssl.duitang.com/uploads/item/201609/03/20160903085850_ZHaP5.gif"
+                                               imageType:MFImageTypeOther],
+                     [[MFPictureModel alloc] initWithURL:@"http://7xi8d6.com1.z0.glb.clouddn.com/2017-03-13-17265708_396005157434387_3099040288153272320_n.jpg"
                                                imageName:nil
-                                               imageType:MFImageTypeGIF],
+                                               imageType:MFImageTypeOther],
+                     [[MFPictureModel alloc] initWithURL:@"http://7xi8d6.com1.z0.glb.clouddn.com/2017-03-02-16906481_1495916493759925_5770648570629718016_n.jpg"
+                                               imageName:nil
+                                               imageType:MFImageTypeOther],
+                     [[MFPictureModel alloc] initWithURL:@"http://ww2.sinaimg.cn/large/610dc034gw1f9lmfwy2nij20u00u076w.jpg"
+                                               imageName:nil
+                                               imageType:MFImageTypeOther],
                      ].mutableCopy;
     }
     return _picList;
@@ -168,7 +174,7 @@ MFPictureBrowserDelegate
             }];
         }
     }
-
+    
     return cell;
 }
 

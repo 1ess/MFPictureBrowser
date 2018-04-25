@@ -1,12 +1,12 @@
 
 
-#import "WelfareViewController.h"
+#import "LocalWelfareViewController.h"
 #import "MFPictureBrowser.h"
 #import "MFDisplayPhotoCollectionViewCell.h"
 #import <PINRemoteImage/PINImageView+PINRemoteImage.h>
 #import "MFPictureBrowser/FLAnimatedImageView+TransitionImage.h"
 #import "MFPictureModel.h"
-@interface WelfareViewController ()
+@interface LocalWelfareViewController ()
 <
 UICollectionViewDelegate,
 UICollectionViewDataSource,
@@ -17,7 +17,7 @@ MFPictureBrowserDelegate
 @property (nonatomic, strong) NSMutableArray *picList;
 @end
 
-@implementation WelfareViewController
+@implementation LocalWelfareViewController
 
 - (UICollectionView *)collectionView {
     if (!_collectionView) {

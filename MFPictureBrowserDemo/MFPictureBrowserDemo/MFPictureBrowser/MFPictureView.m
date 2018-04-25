@@ -16,8 +16,7 @@ UIScrollViewDelegate
 @property (nonatomic, assign) CGFloat scale;
 @property (nonatomic, assign) CGFloat offsetY;
 @property (nonatomic, assign, getter = isShowingAnimation) BOOL showingAnimation;
-
-@property (nonatomic, assign) BOOL loadingFinished;
+@property (nonatomic, assign, getter = isLoadingFinished) BOOL loadingFinished;
 @property (nonatomic, assign, getter = isLocalImage) BOOL localImage;
 @property (nonatomic, assign, getter = isGIF) BOOL GIF;
 @property (nonatomic, strong) UIProgressView *progressView;
@@ -362,7 +361,7 @@ UIScrollViewDelegate
 #pragma mark - 监听方法
 
 - (void)doubleClick:(UITapGestureRecognizer *)gesture {
-    if (!self.loadingFinished) {
+    if (!self.isLoadingFinished) {
         return;
     }
     CGFloat newScale = 2;
@@ -427,7 +426,7 @@ UIScrollViewDelegate
             // 设置 contentOffset
             [scrollView setContentOffset:_lastContentOffset animated:false];
         }else {
-            if (!_scale && !self.loadingFinished) {
+            if (!_scale && !self.isLoadingFinished) {
                 [UIView animateWithDuration:0.1 animations:^{
                     self.progressView.alpha = 1;
                 }];
@@ -445,7 +444,7 @@ UIScrollViewDelegate
     CGFloat offsetY = (scrollView.bounds.size.height > scrollView.contentSize.height) ? (scrollView.bounds.size.height - scrollView.contentSize.height) * 0.5 : 0.0;
     center.y = scrollView.contentSize.height * 0.5 + offsetY;
     _imageView.center = center;
-    if (scrollView.zoomScale == 1 && !self.loadingFinished) {
+    if (scrollView.zoomScale == 1 && !self.isLoadingFinished) {
         [UIView animateWithDuration:0.1 animations:^{
             self.progressView.alpha = 1;
         }];

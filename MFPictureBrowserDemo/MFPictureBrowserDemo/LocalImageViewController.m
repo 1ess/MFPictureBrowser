@@ -82,6 +82,7 @@ MFPictureBrowserDelegate
     }else {
         UIImage *image = [UIImage imageNamed:pictureModel.imageName];
         cell.displayImageView.image = image;
+        pictureModel.posterImage = image;
         [self configTagImageView:cell.tagImageView size:image.size imageType:pictureModel.imageType];
     }
     return cell;
@@ -147,6 +148,8 @@ minimumInteritemSpacingForSectionAtIndex: (NSInteger)section{
     MFPictureModel *pictureModel = self.picList[index];
     if (animatedImage) {
         pictureModel.posterImage = animatedImage.posterImage;
+    }else if (image) {
+        pictureModel.posterImage = image;
     }
     [self.collectionView reloadItemsAtIndexPaths:@[indexPath]];
 }
