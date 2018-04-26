@@ -16,7 +16,6 @@ UICollectionViewDelegateFlowLayout,
 MFPictureBrowserDelegate
 >
 @property (nonatomic, strong) UICollectionView *collectionView;
-@property (nonatomic, strong) NSMutableArray *picList;
 @end
 
 @implementation RemoteImageViewController
@@ -36,29 +35,7 @@ MFPictureBrowserDelegate
 
 - (NSMutableArray *)picList {
     if (!_picList) {
-        _picList = @[
-                     [[MFPictureModel alloc] initWithURL:@"https://pic2.zhimg.com/80/v2-9d0d69e867ed790715fa11d1c55f3151_hd.jpg"
-                                               imageName:nil
-                                               imageType:MFImageTypeOther],
-                     [[MFPictureModel alloc] initWithURL:@"https://ww3.sinaimg.cn/mw690/79ba7be1jw1e5jdfqobcdg20bh06gwwz.gif"
-                                               imageName:nil
-                                               imageType:MFImageTypeGIF],
-                     [[MFPictureModel alloc] initWithURL:@"https://b-ssl.duitang.com/uploads/item/201609/03/20160903092531_ZTaFm.gif"
-                                               imageName:nil
-                                               imageType:MFImageTypeGIF],
-                     [[MFPictureModel alloc] initWithURL:@"https://b-ssl.duitang.com/uploads/item/201609/03/20160903092605_3KdcV.gif"
-                                               imageName:nil
-                                               imageType:MFImageTypeGIF],
-                     [[MFPictureModel alloc] initWithURL:@"https://pic2.zhimg.com/e336f051665a796be2d86ab37aa1ffb9_r.jpg"
-                                               imageName:nil
-                                               imageType:MFImageTypeLongImage],
-                     [[MFPictureModel alloc] initWithURL:@"https://b-ssl.duitang.com/uploads/item/201609/03/20160903085932_PTrKh.gif"
-                                               imageName:nil
-                                               imageType:MFImageTypeGIF],
-                     [[MFPictureModel alloc] initWithURL:@"https://b-ssl.duitang.com/uploads/item/201609/03/20160903085850_ZHaP5.gif"
-                                               imageName:nil
-                                               imageType:MFImageTypeGIF],
-                     ].mutableCopy;
+        _picList = @[].mutableCopy;
     }
     return _picList;
 }
@@ -73,7 +50,7 @@ MFPictureBrowserDelegate
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    [[[PINRemoteImageManager sharedImageManager] cache] removeAllObjects];
+//    [[[PINRemoteImageManager sharedImageManager] cache] removeAllObjects];
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {

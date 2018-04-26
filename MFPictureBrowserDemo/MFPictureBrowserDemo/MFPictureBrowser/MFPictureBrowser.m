@@ -4,6 +4,7 @@
 #import "MFPictureBrowser.h"
 #import "MFPictureView.h"
 #import <MFCategory/UIView+MFFrame.h>
+#import <PINRemoteImage/PINRemoteImageManager.h>
 @interface MFPictureBrowser()
 <
 UIScrollViewDelegate,
@@ -147,11 +148,7 @@ MFPictureViewDelegate
     }
     // 取到当前显示的 pictureView
     MFPictureView *pictureView = [[_pictureViews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"index == %d", self.currentIndex]] firstObject];
-    // 取消所有的下载
-//    for (MFPictureView *pictureView in _pictureViews) {
-//        [pictureView.imageView yy_cancelCurrentImageRequest];
-//    }
-
+    
     // 执行关闭动画
     __weak __typeof(self)weakSelf = self;
     [pictureView animationDismissWithToRect:rect animationBlock:^{
@@ -240,6 +237,10 @@ MFPictureViewDelegate
         }
         self.currentIndex = index;
     }
+}
+
+- (void)dealloc {
+    NSLog(@"browser dealloc");
 }
 
 #pragma mark - MFPictureViewDelegate

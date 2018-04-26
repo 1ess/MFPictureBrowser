@@ -14,13 +14,11 @@
 		4A5AEE9D2085A87600EBFF88 /* MFPictureBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5AEE9C2085A87600EBFF88 /* MFPictureBrowser.m */; };
 		4A5AEEA02085BC7500EBFF88 /* MFPictureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5AEE9F2085BC7500EBFF88 /* MFPictureView.m */; };
 		4A5AEEA32085C11B00EBFF88 /* MFDisplayPhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5AEEA22085C11B00EBFF88 /* MFDisplayPhotoCollectionViewCell.m */; };
-		4A60D1112090297900612995 /* LocalWelfareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A60D1102090297900612995 /* LocalWelfareViewController.m */; };
 		4AA906B6208DAD4C00C99D77 /* FLAnimatedImageView+TransitionImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AA906B5208DAD4C00C99D77 /* FLAnimatedImageView+TransitionImage.m */; };
 		4AE0C925208EBF6800A2B2D5 /* MFPictureModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AE0C924208EBF6800A2B2D5 /* MFPictureModel.m */; };
 		4AE0C929208F01FC00A2B2D5 /* 1.gif in Resources */ = {isa = PBXBuildFile; fileRef = 4AE0C928208F01FC00A2B2D5 /* 1.gif */; };
 		4AE0C92D208F046800A2B2D5 /* 2.gif in Resources */ = {isa = PBXBuildFile; fileRef = 4AE0C92C208F046800A2B2D5 /* 2.gif */; };
 		4AE0C92F208F1E5500A2B2D5 /* 3.gif in Resources */ = {isa = PBXBuildFile; fileRef = 4AE0C92E208F1E5500A2B2D5 /* 3.gif */; };
-		5E4F795B208C7A670036E0B2 /* RemoteWelfareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E4F795A208C7A670036E0B2 /* RemoteWelfareViewController.m */; };
 		5E53B83F20863DD5007480C7 /* ListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E53B83E20863DD5007480C7 /* ListViewController.m */; };
 		5E53B84220863F0B007480C7 /* RemoteImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E53B84120863F0B007480C7 /* RemoteImageViewController.m */; };
 		5E53B84520863F14007480C7 /* LocalImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E53B84420863F14007480C7 /* LocalImageViewController.m */; };
@@ -43,8 +41,6 @@
 		4A5AEE9F2085BC7500EBFF88 /* MFPictureView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MFPictureView.m; sourceTree = "<group>"; };
 		4A5AEEA12085C11B00EBFF88 /* MFDisplayPhotoCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFDisplayPhotoCollectionViewCell.h; sourceTree = "<group>"; };
 		4A5AEEA22085C11B00EBFF88 /* MFDisplayPhotoCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFDisplayPhotoCollectionViewCell.m; sourceTree = "<group>"; };
-		4A60D10F2090297900612995 /* LocalWelfareViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocalWelfareViewController.h; sourceTree = "<group>"; };
-		4A60D1102090297900612995 /* LocalWelfareViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocalWelfareViewController.m; sourceTree = "<group>"; };
 		4AA906B4208DAD4C00C99D77 /* FLAnimatedImageView+TransitionImage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FLAnimatedImageView+TransitionImage.h"; sourceTree = "<group>"; };
 		4AA906B5208DAD4C00C99D77 /* FLAnimatedImageView+TransitionImage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "FLAnimatedImageView+TransitionImage.m"; sourceTree = "<group>"; };
 		4AE0C922208EBAE900A2B2D5 /* MFPictureModelProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MFPictureModelProtocol.h; sourceTree = "<group>"; };
@@ -53,8 +49,6 @@
 		4AE0C928208F01FC00A2B2D5 /* 1.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = 1.gif; sourceTree = "<group>"; };
 		4AE0C92C208F046800A2B2D5 /* 2.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = 2.gif; sourceTree = "<group>"; };
 		4AE0C92E208F1E5500A2B2D5 /* 3.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = 3.gif; sourceTree = "<group>"; };
-		5E4F7959208C7A670036E0B2 /* RemoteWelfareViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RemoteWelfareViewController.h; sourceTree = "<group>"; };
-		5E4F795A208C7A670036E0B2 /* RemoteWelfareViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RemoteWelfareViewController.m; sourceTree = "<group>"; };
 		5E53B83D20863DD5007480C7 /* ListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ListViewController.h; sourceTree = "<group>"; };
 		5E53B83E20863DD5007480C7 /* ListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ListViewController.m; sourceTree = "<group>"; };
 		5E53B84020863F0B007480C7 /* RemoteImageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RemoteImageViewController.h; sourceTree = "<group>"; };
@@ -119,10 +113,6 @@
 				5E53B84120863F0B007480C7 /* RemoteImageViewController.m */,
 				5E53B84320863F14007480C7 /* LocalImageViewController.h */,
 				5E53B84420863F14007480C7 /* LocalImageViewController.m */,
-				5E4F7959208C7A670036E0B2 /* RemoteWelfareViewController.h */,
-				5E4F795A208C7A670036E0B2 /* RemoteWelfareViewController.m */,
-				4A60D10F2090297900612995 /* LocalWelfareViewController.h */,
-				4A60D1102090297900612995 /* LocalWelfareViewController.m */,
 				4A5AEEA12085C11B00EBFF88 /* MFDisplayPhotoCollectionViewCell.h */,
 				4A5AEEA22085C11B00EBFF88 /* MFDisplayPhotoCollectionViewCell.m */,
 				4A5AEE8A2085987300EBFF88 /* Main.storyboard */,
@@ -294,11 +284,9 @@
 				5E53B84220863F0B007480C7 /* RemoteImageViewController.m in Sources */,
 				4AA906B6208DAD4C00C99D77 /* FLAnimatedImageView+TransitionImage.m in Sources */,
 				4A5AEE942085987300EBFF88 /* main.m in Sources */,
-				5E4F795B208C7A670036E0B2 /* RemoteWelfareViewController.m in Sources */,
 				5E53B84520863F14007480C7 /* LocalImageViewController.m in Sources */,
 				4A5AEE862085987300EBFF88 /* AppDelegate.m in Sources */,
 				4AE0C925208EBF6800A2B2D5 /* MFPictureModel.m in Sources */,
-				4A60D1112090297900612995 /* LocalWelfareViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -457,4 +457,8 @@ UIScrollViewDelegate
     }
 }
 
+- (void)dealloc {
+    NSLog(@"picture dealloc");
+}
+
 @end
