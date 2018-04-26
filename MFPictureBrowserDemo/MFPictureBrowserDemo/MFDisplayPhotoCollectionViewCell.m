@@ -8,7 +8,7 @@
     if (self) {
         self.contentView.backgroundColor = [UIColor clearColor];
         
-        self.displayImageView = [[FLAnimatedImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+        self.displayImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
         self.displayImageView.layer.cornerRadius = 2;
         self.displayImageView.layer.masksToBounds = YES;
         self.displayImageView.contentMode = UIViewContentModeScaleAspectFill;

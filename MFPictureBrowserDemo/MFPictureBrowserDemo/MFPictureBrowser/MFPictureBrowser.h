@@ -2,7 +2,6 @@
 //  Copyright © 2018年 GodzzZZZ. All rights reserved.
 
 #import <UIKit/UIKit.h>
-#import <FLAnimatedImage/FLAnimatedImage.h>
 #import "MFPictureModelProtocol.h"
 @class MFPictureBrowser;
 @protocol MFPictureBrowserDelegate <NSObject>
@@ -14,7 +13,7 @@
  
  @return 视图
  */
-- (FLAnimatedImageView *)pictureBrowser:(MFPictureBrowser *)pictureBrowser imageViewAtIndex:(NSInteger)index;
+- (UIImageView *)pictureBrowser:(MFPictureBrowser *)pictureBrowser imageViewAtIndex:(NSInteger)index;
 /**
  返回协议对象
  
@@ -42,7 +41,7 @@
  @param animatedImage  加载成功返回的animatedImage
  @param index          索引
  */
-- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser image:(UIImage *)image animatedImage:(FLAnimatedImage *)animatedImage didLoadAtIndex:(NSInteger)index;
+- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser image:(UIImage *)image animatedImage:(UIImage *)animatedImage didLoadAtIndex:(NSInteger)index;
 
 /**
  browser did dimiss时的回调
@@ -90,7 +89,7 @@
  @param picturesCount       图片的张数
  @param currentPictureIndex 当前用户点击的图片索引
  */
-- (void)showImageFromView:(FLAnimatedImageView *)fromView picturesCount:(NSInteger)picturesCount currentPictureIndex:(NSInteger)currentPictureIndex;
+- (void)showImageFromView:(UIImageView *)fromView picturesCount:(NSInteger)picturesCount currentPictureIndex:(NSInteger)currentPictureIndex;
 
 /**
  让图片浏览器消失

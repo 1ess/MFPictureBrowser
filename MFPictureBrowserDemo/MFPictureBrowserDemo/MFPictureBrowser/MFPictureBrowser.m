@@ -17,7 +17,7 @@ MFPictureViewDelegate
 @property (nonatomic, weak) UIScrollView *scrollView;
 @property (nonatomic, weak) UILabel *pageTextLabel;
 @property (nonatomic, weak) UITapGestureRecognizer *dismissTapGesture;
-@property (nonatomic, strong) FLAnimatedImageView *endView;
+@property (nonatomic, strong) UIImageView *endView;
 @end
 
 @implementation MFPictureBrowser
@@ -68,11 +68,10 @@ MFPictureViewDelegate
 
 #pragma mark - 公共方法
 
-- (void)showImageFromView:(FLAnimatedImageView *)fromView picturesCount:(NSInteger)picturesCount currentPictureIndex:(NSInteger)currentPictureIndex {
+- (void)showImageFromView:(UIImageView *)fromView picturesCount:(NSInteger)picturesCount currentPictureIndex:(NSInteger)currentPictureIndex {
     [self showFromView:fromView picturesCount:picturesCount currentPictureIndex:currentPictureIndex];
     for (NSInteger i = 0; i < picturesCount; i++) {
         MFPictureView *pictureView = [self createImagePictureViewAtIndex:i];
-        [pictureView.imageView stopAnimating];
         [self.pictureViews addObject:pictureView];
     }
     MFPictureView *pictureView = self.pictureViews[currentPictureIndex];
@@ -100,23 +99,19 @@ MFPictureViewDelegate
 
 - (MFPictureView *)createImagePictureViewAtIndex:(NSInteger)index {
     id<MFPictureModelProtocol> pictureModel = [_delegate pictureBrowser:self pictureModelAtIndex:index];
-    FLAnimatedImageView *animtedImageView = [_delegate pictureBrowser:self imageViewAtIndex:index];
+    UIImageView *imageView = [_delegate pictureBrowser:self imageViewAtIndex:index];
     MFPictureView *pictureView = [[MFPictureView alloc] initWithPictureModel:pictureModel];
-    [self configPictureView:pictureView index:index animtedImageView:animtedImageView];
+    [self configPictureView:pictureView index:index imageView:imageView];
     return pictureView;
 }
 
-- (void)configPictureView:(MFPictureView *)pictureView index:(NSInteger)index animtedImageView:(FLAnimatedImageView *)animtedImageView {
+- (void)configPictureView:(MFPictureView *)pictureView index:(NSInteger)index imageView:(UIImageView *)imageView {
     [self.dismissTapGesture requireGestureRecognizerToFail:pictureView.imageView.gestureRecognizers.firstObject];
     pictureView.pictureDelegate = self;
     [self.scrollView addSubview:pictureView];
     pictureView.index = index;
     pictureView.size = self.size;
-    if (animtedImageView.image) {
-        pictureView.pictureSize = animtedImageView.image.size;
-    }else if (animtedImageView.animatedImage) {
-        pictureView.pictureSize = animtedImageView.animatedImage.size;
-    }
+    pictureView.pictureSize = imageView.image.size;
     CGPoint center = pictureView.center;
     center.x = index * _scrollView.width + _scrollView.width * 0.5;
     pictureView.center = center;
@@ -132,7 +127,7 @@ MFPictureViewDelegate
             self.pageTextLabel.alpha = 0;
         }
     } completionBlock:^{
-        [pictureView.imageView startAnimating];
+        
     }];
 }
 
@@ -228,10 +223,8 @@ MFPictureViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     NSUInteger index = (scrollView.contentOffset.x / scrollView.width + 0.5);
     if (self.currentIndex != index) {
-        MFPictureView *view = self.pictureViews[self.currentIndex];
-        [view.imageView stopAnimating];
         MFPictureView *currentView = self.pictureViews[index];
-        [currentView.imageView startAnimating];
+        currentView.decoded = true;
         if ([_delegate respondsToSelector:@selector(pictureBrowser:scrollToIndex:)]) {
             [_delegate pictureBrowser:self scrollToIndex:index];
         }
@@ -253,7 +246,7 @@ MFPictureViewDelegate
     self.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1 - scale];
 }
 
-- (void)pictureView:(MFPictureView *)pictureView image:(UIImage *)image animatedImage:(FLAnimatedImage *)animatedImage didLoadAtIndex:(NSInteger)index {
+- (void)pictureView:(MFPictureView *)pictureView image:(UIImage *)image animatedImage:(UIImage *)animatedImage didLoadAtIndex:(NSInteger)index {
     if ([_delegate respondsToSelector:@selector(pictureBrowser:image:animatedImage:didLoadAtIndex:)]) {
         [_delegate pictureBrowser:self image:image animatedImage:animatedImage didLoadAtIndex:index];
     }
