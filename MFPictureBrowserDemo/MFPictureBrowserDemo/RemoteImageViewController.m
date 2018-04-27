@@ -161,7 +161,6 @@ MFPictureBrowserDelegate
             }
         }
     }
-
     return cell;
 }
 

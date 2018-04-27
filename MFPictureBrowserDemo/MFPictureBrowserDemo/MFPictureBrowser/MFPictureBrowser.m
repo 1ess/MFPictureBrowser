@@ -179,12 +179,16 @@ MFPictureViewDelegate
 #pragma mark - 状态栏状态
 - (void)hideStautsBar {
     UIView *statusBar = [[UIApplication sharedApplication] valueForKey:@"statusBar"];
-    statusBar.alpha = 0;
+    [UIView animateWithDuration:0.15 animations:^{
+        statusBar.transform = CGAffineTransformMakeTranslation(0, -statusBar.height);
+    }];
 }
 
 - (void)showStatusBar {
     UIView *statusBar = [[UIApplication sharedApplication] valueForKey:@"statusBar"];
-    statusBar.alpha = 1;
+    [UIView animateWithDuration:0.15 animations:^{
+        statusBar.transform = CGAffineTransformIdentity;
+    }];
 }
 
 - (void)setPageTextFont:(UIFont *)pageTextFont {
