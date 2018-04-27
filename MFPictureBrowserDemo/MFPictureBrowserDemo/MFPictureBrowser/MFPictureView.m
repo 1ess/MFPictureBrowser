@@ -201,7 +201,7 @@ UIScrollViewDelegate
                 [self setPictureSize:image.size];
                 self.imageView.image = image;
                 __weak __typeof(self)weakSelf = self;
-                [[PINRemoteImageManager sharedImageManager] downloadImageWithURL:[NSURL URLWithString:pictureModel.imageURL] options:(PINRemoteImageManagerDownloadOptionsNone) progressDownload:^(int64_t completedBytes, int64_t totalBytes) {
+                self.taskUUID = [[PINRemoteImageManager sharedImageManager] downloadImageWithURL:[NSURL URLWithString:pictureModel.imageURL] options:(PINRemoteImageManagerDownloadOptionsNone) progressDownload:^(int64_t completedBytes, int64_t totalBytes) {
                     __strong __typeof(weakSelf)strongSelf = weakSelf;
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [strongSelf.progressView setProgress:(1.0 * completedBytes / totalBytes) <= 0.95 ? (1.0 * completedBytes / totalBytes) : 0.95  animated:true];
@@ -284,7 +284,7 @@ UIScrollViewDelegate
                 [self setPictureSize:image.size];
                 self.imageView.image = image;
                 __weak __typeof(self)weakSelf = self;
-                [[PINRemoteImageManager sharedImageManager] downloadImageWithURL:[NSURL URLWithString:pictureModel.imageURL] options:(PINRemoteImageManagerDownloadOptionsNone) progressDownload:^(int64_t completedBytes, int64_t totalBytes) {
+                self.taskUUID = [[PINRemoteImageManager sharedImageManager] downloadImageWithURL:[NSURL URLWithString:pictureModel.imageURL] options:(PINRemoteImageManagerDownloadOptionsNone) progressDownload:^(int64_t completedBytes, int64_t totalBytes) {
                     __strong __typeof(weakSelf)strongSelf = weakSelf;
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [strongSelf.progressView setProgress:(1.0 * completedBytes / totalBytes) animated:true];
