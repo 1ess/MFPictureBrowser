@@ -15,7 +15,7 @@
 		4A5AEEA02085BC7500EBFF88 /* MFPictureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5AEE9F2085BC7500EBFF88 /* MFPictureView.m */; };
 		4A5AEEA32085C11B00EBFF88 /* MFDisplayPhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5AEEA22085C11B00EBFF88 /* MFDisplayPhotoCollectionViewCell.m */; };
 		4A60D12C2091733C00612995 /* UIImageView+TransitionImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A60D12B2091733C00612995 /* UIImageView+TransitionImage.m */; };
-		4A60D135209184B600612995 /* UIImage+MFGIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A60D134209184B600612995 /* UIImage+MFGIF.m */; };
+		4A60D135209184B600612995 /* UIImage+ForceDecoded.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A60D134209184B600612995 /* UIImage+ForceDecoded.m */; };
 		4AE0C925208EBF6800A2B2D5 /* MFPictureModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AE0C924208EBF6800A2B2D5 /* MFPictureModel.m */; };
 		4AE0C929208F01FC00A2B2D5 /* 1.gif in Resources */ = {isa = PBXBuildFile; fileRef = 4AE0C928208F01FC00A2B2D5 /* 1.gif */; };
 		4AE0C92D208F046800A2B2D5 /* 2.gif in Resources */ = {isa = PBXBuildFile; fileRef = 4AE0C92C208F046800A2B2D5 /* 2.gif */; };
@@ -44,8 +44,8 @@
 		4A5AEEA22085C11B00EBFF88 /* MFDisplayPhotoCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFDisplayPhotoCollectionViewCell.m; sourceTree = "<group>"; };
 		4A60D12A2091733C00612995 /* UIImageView+TransitionImage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImageView+TransitionImage.h"; sourceTree = "<group>"; };
 		4A60D12B2091733C00612995 /* UIImageView+TransitionImage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+TransitionImage.m"; sourceTree = "<group>"; };
-		4A60D133209184B600612995 /* UIImage+MFGIF.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+MFGIF.h"; sourceTree = "<group>"; };
-		4A60D134209184B600612995 /* UIImage+MFGIF.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+MFGIF.m"; sourceTree = "<group>"; };
+		4A60D133209184B600612995 /* UIImage+ForceDecoded.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+ForceDecoded.h"; sourceTree = "<group>"; };
+		4A60D134209184B600612995 /* UIImage+ForceDecoded.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ForceDecoded.m"; sourceTree = "<group>"; };
 		4AE0C922208EBAE900A2B2D5 /* MFPictureModelProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MFPictureModelProtocol.h; sourceTree = "<group>"; };
 		4AE0C923208EBF6800A2B2D5 /* MFPictureModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MFPictureModel.h; sourceTree = "<group>"; };
 		4AE0C924208EBF6800A2B2D5 /* MFPictureModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MFPictureModel.m; sourceTree = "<group>"; };
@@ -139,8 +139,8 @@
 				4A5AEE9F2085BC7500EBFF88 /* MFPictureView.m */,
 				4A60D12A2091733C00612995 /* UIImageView+TransitionImage.h */,
 				4A60D12B2091733C00612995 /* UIImageView+TransitionImage.m */,
-				4A60D133209184B600612995 /* UIImage+MFGIF.h */,
-				4A60D134209184B600612995 /* UIImage+MFGIF.m */,
+				4A60D133209184B600612995 /* UIImage+ForceDecoded.h */,
+				4A60D134209184B600612995 /* UIImage+ForceDecoded.m */,
 				4AE0C922208EBAE900A2B2D5 /* MFPictureModelProtocol.h */,
 			);
 			path = MFPictureBrowser;
@@ -289,7 +289,7 @@
 				5E53B84220863F0B007480C7 /* RemoteImageViewController.m in Sources */,
 				4A5AEE942085987300EBFF88 /* main.m in Sources */,
 				5E53B84520863F14007480C7 /* LocalImageViewController.m in Sources */,
-				4A60D135209184B600612995 /* UIImage+MFGIF.m in Sources */,
+				4A60D135209184B600612995 /* UIImage+ForceDecoded.m in Sources */,
 				4A5AEE862085987300EBFF88 /* AppDelegate.m in Sources */,
 				4A60D12C2091733C00612995 /* UIImageView+TransitionImage.m in Sources */,
 				4AE0C925208EBF6800A2B2D5 /* MFPictureModel.m in Sources */,

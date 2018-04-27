@@ -8,7 +8,7 @@
 #import <PINCache/PINCache.h>
 #import <PINRemoteImage/PINRemoteImage.h>
 #import "MFPictureBrowser/UIImageView+TransitionImage.h"
-#import "MFPictureBrowser/UIImage+MFGIF.h"
+#import "MFPictureBrowser/UIImage+ForceDecoded.h"
 @interface RemoteImageViewController ()
 <
 UICollectionViewDelegate,

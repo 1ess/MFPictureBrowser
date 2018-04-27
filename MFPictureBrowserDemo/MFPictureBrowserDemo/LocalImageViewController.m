@@ -7,7 +7,7 @@
 #import <PINCache/PINCache.h>
 #import <PINRemoteImage/PINRemoteImage.h>
 #import "MFPictureBrowser/UIImageView+TransitionImage.h"
-#import "MFPictureBrowser/UIImage+MFGIF.h"
+#import "MFPictureBrowser/UIImage+ForceDecoded.h"
 #import "MFPictureModel.h"
 @interface LocalImageViewController ()
 <

@@ -16,4 +16,5 @@ typedef NS_ENUM(NSInteger, MFImageType) {
 @property (nonatomic, strong) UIImage *placeholderImage;
 @property (nonatomic, strong) UIImage *posterImage;
 @property (nonatomic, strong) UIImage *animatedImage;
+@property (nonatomic, assign) BOOL compressed;
 @end

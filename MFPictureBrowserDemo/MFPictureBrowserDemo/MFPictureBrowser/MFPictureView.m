@@ -6,7 +6,7 @@
 #import <PINRemoteImage/PINRemoteImage.h>
 #import <PINCache/PINCache.h>
 #import "UIImageView+TransitionImage.h"
-#import "UIImage+MFGIF.h"
+#import "UIImage+ForceDecoded.h"
 @interface MFPictureView()
 <
 UIScrollViewDelegate
@@ -136,7 +136,7 @@ UIScrollViewDelegate
             self.imageView.image = image;
             dispatch_async(dispatch_get_global_queue(0, 0), ^{
                 NSURL *imageURL = [[NSBundle mainBundle] URLForResource:pictureModel.imageName withExtension:nil];
-                UIImage *animatedImage = [UIImage forceDecodedImageWithData:[NSData dataWithContentsOfURL:imageURL]];
+                UIImage *animatedImage = [UIImage forceDecodedImageWithData:[NSData dataWithContentsOfURL:imageURL] compressed:pictureModel.compressed];
                 self.loadingFinished = true;
                 if (animatedImage) {
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -210,7 +210,7 @@ UIScrollViewDelegate
                     __strong __typeof(weakSelf)strongSelf = weakSelf;
                     if (!result.error && (result.resultType == PINRemoteImageResultTypeDownload || result.resultType == PINRemoteImageResultTypeMemoryCache || result.resultType == PINRemoteImageResultTypeCache)) {
                         NSData *animatedData = result.animatedImage.data;
-                        UIImage *animatedImage = [UIImage forceDecodedImageWithData:animatedData];
+                        UIImage *animatedImage = [UIImage forceDecodedImageWithData:animatedData compressed:pictureModel.compressed];
                         strongSelf.loadingFinished = true;
                         dispatch_async(dispatch_get_main_queue(), ^{
                             [strongSelf.progressView setProgress:1.f animated:true];
@@ -244,7 +244,7 @@ UIScrollViewDelegate
                 [self setPictureSize:image.size];
                 self.imageView.image = image;
                 [cache objectForKey:cacheKey block:^(PINCache * _Nonnull cache, NSString * _Nonnull key, id  _Nullable object) {
-                    UIImage *animatedImage = [UIImage forceDecodedImageWithData:object];
+                    UIImage *animatedImage = [UIImage forceDecodedImageWithData:object compressed:pictureModel.compressed];
                     self.loadingFinished = true;
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [UIView animateWithDuration:0.2 animations:^{

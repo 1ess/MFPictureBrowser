@@ -1,13 +1,9 @@
-//
-//  UIImage+MFGIF.m
-//  MFPictureBrowserDemo
-//
-//  Created by 张冬冬 on 2018/4/26.
-//  Copyright © 2018年 张冬冬. All rights reserved.
-//
 
-#import "UIImage+MFGIF.h"
-@implementation UIImage (MFGIF)
+//  Copyright © 2018年 GodzzZZZ. All rights reserved.
+
+#import "UIImage+ForceDecoded.h"
+
+@implementation UIImage (ForceDecoded)
 
 //https://github.com/ibireme/YYKit/blob/master/YYKit/Image/YYImageCoder.m
 CGColorSpaceRef CGColorSpaceGetDeviceRGB() {
@@ -69,21 +65,32 @@ CGImageRef CGImageCreateDecodedCopy(CGImageRef imageRef, BOOL decodeForDisplay) 
 }
 
 + (UIImage *)forceDecodedImageWithData:(NSData *)data {
+    return [self forceDecodedImageWithData:data compressed:true];
+}
+
++ (UIImage *)forceDecodedImageWithData:(NSData *)data compressed:(BOOL)compressed {
     if (!data) {
         return nil;
     }
+    CGFloat maxPixelSize = compressed ? data.length * 0.01 : data.length;
     CGImageSourceRef source = CGImageSourceCreateWithData((__bridge CFDataRef)data, NULL);
+    CFDictionaryRef options = (__bridge CFDictionaryRef) @{
+                                                           (id) kCGImageSourceCreateThumbnailWithTransform : @YES,
+                                                           (id) kCGImageSourceCreateThumbnailFromImageAlways : @YES,
+                                                           (id) kCGImageSourceThumbnailMaxPixelSize : @(maxPixelSize)
+                                                           };
     size_t count = CGImageSourceGetCount(source);
     UIImage *animatedImage;
     if (count <= 1) {
-        CGImageRef imageRef = CGImageSourceCreateImageAtIndex(source, 0, NULL);
+        CGImageRef imageRef = CGImageSourceCreateThumbnailAtIndex(source, 0, options);
         CGImageRef decodedImageRef = CGImageCreateDecodedCopy(imageRef, true);
+        CGImageRelease(imageRef);
         animatedImage = [UIImage imageWithCGImage:decodedImageRef scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
     } else {
         NSMutableArray <UIImage *> *images = [NSMutableArray array];
         NSTimeInterval duration = 0.0f;
         for (size_t i = 0; i < count; i++) {
-            CGImageRef imageRef = CGImageSourceCreateImageAtIndex(source, i, NULL);
+            CGImageRef imageRef = CGImageSourceCreateThumbnailAtIndex(source, i, options);
             CGImageRef decodedImageRef = CGImageCreateDecodedCopy(imageRef, true);
             duration += [self frameDurationAtIndex:i source:source];
             UIImage *image = [UIImage imageWithCGImage:decodedImageRef scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
