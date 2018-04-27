@@ -231,10 +231,6 @@ MFPictureViewDelegate
     }
 }
 
-- (void)dealloc {
-    NSLog(@"browser dealloc");
-}
-
 #pragma mark - MFPictureViewDelegate
 
 - (void)pictureView:(MFPictureView *)pictureView didClickAtIndex:(NSInteger)index{

@@ -50,7 +50,7 @@ MFPictureBrowserDelegate
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    [[[PINRemoteImageManager sharedImageManager] cache] removeAllObjects];
+//    [[[PINRemoteImageManager sharedImageManager] cache] removeAllObjects];
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
