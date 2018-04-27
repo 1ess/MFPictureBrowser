@@ -5,7 +5,7 @@
 
 ## 效果图
 
-<img src="https://github.com/GodzzZZZ/Warehouse/blob/master/MFPictureBrowser/1.gif" width="25%"/><img src="https://github.com/GodzzZZZ/Warehouse/blob/master/MFPictureBrowser/2.gif" width="25%"/><img src="https://github.com/GodzzZZZ/Warehouse/blob/master/MFPictureBrowser/3.gif" width="25%"/><img src="https://github.com/GodzzZZZ/Warehouse/blob/master/MFPictureBrowser/4.gif" width="25%"/>
+<img src="https://github.com/GodzzZZZ/MFPictureBrowser/blob/master/SnapShot/1.gif" width="25%"/><img src="https://github.com/GodzzZZZ/MFPictureBrowser/blob/master/SnapShot/2.gif" width="25%"/><img src="https://github.com/GodzzZZZ/MFPictureBrowser/blob/master/SnapShot/3.gif" width="25%"/><img src="https://github.com/GodzzZZZ/MFPictureBrowser/blob/master/SnapShot/4.gif" width="25%"/>
 
 ## 集成方式
 - cocoapod
