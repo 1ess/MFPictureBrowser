@@ -82,12 +82,7 @@ MFPictureBrowserDelegate
             }
         });
     }else {
-        NSURL *imageURL = [[NSBundle mainBundle] URLForResource:pictureModel.imageName withExtension:nil];
-        NSLog(@"--%@", imageURL);
-        NSData *data = [NSData dataWithContentsOfURL:imageURL];
-        NSLog(@"==%@", data);
-        UIImage *image = [UIImage forceDecodedImageWithData:data];
-        NSLog(@"..%@", image);
+        UIImage *image = [UIImage imageNamed:pictureModel.imageName];
         cell.displayImageView.image = image;
         pictureModel.posterImage = image;
         [self configTagImageView:cell.tagImageView size:image.size imageType:pictureModel.imageType];

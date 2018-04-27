@@ -234,8 +234,7 @@ UIScrollViewDelegate
             [self setPictureSize:posterImage.size];
             self.imageView.image = posterImage;
         }else {
-            NSURL *imageURL = [[NSBundle mainBundle] URLForResource:pictureModel.imageName withExtension:nil];
-            UIImage *image = [UIImage forceDecodedImageWithData:[NSData dataWithContentsOfURL:imageURL]];
+            UIImage *image = [UIImage imageNamed:pictureModel.imageName];
             if (image) {
                 pictureModel.posterImage = image;
                 [self setPictureSize:image.size];
