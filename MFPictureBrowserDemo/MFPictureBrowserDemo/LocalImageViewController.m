@@ -71,7 +71,7 @@ MFPictureBrowserDelegate
     if (pictureModel.imageType == MFImageTypeGIF) {
         dispatch_async(dispatch_get_global_queue(0, 0), ^{
             NSURL *imageURL = [[NSBundle mainBundle] URLForResource:pictureModel.imageName withExtension:nil];
-            UIImage *animatedImage = [UIImage animatedGIFWithData:[NSData dataWithContentsOfURL:imageURL]];
+            UIImage *animatedImage = [UIImage forceDecodedImageWithData:[NSData dataWithContentsOfURL:imageURL]];
             if (animatedImage) {
                 pictureModel.posterImage = animatedImage.images.firstObject;
                 pictureModel.animatedImage = animatedImage;
@@ -82,7 +82,12 @@ MFPictureBrowserDelegate
             }
         });
     }else {
-        UIImage *image = [UIImage imageNamed:pictureModel.imageName];
+        NSURL *imageURL = [[NSBundle mainBundle] URLForResource:pictureModel.imageName withExtension:nil];
+        NSLog(@"--%@", imageURL);
+        NSData *data = [NSData dataWithContentsOfURL:imageURL];
+        NSLog(@"==%@", data);
+        UIImage *image = [UIImage forceDecodedImageWithData:data];
+        NSLog(@"..%@", image);
         cell.displayImageView.image = image;
         pictureModel.posterImage = image;
         [self configTagImageView:cell.tagImageView size:image.size imageType:pictureModel.imageType];
@@ -131,8 +136,6 @@ minimumInteritemSpacingForSectionAtIndex: (NSInteger)section{
     MFDisplayPhotoCollectionViewCell *cell = (MFDisplayPhotoCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
     MFPictureBrowser *browser = [[MFPictureBrowser alloc] init];
     browser.delegate = self;
-    MFPictureModel *pictureModel = self.picList[indexPath.row];
-    pictureModel.decoded = true;
     [browser showImageFromView:cell.displayImageView picturesCount:self.picList.count currentPictureIndex:indexPath.row];
 }
 

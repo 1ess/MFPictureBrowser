@@ -21,8 +21,7 @@
 @property (nonatomic, strong, readonly) UIImageView *imageView;
 // 代理
 @property (nonatomic, weak) id<MFPictureViewDelegate> pictureDelegate;
-// 解码选项
-@property (nonatomic, assign, getter = isDecoded) BOOL decoded;
+
 - (instancetype)init NS_UNAVAILABLE;
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)initWithPictureModel:(id<MFPictureModelProtocol>)pictureModel;

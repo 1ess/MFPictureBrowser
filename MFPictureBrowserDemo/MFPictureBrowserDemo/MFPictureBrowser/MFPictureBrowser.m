@@ -81,7 +81,6 @@ MFPictureViewDelegate
 #pragma mark - 私有方法
 
 - (void)showFromView:(UIImageView *)fromView picturesCount:(NSInteger)picturesCount currentPictureIndex:(NSInteger)currentPictureIndex  {
-    [self hideStautsBar];
     NSAssert(picturesCount > 0 && currentPictureIndex < picturesCount && picturesCount <= 9, @"Parameter is not correct");
     NSAssert(self.delegate != nil, @"Please set up delegate for pictureBrowser");
     NSAssert([_delegate respondsToSelector:@selector(pictureBrowser:imageViewAtIndex:)], @"Please implement delegate method of pictureBrowser:imageViewAtIndex:");
@@ -118,6 +117,7 @@ MFPictureViewDelegate
 }
 
 - (void)showPictureView:(MFPictureView *)pictureView fromView:(UIImageView *)fromView{
+    [self hideStautsBar];
     CGRect rect = [fromView convertRect:fromView.bounds toView:nil];
     [pictureView animationShowWithFromRect:rect animationBlock:^{
         self.backgroundColor = [UIColor blackColor];
@@ -126,9 +126,7 @@ MFPictureViewDelegate
         }else {
             self.pageTextLabel.alpha = 0;
         }
-    } completionBlock:^{
-        
-    }];
+    } completionBlock:^{}];
 }
 
 - (void)dismiss {
@@ -145,18 +143,15 @@ MFPictureViewDelegate
     MFPictureView *pictureView = [[_pictureViews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"index == %d", self.currentIndex]] firstObject];
     
     // 执行关闭动画
-    __weak __typeof(self)weakSelf = self;
     [pictureView animationDismissWithToRect:rect animationBlock:^{
-        __strong __typeof(weakSelf)strongSelf = weakSelf;
-        strongSelf.backgroundColor = [UIColor clearColor];
-        strongSelf.pageTextLabel.alpha = 0;
-        [strongSelf showStatusBar];
+        self.backgroundColor = [UIColor clearColor];
+        self.pageTextLabel.alpha = 0;
+        [self showStatusBar];
     } completionBlock:^{
-        __strong __typeof(weakSelf)strongSelf = weakSelf;
-        [strongSelf removeFromSuperview];
-        [strongSelf.pictureViews removeAllObjects];
+        [self removeFromSuperview];
+        [self.pictureViews removeAllObjects];
         if ([_delegate respondsToSelector:@selector(pictureBrowser:dimissAtIndex:)]) {
-            [_delegate pictureBrowser:strongSelf dimissAtIndex:strongSelf.currentIndex];
+            [_delegate pictureBrowser:self dimissAtIndex:self.currentIndex];
         }
     }];
 }
@@ -223,8 +218,6 @@ MFPictureViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     NSUInteger index = (scrollView.contentOffset.x / scrollView.width + 0.5);
     if (self.currentIndex != index) {
-        MFPictureView *currentView = self.pictureViews[index];
-        currentView.decoded = true;
         if ([_delegate respondsToSelector:@selector(pictureBrowser:scrollToIndex:)]) {
             [_delegate pictureBrowser:self scrollToIndex:index];
         }

@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface UIImage (MFGIF)
-+ (UIImage *)animatedGIFWithData:(NSData *)data;
++ (UIImage *)forceDecodedImageWithData:(NSData *)data;
 @end

@@ -68,7 +68,7 @@ CGImageRef CGImageCreateDecodedCopy(CGImageRef imageRef, BOOL decodeForDisplay) 
     }
 }
 
-+ (UIImage *)animatedGIFWithData:(NSData *)data {
++ (UIImage *)forceDecodedImageWithData:(NSData *)data {
     if (!data) {
         return nil;
     }
@@ -76,7 +76,9 @@ CGImageRef CGImageCreateDecodedCopy(CGImageRef imageRef, BOOL decodeForDisplay) 
     size_t count = CGImageSourceGetCount(source);
     UIImage *animatedImage;
     if (count <= 1) {
-        animatedImage = [[UIImage alloc] initWithData:data];
+        CGImageRef imageRef = CGImageSourceCreateImageAtIndex(source, 0, NULL);
+        CGImageRef decodedImageRef = CGImageCreateDecodedCopy(imageRef, true);
+        animatedImage = [UIImage imageWithCGImage:decodedImageRef scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
     } else {
         NSMutableArray <UIImage *> *images = [NSMutableArray array];
         NSTimeInterval duration = 0.0f;
