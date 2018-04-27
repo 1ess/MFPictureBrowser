@@ -91,7 +91,7 @@ UITableViewDataSource
         LocalImageViewController *local = [[LocalImageViewController alloc] init];
         local.picList = @[
                           [[MFPictureModel alloc] initWithURL:nil imageName:@"1.gif" imageType:MFImageTypeGIF],
-                          [[MFPictureModel alloc] initWithURL:nil imageName:@"2.gif" imageType:MFImageTypeGIF],
+                          [[MFPictureModel alloc] initWithURL:nil imageName:@"3.gif" imageType:MFImageTypeGIF],
                           [[MFPictureModel alloc] initWithURL:nil imageName:@"3.jpg" imageType:MFImageTypeOther],
                           [[MFPictureModel alloc] initWithURL:nil imageName:@"4.jpg" imageType:MFImageTypeOther],
                           [[MFPictureModel alloc] initWithURL:nil imageName:@"5.jpg" imageType:MFImageTypeLongImage],
