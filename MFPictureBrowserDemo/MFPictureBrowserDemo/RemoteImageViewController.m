@@ -222,7 +222,7 @@ minimumInteritemSpacingForSectionAtIndex: (NSInteger)section{
     }else if (image) {
         pictureModel.posterImage = image;
     }
-//    [self.collectionView reloadItemsAtIndexPaths:@[indexPath]];
+    [self.collectionView reloadItemsAtIndexPaths:@[indexPath]];
 }
 
 @end

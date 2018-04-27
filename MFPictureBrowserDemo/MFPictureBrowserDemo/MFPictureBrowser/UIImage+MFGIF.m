@@ -9,6 +9,65 @@
 #import "UIImage+MFGIF.h"
 @implementation UIImage (MFGIF)
 
+//https://github.com/ibireme/YYKit/blob/master/YYKit/Image/YYImageCoder.m
+CGColorSpaceRef CGColorSpaceGetDeviceRGB() {
+    static CGColorSpaceRef space;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        space = CGColorSpaceCreateDeviceRGB();
+    });
+    return space;
+}
+
+CGImageRef CGImageCreateDecodedCopy(CGImageRef imageRef, BOOL decodeForDisplay) {
+    if (!imageRef) return NULL;
+    size_t width = CGImageGetWidth(imageRef);
+    size_t height = CGImageGetHeight(imageRef);
+    if (width == 0 || height == 0) return NULL;
+    
+    if (decodeForDisplay) { //decode with redraw (may lose some precision)
+        CGImageAlphaInfo alphaInfo = CGImageGetAlphaInfo(imageRef) & kCGBitmapAlphaInfoMask;
+        BOOL hasAlpha = NO;
+        if (alphaInfo == kCGImageAlphaPremultipliedLast ||
+            alphaInfo == kCGImageAlphaPremultipliedFirst ||
+            alphaInfo == kCGImageAlphaLast ||
+            alphaInfo == kCGImageAlphaFirst) {
+            hasAlpha = YES;
+        }
+        // BGRA8888 (premultiplied) or BGRX8888
+        // same as UIGraphicsBeginImageContext() and -[UIView drawRect:]
+        CGBitmapInfo bitmapInfo = kCGBitmapByteOrder32Host;
+        bitmapInfo |= hasAlpha ? kCGImageAlphaPremultipliedFirst : kCGImageAlphaNoneSkipFirst;
+        CGContextRef context = CGBitmapContextCreate(NULL, width, height, 8, 0, CGColorSpaceGetDeviceRGB(), bitmapInfo);
+        if (!context) return NULL;
+        CGContextDrawImage(context, CGRectMake(0, 0, width, height), imageRef); // decode
+        CGImageRef newImage = CGBitmapContextCreateImage(context);
+        CFRelease(context);
+        return newImage;
+        
+    } else {
+        CGColorSpaceRef space = CGImageGetColorSpace(imageRef);
+        size_t bitsPerComponent = CGImageGetBitsPerComponent(imageRef);
+        size_t bitsPerPixel = CGImageGetBitsPerPixel(imageRef);
+        size_t bytesPerRow = CGImageGetBytesPerRow(imageRef);
+        CGBitmapInfo bitmapInfo = CGImageGetBitmapInfo(imageRef);
+        if (bytesPerRow == 0 || width == 0 || height == 0) return NULL;
+        
+        CGDataProviderRef dataProvider = CGImageGetDataProvider(imageRef);
+        if (!dataProvider) return NULL;
+        CFDataRef data = CGDataProviderCopyData(dataProvider); // decode
+        if (!data) return NULL;
+        
+        CGDataProviderRef newProvider = CGDataProviderCreateWithCFData(data);
+        CFRelease(data);
+        if (!newProvider) return NULL;
+        
+        CGImageRef newImage = CGImageCreate(width, height, bitsPerComponent, bitsPerPixel, bytesPerRow, space, bitmapInfo, newProvider, NULL, false, kCGRenderingIntentDefault);
+        CFRelease(newProvider);
+        return newImage;
+    }
+}
+
 + (UIImage *)animatedGIFWithData:(NSData *)data {
     if (!data) {
         return nil;
@@ -23,8 +82,9 @@
         NSTimeInterval duration = 0.0f;
         for (size_t i = 0; i < count; i++) {
             CGImageRef imageRef = CGImageSourceCreateImageAtIndex(source, i, NULL);
+            CGImageRef decodedImageRef = CGImageCreateDecodedCopy(imageRef, true);
             duration += [self frameDurationAtIndex:i source:source];
-            UIImage *image = [UIImage imageWithCGImage:imageRef scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
+            UIImage *image = [UIImage imageWithCGImage:decodedImageRef scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
             [images addObject:image];
             CGImageRelease(imageRef);
         }
