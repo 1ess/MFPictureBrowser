@@ -117,72 +117,6 @@ UIScrollViewDelegate
 
 #pragma mark - 私有方法
 
-//- (void)setDecoded:(BOOL)decoded {
-//    if (!decoded) {
-//        return;
-//    }
-//    _decoded = decoded;
-//    if (self.pictureModel.isDecoded) {
-//        return;
-//    }
-//    self.pictureModel.decoded = true;
-//    if (self.pictureModel.imageType == MFImageTypeGIF) {
-//        if (self.pictureModel.imageName) {
-//            self.loadingFinished = false;
-//            self.progressView.alpha = 1;
-//            [UIView animateWithDuration:1 animations:^{
-//                [self.progressView setProgress:0.8 animated:true];
-//            }];
-//            dispatch_async(dispatch_get_global_queue(0, 0), ^{
-//                NSURL *imageURL = [[NSBundle mainBundle] URLForResource:self.pictureModel.imageName withExtension:nil];
-//                UIImage *animatedImage = [UIImage animatedGIFWithData:[NSData dataWithContentsOfURL:imageURL]];
-//                self.loadingFinished = true;
-//                if (animatedImage) {
-//                    dispatch_async(dispatch_get_main_queue(), ^{
-//                        self.pictureModel.animatedImage = animatedImage;
-//                        self.pictureModel.posterImage = animatedImage.images.firstObject;
-//                        [self setPictureSize:animatedImage.size];
-//                        [self.imageView performSelector:@selector(animatedTransitionImage:) withObject:animatedImage afterDelay:0 inModes:@[NSDefaultRunLoopMode]];
-//                        if ([_pictureDelegate respondsToSelector:@selector(pictureView:image:animatedImage:didLoadAtIndex:)]) {
-//                            [_pictureDelegate pictureView:self image:nil animatedImage:animatedImage didLoadAtIndex:self.index];
-//                        }
-//                        [UIView animateWithDuration:0.2 animations:^{
-//                            [self.progressView setProgress:1 animated:true];
-//                            self.progressView.alpha = 0;
-//                        }];
-//                    });
-//                }else {
-//                    dispatch_async(dispatch_get_main_queue(), ^{
-//                        self.progressView.alpha = 0;
-//                    });
-//                }
-//            });
-//        }else {
-//            dispatch_async(dispatch_get_global_queue(0, 0), ^{
-//                UIImage *animatedImage = [UIImage animatedGIFWithData:self.animatedData];
-//                self.loadingFinished = true;
-//                dispatch_async(dispatch_get_main_queue(), ^{
-//                    [UIView animateWithDuration:0.2 animations:^{
-//                        if (animatedImage) {
-//                            [self.progressView setProgress:1 animated:true];
-//                        }
-//                        self.progressView.alpha = 0;
-//                    }];
-//                    if (animatedImage) {
-//                        self.pictureModel.animatedImage = animatedImage;
-//                        self.pictureModel.posterImage = animatedImage.images.firstObject;
-//                        if ([_pictureDelegate respondsToSelector:@selector(pictureView:image:animatedImage:didLoadAtIndex:)]) {
-//                            [_pictureDelegate pictureView:self image:nil animatedImage:animatedImage didLoadAtIndex:self.index];
-//                        }
-//                        [self setPictureSize:animatedImage.size];
-//                        [self.imageView performSelector:@selector(animatedTransitionImage:) withObject:animatedImage afterDelay:0 inModes:@[NSDefaultRunLoopMode]];
-//                    }
-//                });
-//            });
-//        }
-//    }
-//}
-
 - (void)configWithLocalPictureModel:(id<MFPictureModelProtocol>)pictureModel {
     if (pictureModel.imageType == MFImageTypeGIF) {
         UIImage *animatedImage = pictureModel.animatedImage;
@@ -284,8 +218,9 @@ UIScrollViewDelegate
                             if (animatedImage) {
                                 pictureModel.animatedImage = animatedImage;
                                 pictureModel.posterImage = animatedImage.images.firstObject;
-                                [strongSelf setPictureSize:animatedImage.size];
-                                strongSelf.imageView.image = animatedImage;
+                                CGSize size = animatedImage.size;
+                                [strongSelf setPictureSize:size];
+                                [strongSelf.imageView performSelector:@selector(animatedTransitionImage:) withObject:animatedImage afterDelay:0 inModes:@[NSDefaultRunLoopMode]];
                             }
                             if ([_pictureDelegate respondsToSelector:@selector(pictureView:image:animatedImage:didLoadAtIndex:)]) {
                                 [_pictureDelegate pictureView:strongSelf image:nil animatedImage:animatedImage didLoadAtIndex:strongSelf.index];
@@ -324,8 +259,9 @@ UIScrollViewDelegate
                             if ([_pictureDelegate respondsToSelector:@selector(pictureView:image:animatedImage:didLoadAtIndex:)]) {
                                 [_pictureDelegate pictureView:self image:nil animatedImage:animatedImage didLoadAtIndex:self.index];
                             }
-                            [self setPictureSize:animatedImage.size];
-                            self.imageView.image = animatedImage;
+                            CGSize size = animatedImage.size;
+                            [self setPictureSize:size];
+                            [self.imageView performSelector:@selector(animatedTransitionImage:) withObject:animatedImage afterDelay:0 inModes:@[NSDefaultRunLoopMode]];
                         }
                     });
                 }];
@@ -368,8 +304,9 @@ UIScrollViewDelegate
                                 if ([_pictureDelegate respondsToSelector:@selector(pictureView:image:animatedImage:didLoadAtIndex:)]) {
                                     [_pictureDelegate pictureView:strongSelf image:result.image animatedImage:nil didLoadAtIndex:strongSelf.index];
                                 }
-                                [strongSelf setPictureSize:result.image.size];
-                                strongSelf.imageView.image = result.image;
+                                CGSize size = result.image.size;
+                                [strongSelf setPictureSize:size];
+                                [strongSelf.imageView performSelector:@selector(animatedTransitionImage:) withObject:result.image afterDelay:0 inModes:@[NSDefaultRunLoopMode]];
                             }
                         }else {
                             strongSelf.loadingFinished = true;
@@ -405,8 +342,9 @@ UIScrollViewDelegate
                             if ([_pictureDelegate respondsToSelector:@selector(pictureView:image:animatedImage:didLoadAtIndex:)]) {
                                 [_pictureDelegate pictureView:self image:image animatedImage:nil didLoadAtIndex:self.index];
                             }
-                            [self setPictureSize:image.size];
-                            self.imageView.image = image;
+                            CGSize size = image.size;
+                            [self setPictureSize:size];
+                            [self.imageView performSelector:@selector(animatedTransitionImage:) withObject:image afterDelay:0 inModes:@[NSDefaultRunLoopMode]];
                         }
                     });
                 }];
