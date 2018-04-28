@@ -14,7 +14,8 @@ MFPictureModelProtocol
 @property (nonatomic, strong) UIImage *posterImage;
 @property (nonatomic, strong) UIImage *animatedImage;
 @property (nonatomic, assign) BOOL compressed;
+@property (nonatomic, assign) BOOL hidden;
 - (instancetype)initWithURL:(NSString *)imageURL imageName:(NSString *)imageName imageType:(MFImageType)imageType;
-- (instancetype)initWithURL:(NSString *)imageURL imageName:(NSString *)imageName imageType:(MFImageType)imageType compressed:(BOOL)compressed;
-- (instancetype)initWithURL:(NSString *)imageURL imageName:(NSString *)imageName imageType:(MFImageType)imageType placeholderImage:(UIImage *)palceholderImage posterImage:(UIImage *)posterImage animatedImage:(UIImage *)animatedImage compressed:(BOOL)compressed;
+- (instancetype)initWithURL:(NSString *)imageURL imageName:(NSString *)imageName imageType:(MFImageType)imageType compressed:(BOOL)compressed hidden:(BOOL)hidden;
+- (instancetype)initWithURL:(NSString *)imageURL imageName:(NSString *)imageName imageType:(MFImageType)imageType placeholderImage:(UIImage *)palceholderImage posterImage:(UIImage *)posterImage animatedImage:(UIImage *)animatedImage compressed:(BOOL)compressed hidden:(BOOL)hidden;
 @end

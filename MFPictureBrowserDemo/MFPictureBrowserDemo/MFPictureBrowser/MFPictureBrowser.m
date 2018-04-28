@@ -18,6 +18,7 @@ MFPictureViewDelegate
 @property (nonatomic, weak) UILabel *pageTextLabel;
 @property (nonatomic, weak) UITapGestureRecognizer *dismissTapGesture;
 @property (nonatomic, strong) UIImageView *endView;
+@property (nonatomic, assign) BOOL animationInProgress;
 @end
 
 @implementation MFPictureBrowser
@@ -64,6 +65,8 @@ MFPictureViewDelegate
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture:)];
     [self addGestureRecognizer:tapGesture];
     self.dismissTapGesture = tapGesture;
+    
+    self.animationInProgress = false;
 }
 
 #pragma mark - 公共方法
@@ -156,9 +159,10 @@ MFPictureViewDelegate
     } completionBlock:^{
         [self removeFromSuperview];
         [self.pictureViews removeAllObjects];
-        if ([_delegate respondsToSelector:@selector(pictureBrowser:dimissAtIndex:)]) {
+        if ([_delegate respondsToSelector:@selector(pictureBrowser:dimissAtIndex:)] && !self.animationInProgress) {
             [_delegate pictureBrowser:self dimissAtIndex:self.currentIndex];
         }
+        self.animationInProgress = true;
     }];
 }
 

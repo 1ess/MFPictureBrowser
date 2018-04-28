@@ -16,7 +16,7 @@ UIScrollViewDelegate
 @property (nonatomic, assign) CGPoint lastContentOffset;
 @property (nonatomic, assign) CGFloat scale;
 @property (nonatomic, assign) CGFloat offsetY;
-@property (nonatomic, assign, getter = isShowingAnimation) BOOL showingAnimation;
+@property (nonatomic, assign, getter = isAnimationInProgress) BOOL animationInProgress;
 @property (nonatomic, assign, getter = isLoadingFinished) BOOL loadingFinished;
 @property (nonatomic, assign, getter = isLocalImage) BOOL localImage;
 @property (nonatomic, assign, getter = isGIF) BOOL GIF;
@@ -78,7 +78,7 @@ UIScrollViewDelegate
 
 - (void)animationShowWithFromRect:(CGRect)rect animationBlock:(void (^)(void))animationBlock completionBlock:(void (^)(void))completionBlock {
     self.imageView.frame = rect;
-    self.showingAnimation = true;
+    self.animationInProgress = true;
     [UIView animateWithDuration:0.25 delay:0 options:7 << 16 animations:^{
         if (animationBlock) {
             animationBlock();
@@ -89,7 +89,7 @@ UIScrollViewDelegate
             if (completionBlock) {
                 completionBlock();
             }
-            self.showingAnimation = false;
+            self.animationInProgress = false;
         }
     }];
 }
@@ -109,7 +109,6 @@ UIScrollViewDelegate
         if (finished) {
             if (completionBlock) {
                 completionBlock();
-                self.pictureModel = nil;
             }
         }
     }];

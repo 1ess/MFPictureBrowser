@@ -17,6 +17,7 @@ UICollectionViewDelegateFlowLayout,
 MFPictureBrowserDelegate
 >
 @property (nonatomic, strong) UICollectionView *collectionView;
+@property (nonatomic, assign) NSInteger currentIndex;
 @end
 
 @implementation LocalImageViewController
@@ -67,30 +68,40 @@ MFPictureBrowserDelegate
     
     MFDisplayPhotoCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"reuseCell" forIndexPath:indexPath];
     MFPictureModel *pictureModel = self.picList[indexPath.row];
-    
+    __weak MFDisplayPhotoCollectionViewCell *weakCell = cell;
+    if (pictureModel.hidden) {
+        weakCell.displayImageView.alpha = 0;
+    }else {
+        weakCell.displayImageView.alpha = 1;
+    }
     if (pictureModel.imageType == MFImageTypeGIF) {
-        dispatch_async(dispatch_get_global_queue(0, 0), ^{
-            NSURL *imageURL = [[NSBundle mainBundle] URLForResource:pictureModel.imageName withExtension:nil];
-            UIImage *animatedImage = [UIImage forceDecodedImageWithData:[NSData dataWithContentsOfURL:imageURL]];
-            if (animatedImage) {
-                pictureModel.posterImage = animatedImage.images.firstObject;
-                pictureModel.animatedImage = animatedImage;
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [cell.displayImageView animatedTransitionImage:animatedImage];
-                    [self configTagImageView:cell.tagImageView size:animatedImage.size imageType:MFImageTypeGIF];
-                });
-            }
-        });
+        if (pictureModel.animatedImage) {
+            weakCell.displayImageView.image = pictureModel.animatedImage;
+            [self configTagImageView:weakCell.tagImageView imageType:MFImageTypeGIF];
+        }else {
+            dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                NSURL *imageURL = [[NSBundle mainBundle] URLForResource:pictureModel.imageName withExtension:nil];
+                UIImage *animatedImage = [UIImage forceDecodedImageWithData:[NSData dataWithContentsOfURL:imageURL]];
+                if (animatedImage) {
+                    pictureModel.posterImage = animatedImage.images.firstObject;
+                    pictureModel.animatedImage = animatedImage;
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [weakCell.displayImageView animatedTransitionImage:animatedImage];
+                        [self configTagImageView:weakCell.tagImageView imageType:MFImageTypeGIF];
+                    });
+                }
+            });
+        }
     }else {
         UIImage *image = [UIImage imageNamed:pictureModel.imageName];
-        cell.displayImageView.image = image;
+        weakCell.displayImageView.image = image;
         pictureModel.posterImage = image;
-        [self configTagImageView:cell.tagImageView size:image.size imageType:pictureModel.imageType];
+        [self configTagImageView:weakCell.tagImageView imageType:pictureModel.imageType];
     }
     return cell;
 }
 
-- (void)configTagImageView:(UIImageView *)tagImageView size:(CGSize)size imageType:(MFImageType)imageType {
+- (void)configTagImageView:(UIImageView *)tagImageView imageType:(MFImageType)imageType {
     if (imageType == MFImageTypeLongImage) {
         tagImageView.image = [UIImage imageNamed:@"ic_messages_pictype_long_pic_30x30_"];
     }else if (imageType == MFImageTypeGIF) {
@@ -131,6 +142,10 @@ minimumInteritemSpacingForSectionAtIndex: (NSInteger)section{
     MFDisplayPhotoCollectionViewCell *cell = (MFDisplayPhotoCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
     MFPictureBrowser *browser = [[MFPictureBrowser alloc] init];
     browser.delegate = self;
+    self.currentIndex = indexPath.row;
+    MFPictureModel *pictureModel = self.picList[indexPath.row];
+    pictureModel.hidden = true;
+    [collectionView reloadItemsAtIndexPaths:@[indexPath]];
     [browser showImageFromView:cell.displayImageView picturesCount:self.picList.count currentPictureIndex:indexPath.row];
 }
 
@@ -154,6 +169,22 @@ minimumInteritemSpacingForSectionAtIndex: (NSInteger)section{
         pictureModel.posterImage = image;
     }
     [self.collectionView reloadItemsAtIndexPaths:@[indexPath]];
+}
+
+- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser scrollToIndex:(NSInteger)index {
+    MFPictureModel *pictureModel = self.picList[self.currentIndex];
+    pictureModel.hidden = false;
+    [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.currentIndex inSection:0]]];
+    self.currentIndex = index;
+    MFPictureModel *currentPictureModel = self.picList[self.currentIndex];
+    currentPictureModel.hidden = true;
+    [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.currentIndex inSection:0]]];
+}
+
+- (void)pictureBrowser:(MFPictureBrowser *)pictureBrowser dimissAtIndex:(NSInteger)index {
+    MFPictureModel *pictureModel = self.picList[index];
+    pictureModel.hidden = false;
+    [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]]];
 }
 
 @end
