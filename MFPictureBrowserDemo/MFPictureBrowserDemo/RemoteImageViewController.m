@@ -51,7 +51,7 @@ MFPictureBrowserDelegate
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-//    [[[PINRemoteImageManager sharedImageManager] cache] removeAllObjects];
+    [[[PINRemoteImageManager sharedImageManager] cache] removeAllObjects];
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -70,79 +70,69 @@ MFPictureBrowserDelegate
     NSURL *url = [NSURL URLWithString:pictureModel.imageURL];
     [cell.displayImageView setPin_updateWithProgress:YES];
     __weak MFDisplayPhotoCollectionViewCell *weakCell = cell;
-    if (pictureModel.hidden) {
-        weakCell.displayImageView.alpha = 0;
-    }else {
-        weakCell.displayImageView.alpha = 1;
-    }
+    weakCell.displayImageView.alpha = 0;
     if (pictureModel.imageType == MFImageTypeGIF) {
         if (pictureModel.animatedImage) {
-            weakCell.displayImageView.image = pictureModel.animatedImage;
+            weakCell.displayImageView.animatedImage = pictureModel.flAnimatedImage;
+            if (!pictureModel.hidden) {
+                weakCell.displayImageView.alpha = 1.0f;
+            }
             [self configTagImageView:weakCell.tagImageView imageType:MFImageTypeGIF];
         }else {
-            NSString *cacheKey = [[PINRemoteImageManager sharedImageManager] cacheKeyForURL:url processorKey:nil];
-            PINCache *cache = [PINRemoteImageManager sharedImageManager].cache;
-            BOOL imageAvailable = [cache containsObjectForKey:cacheKey];
-            if (imageAvailable) {
-                [cache objectForKey:cacheKey block:^(PINCache * _Nonnull cache, NSString * _Nonnull key, id  _Nullable object) {
-                    UIImage *animatedImage = [UIImage forceDecodedImageWithData:object];
-                    if (animatedImage) {
+            [weakCell.displayImageView pin_setImageFromURL:url placeholderImage:pictureModel.posterImage ?: pictureModel.placeholderImage completion:^(PINRemoteImageManagerResult * _Nonnull result) {
+                if (!result.error && (result.resultType == PINRemoteImageResultTypeDownload || result.resultType == PINRemoteImageResultTypeMemoryCache || result.resultType == PINRemoteImageResultTypeCache)) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (!pictureModel.hidden) {
+                            if (result.requestDuration > 0.25) {
+                                [UIView animateWithDuration:0.3 animations:^{
+                                    weakCell.displayImageView.alpha = 1.0f;
+                                }];
+                            } else {
+                                weakCell.displayImageView.alpha = 1.0f;
+                            }
+                        }else {
+                            weakCell.displayImageView.alpha = 0.0f;
+                        }
+                    });
+                    pictureModel.flAnimatedImage = result.animatedImage;
+                    NSData *animatedData = result.animatedImage.data;
+                    UIImage *animatedImage = [UIImage forceDecodedImageWithData:animatedData];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        
                         pictureModel.posterImage = animatedImage.images.firstObject;
                         pictureModel.animatedImage = animatedImage;
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            [weakCell.displayImageView animatedTransitionImage:animatedImage];
-                            [self configTagImageView:weakCell.tagImageView imageType:MFImageTypeGIF];
-                        });
-                    }
-                }];
-            }else {
-                [[PINRemoteImageManager sharedImageManager] downloadImageWithURL:url options:(PINRemoteImageManagerDownloadOptionsNone) progressDownload:nil completion:^(PINRemoteImageManagerResult * _Nonnull result) {
-                    if (!result.error && (result.resultType == PINRemoteImageResultTypeDownload || result.resultType == PINRemoteImageResultTypeMemoryCache || result.resultType == PINRemoteImageResultTypeCache)) {
-                        NSData *animatedData = result.animatedImage.data;
-                        UIImage *animatedImage = [UIImage forceDecodedImageWithData:animatedData];
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            pictureModel.posterImage = animatedImage.images.firstObject;
-                            pictureModel.animatedImage = animatedImage;
-                            [weakCell.displayImageView animatedTransitionImage:animatedImage];
-                            [self configTagImageView:weakCell.tagImageView imageType:MFImageTypeGIF];
-                        });
-                    }
-                }];
-            }
+                        [self configTagImageView:weakCell.tagImageView imageType:MFImageTypeGIF];
+                    });
+                }
+            }];
         }
     }else {
         if (pictureModel.posterImage) {
-            [weakCell.displayImageView animatedTransitionImage:pictureModel.posterImage];
+            weakCell.displayImageView.image = pictureModel.posterImage;
+            if (!pictureModel.hidden) {
+                weakCell.displayImageView.alpha = 1.0f;
+            }
             [self configTagImageView:weakCell.tagImageView imageType:pictureModel.imageType];
         }else {
-            NSString *cacheKey = [[PINRemoteImageManager sharedImageManager] cacheKeyForURL:url processorKey:nil];
-            PINCache *cache = [PINRemoteImageManager sharedImageManager].cache;
-            BOOL imageAvailable = [cache containsObjectForKey:cacheKey];
-            if (imageAvailable) {
-                [cache objectForKey:cacheKey block:^(PINCache * _Nonnull cache, NSString * _Nonnull key, id  _Nullable object) {
-                    UIImage *image = nil;
-                    if ([object isKindOfClass:[NSData class]]) {
-                        image = [UIImage forceDecodedImageWithData:object];
-                    }else if ([object isKindOfClass:[UIImage class]]) {
-                        image = object;
-                    }
+            [weakCell.displayImageView pin_setImageFromURL:url placeholderImage:pictureModel.placeholderImage completion:^(PINRemoteImageManagerResult * _Nonnull result) {
+                if (!result.error && (result.resultType == PINRemoteImageResultTypeDownload || result.resultType == PINRemoteImageResultTypeMemoryCache || result.resultType == PINRemoteImageResultTypeCache)) {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [weakCell.displayImageView animatedTransitionImage:image];
-                        pictureModel.posterImage = weakCell.displayImageView.image;
+                        if (!pictureModel.hidden) {
+                            if (result.requestDuration > 0.25) {
+                                [UIView animateWithDuration:0.3 animations:^{
+                                    weakCell.displayImageView.alpha = 1.0f;
+                                }];
+                            } else {
+                                weakCell.displayImageView.alpha = 1.0f;
+                            }
+                        }else {
+                            weakCell.displayImageView.alpha = 0.0f;
+                        }
+                        pictureModel.posterImage = result.image;
                         [self configTagImageView:weakCell.tagImageView imageType:pictureModel.imageType];
                     });
-                }];
-            }else {
-                [[PINRemoteImageManager sharedImageManager] downloadImageWithURL:url options:(PINRemoteImageManagerDownloadOptionsNone) progressDownload:nil completion:^(PINRemoteImageManagerResult * _Nonnull result) {
-                    if (!result.error && (result.resultType == PINRemoteImageResultTypeDownload || result.resultType == PINRemoteImageResultTypeMemoryCache || result.resultType == PINRemoteImageResultTypeCache)) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            [weakCell.displayImageView animatedTransitionImage:result.image];
-                            pictureModel.posterImage = weakCell.displayImageView.image;
-                            [self configTagImageView:weakCell.tagImageView imageType:pictureModel.imageType];
-                        });
-                    }
-                }];
-            }
+                }
+            }];
         }
     }
     return cell;

@@ -75,13 +75,15 @@ MFPictureBrowserDelegate
         weakCell.displayImageView.alpha = 1;
     }
     if (pictureModel.imageType == MFImageTypeGIF) {
-        if (pictureModel.animatedImage) {
-            weakCell.displayImageView.image = pictureModel.animatedImage;
+        if (pictureModel.flAnimatedImage) {
+            weakCell.displayImageView.animatedImage = pictureModel.flAnimatedImage;
             [self configTagImageView:weakCell.tagImageView imageType:MFImageTypeGIF];
         }else {
             dispatch_async(dispatch_get_global_queue(0, 0), ^{
                 NSURL *imageURL = [[NSBundle mainBundle] URLForResource:pictureModel.imageName withExtension:nil];
-                UIImage *animatedImage = [UIImage forceDecodedImageWithData:[NSData dataWithContentsOfURL:imageURL]];
+                NSData *animatedData = [NSData dataWithContentsOfURL:imageURL];
+                UIImage *animatedImage = [UIImage forceDecodedImageWithData:animatedData];
+                pictureModel.flAnimatedImage = [FLAnimatedImage animatedImageWithGIFData:animatedData];
                 if (animatedImage) {
                     pictureModel.posterImage = animatedImage.images.firstObject;
                     pictureModel.animatedImage = animatedImage;
