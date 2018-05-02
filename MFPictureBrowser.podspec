@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   # ―――  Spec Metadata  ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
   s.name         = "MFPictureBrowser"
-  s.version      = "0.3.1"
+  s.version      = "0.4.0"
   s.summary      = "Elegant Picture Browser"
 
   # This description is used to generate tags and improve search results.
