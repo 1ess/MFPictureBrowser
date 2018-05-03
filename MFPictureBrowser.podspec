@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   # ―――  Spec Metadata  ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
   s.name         = "MFPictureBrowser"
-  s.version      = "0.4.0"
+  s.version      = "0.5.0"
   s.summary      = "Elegant Picture Browser"
 
   # This description is used to generate tags and improve search results.
@@ -109,5 +109,6 @@ Pod::Spec.new do |s|
   s.requires_arc = true
   s.dependency 'PINRemoteImage'
   s.dependency 'MFCategory'
+  s.dependency 'PINRemoteImage/WebP'
   # s.xcconfig = { "HEADER_SEARCH_PATHS" => "$(SDKROOT)/usr/include/libxml2" }
 end
