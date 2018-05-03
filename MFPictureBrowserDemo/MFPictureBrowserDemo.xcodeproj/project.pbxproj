@@ -16,6 +16,8 @@
 		4A5AEEA32085C11B00EBFF88 /* MFDisplayPhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5AEEA22085C11B00EBFF88 /* MFDisplayPhotoCollectionViewCell.m */; };
 		4A60D12C2091733C00612995 /* UIImageView+TransitionImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A60D12B2091733C00612995 /* UIImageView+TransitionImage.m */; };
 		4A60D135209184B600612995 /* UIImage+ForceDecoded.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A60D134209184B600612995 /* UIImage+ForceDecoded.m */; };
+		4AD36530209B086A005F9089 /* FLAnimatedImageView+TransitionImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD3652F209B086A005F9089 /* FLAnimatedImageView+TransitionImage.m */; };
+		4AD36532209B0A67005F9089 /* 1.webp in Resources */ = {isa = PBXBuildFile; fileRef = 4AD36531209B0A67005F9089 /* 1.webp */; };
 		4AE0C925208EBF6800A2B2D5 /* MFPictureModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AE0C924208EBF6800A2B2D5 /* MFPictureModel.m */; };
 		4AE0C929208F01FC00A2B2D5 /* 1.gif in Resources */ = {isa = PBXBuildFile; fileRef = 4AE0C928208F01FC00A2B2D5 /* 1.gif */; };
 		4AE0C92D208F046800A2B2D5 /* 2.gif in Resources */ = {isa = PBXBuildFile; fileRef = 4AE0C92C208F046800A2B2D5 /* 2.gif */; };
@@ -46,6 +48,9 @@
 		4A60D12B2091733C00612995 /* UIImageView+TransitionImage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+TransitionImage.m"; sourceTree = "<group>"; };
 		4A60D133209184B600612995 /* UIImage+ForceDecoded.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+ForceDecoded.h"; sourceTree = "<group>"; };
 		4A60D134209184B600612995 /* UIImage+ForceDecoded.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ForceDecoded.m"; sourceTree = "<group>"; };
+		4AD3652E209B086A005F9089 /* FLAnimatedImageView+TransitionImage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FLAnimatedImageView+TransitionImage.h"; sourceTree = "<group>"; };
+		4AD3652F209B086A005F9089 /* FLAnimatedImageView+TransitionImage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "FLAnimatedImageView+TransitionImage.m"; sourceTree = "<group>"; };
+		4AD36531209B0A67005F9089 /* 1.webp */ = {isa = PBXFileReference; lastKnownFileType = file; path = 1.webp; sourceTree = "<group>"; };
 		4AE0C922208EBAE900A2B2D5 /* MFPictureModelProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MFPictureModelProtocol.h; sourceTree = "<group>"; };
 		4AE0C923208EBF6800A2B2D5 /* MFPictureModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MFPictureModel.h; sourceTree = "<group>"; };
 		4AE0C924208EBF6800A2B2D5 /* MFPictureModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MFPictureModel.m; sourceTree = "<group>"; };
@@ -122,6 +127,7 @@
 				4A5AEE8F2085987300EBFF88 /* LaunchScreen.storyboard */,
 				4A5AEE922085987300EBFF88 /* Info.plist */,
 				4A5AEE932085987300EBFF88 /* main.m */,
+				4AD36531209B0A67005F9089 /* 1.webp */,
 				4AE0C928208F01FC00A2B2D5 /* 1.gif */,
 				4AE0C92C208F046800A2B2D5 /* 2.gif */,
 				4AE0C92E208F1E5500A2B2D5 /* 3.gif */,
@@ -139,6 +145,8 @@
 				4A5AEE9F2085BC7500EBFF88 /* MFPictureView.m */,
 				4A60D12A2091733C00612995 /* UIImageView+TransitionImage.h */,
 				4A60D12B2091733C00612995 /* UIImageView+TransitionImage.m */,
+				4AD3652E209B086A005F9089 /* FLAnimatedImageView+TransitionImage.h */,
+				4AD3652F209B086A005F9089 /* FLAnimatedImageView+TransitionImage.m */,
 				4A60D133209184B600612995 /* UIImage+ForceDecoded.h */,
 				4A60D134209184B600612995 /* UIImage+ForceDecoded.m */,
 				4AE0C922208EBAE900A2B2D5 /* MFPictureModelProtocol.h */,
@@ -165,8 +173,6 @@
 				4A5AEE7D2085987300EBFF88 /* Sources */,
 				4A5AEE7E2085987300EBFF88 /* Frameworks */,
 				4A5AEE7F2085987300EBFF88 /* Resources */,
-				009B16CC9B133F10F907ECF7 /* [CP] Embed Pods Frameworks */,
-				5875E36B2D958339829D3E05 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -215,6 +221,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4AD36532209B0A67005F9089 /* 1.webp in Resources */,
 				4AE0C92F208F1E5500A2B2D5 /* 3.gif in Resources */,
 				4A5AEE912085987300EBFF88 /* LaunchScreen.storyboard in Resources */,
 				4AE0C92D208F046800A2B2D5 /* 2.gif in Resources */,
@@ -227,36 +234,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		009B16CC9B133F10F907ECF7 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MFPictureBrowserDemo/Pods-MFPictureBrowserDemo-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		5875E36B2D958339829D3E05 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MFPictureBrowserDemo/Pods-MFPictureBrowserDemo-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		CD5B2E9B46AE3F8D5A629EC8 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -293,6 +270,7 @@
 				4A5AEE862085987300EBFF88 /* AppDelegate.m in Sources */,
 				4A60D12C2091733C00612995 /* UIImageView+TransitionImage.m in Sources */,
 				4AE0C925208EBF6800A2B2D5 /* MFPictureModel.m in Sources */,
+				4AD36530209B086A005F9089 /* FLAnimatedImageView+TransitionImage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -428,6 +406,15 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5D33D27VC6;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/MFPictureBrowserDemo/MFPictureBrowser",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"PIN_WEBP=1",
+				);
 				INFOPLIST_FILE = MFPictureBrowserDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -443,6 +430,15 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5D33D27VC6;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/MFPictureBrowserDemo/MFPictureBrowser",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"PIN_WEBP=1",
+				);
 				INFOPLIST_FILE = MFPictureBrowserDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

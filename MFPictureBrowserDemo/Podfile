@@ -7,5 +7,6 @@ target 'MFPictureBrowserDemo' do
 
   # Pods for MFPictureBrowserDemo
 pod ‘PINRemoteImage’
+pod ‘PINRemoteImage/WebP’
 pod ‘MFCategory’
 end

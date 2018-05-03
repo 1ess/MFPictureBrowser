@@ -85,6 +85,9 @@ UITableViewDataSource
                            [[MFPictureModel alloc] initWithURL:@"https://b-ssl.duitang.com/uploads/item/201609/03/20160903085850_ZHaP5.gif"
                                                      imageName:nil
                                                      imageType:MFImageTypeGIF],
+                           [[MFPictureModel alloc] initWithURL:@"https://p.upyun.com/demo/webp/webp/png-3.webp"
+                                                     imageName:nil
+                                                     imageType:MFImageTypeNormalWebP],
                            ].mutableCopy;
         [self.navigationController pushViewController:remote animated:true];
     }else if (indexPath.row == 1) {
@@ -92,7 +95,7 @@ UITableViewDataSource
         local.picList = @[
                           [[MFPictureModel alloc] initWithURL:nil imageName:@"1.gif" imageType:MFImageTypeGIF],
                           [[MFPictureModel alloc] initWithURL:nil imageName:@"2.gif" imageType:MFImageTypeGIF],
-                          [[MFPictureModel alloc] initWithURL:nil imageName:@"3.jpg" imageType:MFImageTypeOther],
+                          [[MFPictureModel alloc] initWithURL:nil imageName:@"1.webp" imageType:MFImageTypeNormalWebP],
                           [[MFPictureModel alloc] initWithURL:nil imageName:@"4.jpg" imageType:MFImageTypeOther],
                           [[MFPictureModel alloc] initWithURL:nil imageName:@"5.jpg" imageType:MFImageTypeLongImage],
                           ].mutableCopy;

@@ -7,8 +7,10 @@
 #import <PINCache/PINCache.h>
 #import <PINRemoteImage/PINRemoteImage.h>
 #import "MFPictureBrowser/UIImageView+TransitionImage.h"
+#import "MFPictureBrowser/FLAnimatedImageView+TransitionImage.h"
 #import "MFPictureBrowser/UIImage+ForceDecoded.h"
 #import "MFPictureModel.h"
+#import <PINRemoteImage/PINImage+WebP.h>
 @interface LocalImageViewController ()
 <
 UICollectionViewDelegate,
@@ -77,19 +79,36 @@ MFPictureBrowserDelegate
     if (pictureModel.imageType == MFImageTypeGIF) {
         if (pictureModel.flAnimatedImage) {
             weakCell.displayImageView.animatedImage = pictureModel.flAnimatedImage;
-            [self configTagImageView:weakCell.tagImageView imageType:MFImageTypeGIF];
+            [self configTagImageView:weakCell.tagImageView imageType:pictureModel.imageType];
         }else {
             dispatch_async(dispatch_get_global_queue(0, 0), ^{
                 NSURL *imageURL = [[NSBundle mainBundle] URLForResource:pictureModel.imageName withExtension:nil];
                 NSData *animatedData = [NSData dataWithContentsOfURL:imageURL];
-                UIImage *animatedImage = [UIImage forceDecodedImageWithData:animatedData];
-                pictureModel.flAnimatedImage = [FLAnimatedImage animatedImageWithGIFData:animatedData];
+                FLAnimatedImage *animatedImage = [FLAnimatedImage animatedImageWithGIFData:animatedData];
+                pictureModel.flAnimatedImage = animatedImage;
                 if (animatedImage) {
-                    pictureModel.posterImage = animatedImage.images.firstObject;
-                    pictureModel.animatedImage = animatedImage;
+                    pictureModel.posterImage = animatedImage.posterImage;
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [weakCell.displayImageView animatedTransitionImage:animatedImage];
-                        [self configTagImageView:weakCell.tagImageView imageType:MFImageTypeGIF];
+                        [self configTagImageView:weakCell.tagImageView imageType:pictureModel.imageType];
+                    });
+                }
+            });
+        }
+    }else if (pictureModel.imageType == MFImageTypeNormalWebP) {
+        if (pictureModel.posterImage) {
+            weakCell.displayImageView.image = pictureModel.posterImage;
+            [self configTagImageView:weakCell.tagImageView imageType:pictureModel.imageType];
+        }else {
+            dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                NSURL *imageURL = [[NSBundle mainBundle] URLForResource:pictureModel.imageName withExtension:nil];
+                NSData *webpData = [NSData dataWithContentsOfURL:imageURL];
+                UIImage *webpImage = [PINImage pin_imageWithWebPData:webpData];
+                if (webpImage) {
+                    pictureModel.posterImage = webpImage;
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [weakCell.displayImageView animatedTransitionNormalImage:webpImage];
+                        [self configTagImageView:weakCell.tagImageView imageType:pictureModel.imageType];
                     });
                 }
             });
@@ -106,7 +125,7 @@ MFPictureBrowserDelegate
 - (void)configTagImageView:(UIImageView *)tagImageView imageType:(MFImageType)imageType {
     if (imageType == MFImageTypeLongImage) {
         tagImageView.image = [UIImage imageNamed:@"ic_messages_pictype_long_pic_30x30_"];
-    }else if (imageType == MFImageTypeGIF) {
+    }else if (imageType == MFImageTypeGIF || imageType == MFImageTypeAnimatedWebP) {
         tagImageView.image = [UIImage imageNamed:@"ic_messages_pictype_gif_30x30_"];
     }else {
         tagImageView.image = nil;

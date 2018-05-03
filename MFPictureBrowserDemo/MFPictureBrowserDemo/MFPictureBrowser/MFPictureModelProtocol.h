@@ -8,6 +8,8 @@ typedef NS_ENUM(NSInteger, MFImageType) {
     MFImageTypeUnknown,
     MFImageTypeOther,
     MFImageTypeGIF,
+    MFImageTypeAnimatedWebP,//NOT SUPPORT NOW
+    MFImageTypeNormalWebP,
     MFImageTypeLongImage
 };
 @protocol MFPictureModelProtocol <NSObject>

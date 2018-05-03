@@ -1,5 +1,29 @@
 PODS:
   - FLAnimatedImage (1.0.12)
+  - libwebp (0.6.1):
+    - libwebp/core (= 0.6.1)
+    - libwebp/dec (= 0.6.1)
+    - libwebp/demux (= 0.6.1)
+    - libwebp/dsp (= 0.6.1)
+    - libwebp/enc (= 0.6.1)
+    - libwebp/mux (= 0.6.1)
+    - libwebp/utils (= 0.6.1)
+    - libwebp/webp (= 0.6.1)
+  - libwebp/core (0.6.1):
+    - libwebp/webp
+  - libwebp/dec (0.6.1):
+    - libwebp/core
+  - libwebp/demux (0.6.1):
+    - libwebp/core
+  - libwebp/dsp (0.6.1):
+    - libwebp/core
+  - libwebp/enc (0.6.1):
+    - libwebp/core
+  - libwebp/mux (0.6.1):
+    - libwebp/core
+  - libwebp/utils (0.6.1):
+    - libwebp/core
+  - libwebp/webp (0.6.1)
   - MFCategory (0.2.1)
   - PINCache (2.3)
   - PINRemoteImage (2.1.4):
@@ -9,17 +33,30 @@ PODS:
   - PINRemoteImage/FLAnimatedImage (2.1.4):
     - FLAnimatedImage (>= 1.0)
     - PINRemoteImage/Core
+  - PINRemoteImage/WebP (2.1.4):
+    - libwebp
+    - PINRemoteImage/Core
 
 DEPENDENCIES:
   - MFCategory
   - PINRemoteImage
+  - PINRemoteImage/WebP
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - FLAnimatedImage
+    - libwebp
+    - MFCategory
+    - PINCache
+    - PINRemoteImage
 
 SPEC CHECKSUMS:
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
+  libwebp: 38b601da310fe7c329c638d0c0d10aed006a54fe
   MFCategory: 82ca2cf2d9d05540fc64224a85dcfa9ff31c1d63
   PINCache: ce36ed282031b92fc7733ffe831f474ff80fddc2
   PINRemoteImage: 4ac4011c5caefd6befd99758e09becede05d3226
 
-PODFILE CHECKSUM: ec6f4e79642a97d75fe6f1f109bcea6209a1b28b
+PODFILE CHECKSUM: a4ad6fa812a6d1c5807363ed9eb15e21fe70f329
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.0

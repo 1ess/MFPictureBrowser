@@ -9,6 +9,7 @@
 #import <PINRemoteImage/PINRemoteImage.h>
 #import "MFPictureBrowser/UIImageView+TransitionImage.h"
 #import "MFPictureBrowser/UIImage+ForceDecoded.h"
+#import <PINRemoteImage/PINImage+WebP.h>
 @interface RemoteImageViewController ()
 <
 UICollectionViewDelegate,
@@ -106,6 +107,36 @@ MFPictureBrowserDelegate
                 }
             }];
         }
+    }else if (pictureModel.imageType == MFImageTypeNormalWebP) {
+        if (pictureModel.posterImage) {
+            weakCell.displayImageView.image = pictureModel.posterImage;
+            if (!pictureModel.hidden) {
+                weakCell.displayImageView.alpha = 1.0f;
+            }
+            [self configTagImageView:weakCell.tagImageView imageType:pictureModel.imageType];
+        }else {
+            [weakCell.displayImageView pin_setImageFromURL:url placeholderImage:pictureModel.posterImage ?: pictureModel.placeholderImage completion:^(PINRemoteImageManagerResult * _Nonnull result) {
+                if (!result.error && (result.resultType == PINRemoteImageResultTypeDownload || result.resultType == PINRemoteImageResultTypeMemoryCache || result.resultType == PINRemoteImageResultTypeCache)) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (!pictureModel.hidden) {
+                            if (result.requestDuration > 0.25) {
+                                [UIView animateWithDuration:0.3 animations:^{
+                                    weakCell.displayImageView.alpha = 1.0f;
+                                }];
+                            } else {
+                                weakCell.displayImageView.alpha = 1.0f;
+                            }
+                        }else {
+                            weakCell.displayImageView.alpha = 0.0f;
+                        }
+                    });
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        pictureModel.posterImage = result.image;
+                        [self configTagImageView:weakCell.tagImageView imageType:pictureModel.imageType];
+                    });
+                }
+            }];
+        }
     }else {
         if (pictureModel.posterImage) {
             weakCell.displayImageView.image = pictureModel.posterImage;
@@ -141,7 +172,7 @@ MFPictureBrowserDelegate
 - (void)configTagImageView:(UIImageView *)tagImageView imageType:(MFImageType)imageType {
     if (imageType == MFImageTypeLongImage) {
         tagImageView.image = [UIImage imageNamed:@"ic_messages_pictype_long_pic_30x30_"];
-    }else if (imageType == MFImageTypeGIF) {
+    }else if (imageType == MFImageTypeGIF || imageType == MFImageTypeAnimatedWebP) {
         tagImageView.image = [UIImage imageNamed:@"ic_messages_pictype_gif_30x30_"];
     }else {
         tagImageView.image = nil;
