@@ -69,21 +69,21 @@ MFPictureViewDelegate
     self.animationInProgress = false;
 }
 
-#pragma mark - 公共方法
+#pragma mark - public
 
 - (void)showImageFromView:(UIImageView *)fromView picturesCount:(NSInteger)picturesCount currentPictureIndex:(NSInteger)currentPictureIndex {
-    [self showFromView:fromView picturesCount:picturesCount currentPictureIndex:currentPictureIndex];
+    [self _showFromView:fromView picturesCount:picturesCount currentPictureIndex:currentPictureIndex];
     for (NSInteger i = 0; i < picturesCount; i++) {
-        MFPictureView *pictureView = [self createImagePictureViewAtIndex:i];
+        MFPictureView *pictureView = [self _createImagePictureViewAtIndex:i];
         [self.pictureViews addObject:pictureView];
     }
     MFPictureView *pictureView = self.pictureViews[currentPictureIndex];
-    [self showPictureView:pictureView fromView:fromView];
+    [self _showPictureView:pictureView fromView:fromView];
 }
 
-#pragma mark - 私有方法
+#pragma mark - private
 
-- (void)showFromView:(UIImageView *)fromView picturesCount:(NSInteger)picturesCount currentPictureIndex:(NSInteger)currentPictureIndex  {
+- (void)_showFromView:(UIImageView *)fromView picturesCount:(NSInteger)picturesCount currentPictureIndex:(NSInteger)currentPictureIndex  {
     NSAssert(picturesCount > 0 && currentPictureIndex < picturesCount && picturesCount <= 9, @"Parameter is not correct");
     NSAssert(self.delegate != nil, @"Please set up delegate for pictureBrowser");
     NSAssert([_delegate respondsToSelector:@selector(pictureBrowser:imageViewAtIndex:)], @"Please implement delegate method of pictureBrowser:imageViewAtIndex:");
@@ -99,15 +99,15 @@ MFPictureViewDelegate
     [self.scrollView setContentOffset:CGPointMake(currentPictureIndex * _scrollView.width, 0) animated:false];
 }
 
-- (MFPictureView *)createImagePictureViewAtIndex:(NSInteger)index {
+- (MFPictureView *)_createImagePictureViewAtIndex:(NSInteger)index {
     id<MFPictureModelProtocol> pictureModel = [_delegate pictureBrowser:self pictureModelAtIndex:index];
     UIImageView *imageView = [_delegate pictureBrowser:self imageViewAtIndex:index];
     MFPictureView *pictureView = [[MFPictureView alloc] initWithPictureModel:pictureModel];
-    [self configPictureView:pictureView index:index imageView:imageView];
+    [self _configPictureView:pictureView index:index imageView:imageView];
     return pictureView;
 }
 
-- (void)configPictureView:(MFPictureView *)pictureView index:(NSInteger)index imageView:(UIImageView *)imageView {
+- (void)_configPictureView:(MFPictureView *)pictureView index:(NSInteger)index imageView:(UIImageView *)imageView {
     [self.dismissTapGesture requireGestureRecognizerToFail:pictureView.imageView.gestureRecognizers.firstObject];
     pictureView.pictureDelegate = self;
     [self.scrollView addSubview:pictureView];
@@ -119,8 +119,8 @@ MFPictureViewDelegate
     pictureView.center = center;
 }
 
-- (void)showPictureView:(MFPictureView *)pictureView fromView:(UIImageView *)fromView{
-    [self hideStautsBar];
+- (void)_showPictureView:(MFPictureView *)pictureView fromView:(UIImageView *)fromView{
+    [self _hideStautsBar];
     CGRect rect = [fromView convertRect:fromView.bounds toView:nil];
     [pictureView animationShowWithFromRect:rect animationBlock:^{
         self.backgroundColor = [UIColor blackColor];
@@ -155,7 +155,7 @@ MFPictureViewDelegate
     [pictureView animationDismissWithToRect:rect animationBlock:^{
         self.backgroundColor = [UIColor clearColor];
         self.pageTextLabel.alpha = 0;
-        [self showStatusBar];
+        [self _showStatusBar];
     } completionBlock:^{
         [self removeFromSuperview];
         [self.pictureViews removeAllObjects];
@@ -167,7 +167,7 @@ MFPictureViewDelegate
 }
 
 
-#pragma mark - 手势
+#pragma mark - gesture
 - (void)tapGesture:(UITapGestureRecognizer *)gesture {
     [self dismiss];
 }
@@ -181,14 +181,14 @@ MFPictureViewDelegate
 }
 
 #pragma mark - 状态栏状态
-- (void)hideStautsBar {
+- (void)_hideStautsBar {
     UIView *statusBar = [[UIApplication sharedApplication] valueForKey:@"statusBar"];
     [UIView animateWithDuration:0.15 animations:^{
         statusBar.transform = CGAffineTransformMakeTranslation(0, -statusBar.height);
     }];
 }
 
-- (void)showStatusBar {
+- (void)_showStatusBar {
     UIView *statusBar = [[UIApplication sharedApplication] valueForKey:@"statusBar"];
     [UIView animateWithDuration:0.15 animations:^{
         statusBar.transform = CGAffineTransformIdentity;
@@ -218,10 +218,10 @@ MFPictureViewDelegate
 
 - (void)setCurrentIndex:(NSInteger)currentIndex {
     _currentIndex = currentIndex;
-    [self p_setPageText:currentIndex];
+    [self _setPageText:currentIndex];
 }
 
-- (void)p_setPageText:(NSUInteger)index {
+- (void)_setPageText:(NSUInteger)index {
     _pageTextLabel.text = [NSString stringWithFormat:@"%zd / %zd", index + 1, self.picturesCount];
     [_pageTextLabel sizeToFit];
     _pageTextLabel.center = self.pageTextCenter;

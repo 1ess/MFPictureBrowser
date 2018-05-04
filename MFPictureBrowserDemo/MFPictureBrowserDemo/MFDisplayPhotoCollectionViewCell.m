@@ -19,6 +19,9 @@
         self.tagImageView.alpha = 0;
         [self.displayImageView addSubview:self.tagImageView];
         
+        self.button = [UIButton buttonWithType:UIButtonTypeCustom];
+        self.button.frame = self.contentView.bounds;
+        [self.contentView addSubview:self.button];
     }
     return self;
 }

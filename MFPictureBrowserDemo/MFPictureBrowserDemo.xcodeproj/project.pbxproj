@@ -33,7 +33,6 @@
 /* Begin PBXFileReference section */
 		03F4406D2CD57D8E4838F5A5 /* Pods-MFPictureBrowserDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MFPictureBrowserDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MFPictureBrowserDemo/Pods-MFPictureBrowserDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		4A24835C209C5BF7004C69EC /* 2.webp */ = {isa = PBXFileReference; lastKnownFileType = file; path = 2.webp; sourceTree = "<group>"; };
-		4A24835E209C696C004C69EC /* MFPictureBrowserMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MFPictureBrowserMacro.h; sourceTree = "<group>"; };
 		4A29A8FB209C37010029A378 /* RemoteImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteImageViewController.h; sourceTree = "<group>"; };
 		4A29A8FC209C37020029A378 /* RemoteImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteImageViewController.m; sourceTree = "<group>"; };
 		4A5AEE812085987300EBFF88 /* MFPictureBrowserDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MFPictureBrowserDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -154,7 +153,6 @@
 				4A60D133209184B600612995 /* UIImage+ForceDecoded.h */,
 				4A60D134209184B600612995 /* UIImage+ForceDecoded.m */,
 				4AE0C922208EBAE900A2B2D5 /* MFPictureModelProtocol.h */,
-				4A24835E209C696C004C69EC /* MFPictureBrowserMacro.h */,
 			);
 			path = MFPictureBrowser;
 			sourceTree = "<group>";

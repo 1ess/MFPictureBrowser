@@ -67,6 +67,7 @@ MFPictureBrowserDelegate
                   cellForItemAtIndexPath: (NSIndexPath *)indexPath {
     
     MFDisplayPhotoCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"reuseCell" forIndexPath:indexPath];
+    [cell.button addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     MFPictureModel *pictureModel = self.picList[indexPath.row];
     __weak MFDisplayPhotoCollectionViewCell *weakCell = cell;
     if (pictureModel.hidden) {
@@ -135,6 +136,18 @@ MFPictureBrowserDelegate
     }
 }
 
+- (void)buttonClick:(UIButton *)sender {
+    MFDisplayPhotoCollectionViewCell *cell = (MFDisplayPhotoCollectionViewCell *)sender.superview.superview;
+    NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
+    MFPictureBrowser *browser = [[MFPictureBrowser alloc] init];
+    browser.delegate = self;
+    self.currentIndex = indexPath.row;
+    MFPictureModel *pictureModel = self.picList[indexPath.row];
+    pictureModel.hidden = true;
+    [self.collectionView reloadItemsAtIndexPaths:@[indexPath]];
+    [browser showImageFromView:cell.displayImageView picturesCount:self.picList.count currentPictureIndex:indexPath.row];
+}
+
 - (CGSize)collectionView: (UICollectionView *)collectionView
                   layout: (UICollectionViewLayout*)collectionViewLayout
   sizeForItemAtIndexPath: (NSIndexPath *)indexPath{
@@ -159,14 +172,6 @@ minimumInteritemSpacingForSectionAtIndex: (NSInteger)section{
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
-    MFDisplayPhotoCollectionViewCell *cell = (MFDisplayPhotoCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    MFPictureBrowser *browser = [[MFPictureBrowser alloc] init];
-    browser.delegate = self;
-    self.currentIndex = indexPath.row;
-    MFPictureModel *pictureModel = self.picList[indexPath.row];
-    pictureModel.hidden = true;
-    [collectionView reloadItemsAtIndexPaths:@[indexPath]];
-    [browser showImageFromView:cell.displayImageView picturesCount:self.picList.count currentPictureIndex:indexPath.row];
 }
 
 - (UIImageView *)pictureBrowser:(MFPictureBrowser *)pictureBrowser imageViewAtIndex:(NSInteger)index {
