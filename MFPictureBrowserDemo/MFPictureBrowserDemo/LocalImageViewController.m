@@ -3,14 +3,10 @@
 #import "LocalImageViewController.h"
 #import "MFPictureBrowser.h"
 #import "MFDisplayPhotoCollectionViewCell.h"
-#import <PINRemoteImage/PINImageView+PINRemoteImage.h>
-#import <PINCache/PINCache.h>
-#import <PINRemoteImage/PINRemoteImage.h>
+#import <YYWebImage/YYWebImage.h>
 #import "MFPictureBrowser/UIImageView+TransitionImage.h"
-#import "MFPictureBrowser/FLAnimatedImageView+TransitionImage.h"
 #import "MFPictureBrowser/UIImage+ForceDecoded.h"
 #import "MFPictureModel.h"
-#import <PINRemoteImage/PINImage+WebP.h>
 @interface LocalImageViewController ()
 <
 UICollectionViewDelegate,
@@ -54,7 +50,9 @@ MFPictureBrowserDelegate
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    [[[PINRemoteImageManager sharedImageManager] cache] removeAllObjects];
+    YYImageCache *cache = [YYWebImageManager sharedManager].cache;
+    [cache.memoryCache removeAllObjects];
+    [cache.diskCache removeAllObjects];
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -77,19 +75,19 @@ MFPictureBrowserDelegate
         weakCell.displayImageView.alpha = 1;
     }
     if (pictureModel.imageType == MFImageTypeGIF) {
-        if (pictureModel.flAnimatedImage) {
-            weakCell.displayImageView.animatedImage = pictureModel.flAnimatedImage;
+        if (pictureModel.posterImage) {
+            weakCell.displayImageView.image = pictureModel.posterImage;
             [self configTagImageView:weakCell.tagImageView imageType:pictureModel.imageType];
         }else {
             dispatch_async(dispatch_get_global_queue(0, 0), ^{
                 NSURL *imageURL = [[NSBundle mainBundle] URLForResource:pictureModel.imageName withExtension:nil];
                 NSData *animatedData = [NSData dataWithContentsOfURL:imageURL];
-                FLAnimatedImage *animatedImage = [FLAnimatedImage animatedImageWithGIFData:animatedData];
-                pictureModel.flAnimatedImage = animatedImage;
+                UIImage *animatedImage = [UIImage forceDecodedImageWithData:animatedData];
+                pictureModel.animatedImage = animatedImage;
                 if (animatedImage) {
-                    pictureModel.posterImage = animatedImage.posterImage;
+                    pictureModel.posterImage = animatedImage.images.firstObject;
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [weakCell.displayImageView animatedTransitionImage:animatedImage];
+                        [weakCell.displayImageView animatedTransitionImage:pictureModel.posterImage];
                         [self configTagImageView:weakCell.tagImageView imageType:pictureModel.imageType];
                     });
                 }
@@ -103,11 +101,11 @@ MFPictureBrowserDelegate
             dispatch_async(dispatch_get_global_queue(0, 0), ^{
                 NSURL *imageURL = [[NSBundle mainBundle] URLForResource:pictureModel.imageName withExtension:nil];
                 NSData *webpData = [NSData dataWithContentsOfURL:imageURL];
-                UIImage *webpImage = [PINImage pin_imageWithWebPData:webpData];
+                UIImage *webpImage = [YYImage imageWithData:webpData];
                 if (webpImage) {
                     pictureModel.posterImage = webpImage;
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [weakCell.displayImageView animatedTransitionNormalImage:webpImage];
+                        [weakCell.displayImageView animatedTransitionImage:webpImage];
                         [self configTagImageView:weakCell.tagImageView imageType:pictureModel.imageType];
                     });
                 }

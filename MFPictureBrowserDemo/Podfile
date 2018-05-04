@@ -6,7 +6,7 @@ target 'MFPictureBrowserDemo' do
   # use_frameworks!
 
   # Pods for MFPictureBrowserDemo
-pod ‘PINRemoteImage’
-pod ‘PINRemoteImage/WebP’
+pod ‘YYWebImage’
+pod ‘YYImage/WebP’
 pod ‘MFCategory’
 end

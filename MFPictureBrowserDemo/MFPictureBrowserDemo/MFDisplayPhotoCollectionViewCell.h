@@ -1,8 +1,8 @@
 
 
 #import <UIKit/UIKit.h>
-#import <FLAnimatedImage/FLAnimatedImageView.h>
+#import <YYImage/YYAnimatedImageView.h>
 @interface MFDisplayPhotoCollectionViewCell : UICollectionViewCell
-@property (nonatomic ,strong) FLAnimatedImageView *displayImageView;
+@property (nonatomic ,strong) YYAnimatedImageView *displayImageView;
 @property (nonatomic, strong) UIImageView *tagImageView;
 @end

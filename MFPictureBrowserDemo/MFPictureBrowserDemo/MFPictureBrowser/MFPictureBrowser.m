@@ -4,7 +4,7 @@
 #import "MFPictureBrowser.h"
 #import "MFPictureView.h"
 #import <MFCategory/UIView+MFFrame.h>
-#import <PINRemoteImage/PINRemoteImageManager.h>
+#import <YYWebImage/YYWebImage.h>
 @interface MFPictureBrowser()
 <
 UIScrollViewDelegate,
@@ -144,9 +144,9 @@ MFPictureViewDelegate
     }
     // 取消所有请求
     for (MFPictureView *pictureView in self.pictureViews) {
-        if (pictureView.taskUUID) {
-            [[PINRemoteImageManager sharedImageManager] cancelTaskWithUUID:pictureView.taskUUID];
-        }
+//        if (pictureView.taskUUID) {
+//            [[PINRemoteImageManager sharedImageManager] cancelTaskWithUUID:pictureView.taskUUID];
+//        }
     }
     // 取到当前显示的 pictureView
     MFPictureView *pictureView = [[_pictureViews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"index == %d", self.currentIndex]] firstObject];

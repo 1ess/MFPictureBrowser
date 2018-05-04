@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4A29A8FD209C37020029A378 /* RemoteImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A29A8FC209C37020029A378 /* RemoteImageViewController.m */; };
 		4A5AEE862085987300EBFF88 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5AEE852085987300EBFF88 /* AppDelegate.m */; };
 		4A5AEE8C2085987300EBFF88 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4A5AEE8A2085987300EBFF88 /* Main.storyboard */; };
 		4A5AEE912085987300EBFF88 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4A5AEE8F2085987300EBFF88 /* LaunchScreen.storyboard */; };
@@ -16,14 +17,13 @@
 		4A5AEEA32085C11B00EBFF88 /* MFDisplayPhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5AEEA22085C11B00EBFF88 /* MFDisplayPhotoCollectionViewCell.m */; };
 		4A60D12C2091733C00612995 /* UIImageView+TransitionImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A60D12B2091733C00612995 /* UIImageView+TransitionImage.m */; };
 		4A60D135209184B600612995 /* UIImage+ForceDecoded.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A60D134209184B600612995 /* UIImage+ForceDecoded.m */; };
-		4AD36530209B086A005F9089 /* FLAnimatedImageView+TransitionImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD3652F209B086A005F9089 /* FLAnimatedImageView+TransitionImage.m */; };
 		4AD36532209B0A67005F9089 /* 1.webp in Resources */ = {isa = PBXBuildFile; fileRef = 4AD36531209B0A67005F9089 /* 1.webp */; };
+		4AD36535209BE6B9005F9089 /* MFRunLoopDistribution.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD36534209BE6B9005F9089 /* MFRunLoopDistribution.m */; };
 		4AE0C925208EBF6800A2B2D5 /* MFPictureModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AE0C924208EBF6800A2B2D5 /* MFPictureModel.m */; };
 		4AE0C929208F01FC00A2B2D5 /* 1.gif in Resources */ = {isa = PBXBuildFile; fileRef = 4AE0C928208F01FC00A2B2D5 /* 1.gif */; };
 		4AE0C92D208F046800A2B2D5 /* 2.gif in Resources */ = {isa = PBXBuildFile; fileRef = 4AE0C92C208F046800A2B2D5 /* 2.gif */; };
 		4AE0C92F208F1E5500A2B2D5 /* 3.gif in Resources */ = {isa = PBXBuildFile; fileRef = 4AE0C92E208F1E5500A2B2D5 /* 3.gif */; };
 		5E53B83F20863DD5007480C7 /* ListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E53B83E20863DD5007480C7 /* ListViewController.m */; };
-		5E53B84220863F0B007480C7 /* RemoteImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E53B84120863F0B007480C7 /* RemoteImageViewController.m */; };
 		5E53B84520863F14007480C7 /* LocalImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E53B84420863F14007480C7 /* LocalImageViewController.m */; };
 		5E53B849208642AE007480C7 /* Image.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5E53B848208642AE007480C7 /* Image.xcassets */; };
 		C343AF5E55FDB1C04384A8C5 /* libPods-MFPictureBrowserDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3403644A2EFF9B61054AEB2 /* libPods-MFPictureBrowserDemo.a */; };
@@ -31,6 +31,8 @@
 
 /* Begin PBXFileReference section */
 		03F4406D2CD57D8E4838F5A5 /* Pods-MFPictureBrowserDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MFPictureBrowserDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MFPictureBrowserDemo/Pods-MFPictureBrowserDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		4A29A8FB209C37010029A378 /* RemoteImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteImageViewController.h; sourceTree = "<group>"; };
+		4A29A8FC209C37020029A378 /* RemoteImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteImageViewController.m; sourceTree = "<group>"; };
 		4A5AEE812085987300EBFF88 /* MFPictureBrowserDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MFPictureBrowserDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A5AEE842085987300EBFF88 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		4A5AEE852085987300EBFF88 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -48,9 +50,9 @@
 		4A60D12B2091733C00612995 /* UIImageView+TransitionImage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+TransitionImage.m"; sourceTree = "<group>"; };
 		4A60D133209184B600612995 /* UIImage+ForceDecoded.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+ForceDecoded.h"; sourceTree = "<group>"; };
 		4A60D134209184B600612995 /* UIImage+ForceDecoded.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ForceDecoded.m"; sourceTree = "<group>"; };
-		4AD3652E209B086A005F9089 /* FLAnimatedImageView+TransitionImage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FLAnimatedImageView+TransitionImage.h"; sourceTree = "<group>"; };
-		4AD3652F209B086A005F9089 /* FLAnimatedImageView+TransitionImage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "FLAnimatedImageView+TransitionImage.m"; sourceTree = "<group>"; };
 		4AD36531209B0A67005F9089 /* 1.webp */ = {isa = PBXFileReference; lastKnownFileType = file; path = 1.webp; sourceTree = "<group>"; };
+		4AD36533209BE6B9005F9089 /* MFRunLoopDistribution.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MFRunLoopDistribution.h; sourceTree = "<group>"; };
+		4AD36534209BE6B9005F9089 /* MFRunLoopDistribution.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MFRunLoopDistribution.m; sourceTree = "<group>"; };
 		4AE0C922208EBAE900A2B2D5 /* MFPictureModelProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MFPictureModelProtocol.h; sourceTree = "<group>"; };
 		4AE0C923208EBF6800A2B2D5 /* MFPictureModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MFPictureModel.h; sourceTree = "<group>"; };
 		4AE0C924208EBF6800A2B2D5 /* MFPictureModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MFPictureModel.m; sourceTree = "<group>"; };
@@ -59,8 +61,6 @@
 		4AE0C92E208F1E5500A2B2D5 /* 3.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = 3.gif; sourceTree = "<group>"; };
 		5E53B83D20863DD5007480C7 /* ListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ListViewController.h; sourceTree = "<group>"; };
 		5E53B83E20863DD5007480C7 /* ListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ListViewController.m; sourceTree = "<group>"; };
-		5E53B84020863F0B007480C7 /* RemoteImageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RemoteImageViewController.h; sourceTree = "<group>"; };
-		5E53B84120863F0B007480C7 /* RemoteImageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RemoteImageViewController.m; sourceTree = "<group>"; };
 		5E53B84320863F14007480C7 /* LocalImageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocalImageViewController.h; sourceTree = "<group>"; };
 		5E53B84420863F14007480C7 /* LocalImageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocalImageViewController.m; sourceTree = "<group>"; };
 		5E53B848208642AE007480C7 /* Image.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Image.xcassets; sourceTree = "<group>"; };
@@ -117,8 +117,8 @@
 				5E53B83E20863DD5007480C7 /* ListViewController.m */,
 				4AE0C923208EBF6800A2B2D5 /* MFPictureModel.h */,
 				4AE0C924208EBF6800A2B2D5 /* MFPictureModel.m */,
-				5E53B84020863F0B007480C7 /* RemoteImageViewController.h */,
-				5E53B84120863F0B007480C7 /* RemoteImageViewController.m */,
+				4A29A8FB209C37010029A378 /* RemoteImageViewController.h */,
+				4A29A8FC209C37020029A378 /* RemoteImageViewController.m */,
 				5E53B84320863F14007480C7 /* LocalImageViewController.h */,
 				5E53B84420863F14007480C7 /* LocalImageViewController.m */,
 				4A5AEEA12085C11B00EBFF88 /* MFDisplayPhotoCollectionViewCell.h */,
@@ -139,14 +139,14 @@
 		4A5AEE9A2085988A00EBFF88 /* MFPictureBrowser */ = {
 			isa = PBXGroup;
 			children = (
+				4AD36533209BE6B9005F9089 /* MFRunLoopDistribution.h */,
+				4AD36534209BE6B9005F9089 /* MFRunLoopDistribution.m */,
 				4A5AEE9B2085A87600EBFF88 /* MFPictureBrowser.h */,
 				4A5AEE9C2085A87600EBFF88 /* MFPictureBrowser.m */,
 				4A5AEE9E2085BC7500EBFF88 /* MFPictureView.h */,
 				4A5AEE9F2085BC7500EBFF88 /* MFPictureView.m */,
 				4A60D12A2091733C00612995 /* UIImageView+TransitionImage.h */,
 				4A60D12B2091733C00612995 /* UIImageView+TransitionImage.m */,
-				4AD3652E209B086A005F9089 /* FLAnimatedImageView+TransitionImage.h */,
-				4AD3652F209B086A005F9089 /* FLAnimatedImageView+TransitionImage.m */,
 				4A60D133209184B600612995 /* UIImage+ForceDecoded.h */,
 				4A60D134209184B600612995 /* UIImage+ForceDecoded.m */,
 				4AE0C922208EBAE900A2B2D5 /* MFPictureModelProtocol.h */,
@@ -262,15 +262,15 @@
 				4A5AEE9D2085A87600EBFF88 /* MFPictureBrowser.m in Sources */,
 				4A5AEEA32085C11B00EBFF88 /* MFDisplayPhotoCollectionViewCell.m in Sources */,
 				5E53B83F20863DD5007480C7 /* ListViewController.m in Sources */,
+				4AD36535209BE6B9005F9089 /* MFRunLoopDistribution.m in Sources */,
 				4A5AEEA02085BC7500EBFF88 /* MFPictureView.m in Sources */,
-				5E53B84220863F0B007480C7 /* RemoteImageViewController.m in Sources */,
 				4A5AEE942085987300EBFF88 /* main.m in Sources */,
 				5E53B84520863F14007480C7 /* LocalImageViewController.m in Sources */,
 				4A60D135209184B600612995 /* UIImage+ForceDecoded.m in Sources */,
+				4A29A8FD209C37020029A378 /* RemoteImageViewController.m in Sources */,
 				4A5AEE862085987300EBFF88 /* AppDelegate.m in Sources */,
 				4A60D12C2091733C00612995 /* UIImageView+TransitionImage.m in Sources */,
 				4AE0C925208EBF6800A2B2D5 /* MFPictureModel.m in Sources */,
-				4AD36530209B086A005F9089 /* FLAnimatedImageView+TransitionImage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

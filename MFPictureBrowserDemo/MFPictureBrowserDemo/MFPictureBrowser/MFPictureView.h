@@ -21,8 +21,6 @@
 @property (nonatomic, strong, readonly) UIImageView *imageView;
 // 代理
 @property (nonatomic, weak) id<MFPictureViewDelegate> pictureDelegate;
-// 请求 UUID
-@property (nonatomic, strong) NSUUID *taskUUID;
 
 - (instancetype)init NS_UNAVAILABLE;
 + (instancetype)new NS_UNAVAILABLE;
