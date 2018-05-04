@@ -83,6 +83,34 @@ MFPictureBrowserDelegate
                 pictureModel.posterImage = image;
                 [strongSelf configTagImageView:weakCell.tagImageView imageType:pictureModel.imageType];
             });
+            switch (pictureModel.imageType) {
+                case MFImageTypeGIF:
+                    {
+                        if (!pictureModel.animatedImage) {
+                            YYImage *yyImage = (YYImage *)image;
+                            NSData *animatedData = yyImage.animatedImageData;
+                            UIImage *animatedImage = [UIImage forceDecodedImageWithData:animatedData];
+                            pictureModel.animatedImage = animatedImage;
+                        }
+                    }
+                    break;
+                case MFImageTypeAnimatedWebP:
+                    {
+                        if (!pictureModel.webpAnimatedImage) {
+                            pictureModel.webpAnimatedImage = (YYImage *)image;
+                        }
+                    }
+                    break;
+                case MFImageTypeStaticWebP:
+                    {
+                        if (!pictureModel.posterImage) {
+                            pictureModel.posterImage = (YYImage *)image;
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
     }];
     return cell;

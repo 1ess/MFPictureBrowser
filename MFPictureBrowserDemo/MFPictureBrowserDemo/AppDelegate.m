@@ -1,7 +1,7 @@
 
 
 #import "AppDelegate.h"
-
+#import <YYWebImage/YYWebImage.h>
 @interface AppDelegate ()
 
 @end
@@ -10,7 +10,8 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    [YYImageCache sharedCache].memoryCache.costLimit = 50*1024*1024;
+    [YYImageCache sharedCache].memoryCache.shouldRemoveAllObjectsOnMemoryWarning = YES;
     return YES;
 }
 

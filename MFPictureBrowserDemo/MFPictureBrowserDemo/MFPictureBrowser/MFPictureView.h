@@ -3,6 +3,7 @@
 
 #import <UIKit/UIKit.h>
 #import "MFPictureModelProtocol.h"
+#import <YYWebImage/YYWebImage.h>
 #import <YYImage/YYImage.h>
 @class MFPictureView;
 @protocol MFPictureViewDelegate <NSObject>
@@ -22,7 +23,8 @@
 @property (nonatomic, strong, readonly) YYAnimatedImageView *imageView;
 // 代理
 @property (nonatomic, weak) id<MFPictureViewDelegate> pictureDelegate;
-
+// 下载 operation
+@property (nonatomic, strong) YYWebImageOperation *operation;
 - (instancetype)init NS_UNAVAILABLE;
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)initWithPictureModel:(id<MFPictureModelProtocol>)pictureModel;

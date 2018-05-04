@@ -142,11 +142,11 @@ MFPictureViewDelegate
     }else {
         rect = _endView.frame;
     }
-    // 取消所有请求
+    // 取消未完成请求
     for (MFPictureView *pictureView in self.pictureViews) {
-//        if (pictureView.taskUUID) {
-//            [[PINRemoteImageManager sharedImageManager] cancelTaskWithUUID:pictureView.taskUUID];
-//        }
+        if (pictureView.operation) {
+            [pictureView.operation cancel];
+        }
     }
     // 取到当前显示的 pictureView
     MFPictureView *pictureView = [[_pictureViews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"index == %d", self.currentIndex]] firstObject];

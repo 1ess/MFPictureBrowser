@@ -93,7 +93,7 @@ MFPictureBrowserDelegate
                 }
             });
         }
-    }else if (pictureModel.imageType == MFImageTypeNormalWebP) {
+    }else if (pictureModel.imageType == MFImageTypeStaticWebP || pictureModel.imageType == MFImageTypeAnimatedWebP) {
         if (pictureModel.posterImage) {
             weakCell.displayImageView.image = pictureModel.posterImage;
             [self configTagImageView:weakCell.tagImageView imageType:pictureModel.imageType];
@@ -101,9 +101,10 @@ MFPictureBrowserDelegate
             dispatch_async(dispatch_get_global_queue(0, 0), ^{
                 NSURL *imageURL = [[NSBundle mainBundle] URLForResource:pictureModel.imageName withExtension:nil];
                 NSData *webpData = [NSData dataWithContentsOfURL:imageURL];
-                UIImage *webpImage = [YYImage imageWithData:webpData];
+                YYImage *webpImage = [YYImage imageWithData:webpData];
                 if (webpImage) {
                     pictureModel.posterImage = webpImage;
+                    pictureModel.webpAnimatedImage = webpImage;
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [weakCell.displayImageView animatedTransitionImage:webpImage];
                         [self configTagImageView:weakCell.tagImageView imageType:pictureModel.imageType];

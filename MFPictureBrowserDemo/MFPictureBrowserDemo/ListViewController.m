@@ -87,7 +87,10 @@ UITableViewDataSource
                                                      imageType:MFImageTypeGIF],
                            [[MFPictureModel alloc] initWithURL:@"https://p.upyun.com/demo/webp/webp/png-3.webp"
                                                      imageName:nil
-                                                     imageType:MFImageTypeNormalWebP],
+                                                     imageType:MFImageTypeStaticWebP],
+                           [[MFPictureModel alloc] initWithURL:@"https://p.upyun.com/demo/webp/webp/animated-gif-3.webp"
+                                                     imageName:nil
+                                                     imageType:MFImageTypeAnimatedWebP],
                            ].mutableCopy;
         [self.navigationController pushViewController:remote animated:true];
     }else if (indexPath.row == 1) {
@@ -95,7 +98,8 @@ UITableViewDataSource
         local.picList = @[
                           [[MFPictureModel alloc] initWithURL:nil imageName:@"1.gif" imageType:MFImageTypeGIF],
                           [[MFPictureModel alloc] initWithURL:nil imageName:@"2.gif" imageType:MFImageTypeGIF],
-                          [[MFPictureModel alloc] initWithURL:nil imageName:@"1.webp" imageType:MFImageTypeNormalWebP],
+                          [[MFPictureModel alloc] initWithURL:nil imageName:@"1.webp" imageType:MFImageTypeStaticWebP],
+                          [[MFPictureModel alloc] initWithURL:nil imageName:@"2.webp" imageType:MFImageTypeAnimatedWebP],
                           [[MFPictureModel alloc] initWithURL:nil imageName:@"4.jpg" imageType:MFImageTypeOther],
                           [[MFPictureModel alloc] initWithURL:nil imageName:@"5.jpg" imageType:MFImageTypeLongImage],
                           ].mutableCopy;
