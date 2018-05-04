@@ -1,6 +1,6 @@
 # MFPictureBrowser
 
-类似于<即刻>应用的图片浏览器效果
+类似于<即刻>应用的图片浏览器效果(支持PNG， JPG， GIF， WebP)
 [参考：ESPictureBrowser](https://github.com/EnjoySR/ESPictureBrowser), 提交了 PR, 但原作者可能不维护了, 所以我重新写了一下, 并修改了其中一些 bug.
 
 ## 效果图
