@@ -2,7 +2,6 @@
 
 #import <Foundation/Foundation.h>
 #import "MFPictureModelProtocol.h"
-
 @interface MFPictureModel : NSObject
 <
 MFPictureModelProtocol

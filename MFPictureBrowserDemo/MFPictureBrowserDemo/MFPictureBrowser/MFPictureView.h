@@ -3,6 +3,7 @@
 
 #import <UIKit/UIKit.h>
 #import "MFPictureModelProtocol.h"
+#import <YYImage/YYImage.h>
 @class MFPictureView;
 @protocol MFPictureViewDelegate <NSObject>
 - (void)pictureView:(MFPictureView *)pictureView didClickAtIndex:(NSInteger)index;
@@ -18,7 +19,7 @@
 // 协议对象
 @property (nonatomic, strong) id<MFPictureModelProtocol> pictureModel;
 // 当前显示图片的控件
-@property (nonatomic, strong, readonly) UIImageView *imageView;
+@property (nonatomic, strong, readonly) YYAnimatedImageView *imageView;
 // 代理
 @property (nonatomic, weak) id<MFPictureViewDelegate> pictureDelegate;
 

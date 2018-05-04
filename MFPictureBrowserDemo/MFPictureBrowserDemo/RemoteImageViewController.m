@@ -75,21 +75,16 @@ MFPictureBrowserDelegate
     }else {
         weakCell.displayImageView.alpha = 0.0f;
     }
-    if (pictureModel.posterImage) {
-        weakCell.displayImageView.image = pictureModel.posterImage;
-        [self configTagImageView:weakCell.tagImageView imageType:pictureModel.imageType];
-    }else {
-        __weak __typeof(self)weakSelf = self;
-        [weakCell.displayImageView yy_setImageWithURL:url placeholder:pictureModel.placeholderImage options:YYWebImageOptionProgressiveBlur | YYWebImageOptionSetImageWithFadeAnimation completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
-            __strong __typeof(weakSelf)strongSelf = weakSelf;
-            if (!error && stage == YYWebImageStageFinished) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    pictureModel.posterImage = image;
-                    [strongSelf configTagImageView:weakCell.tagImageView imageType:pictureModel.imageType];
-                });
-            }
-        }];
-    }
+    __weak __typeof(self)weakSelf = self;
+    [weakCell.displayImageView yy_setImageWithURL:url placeholder:pictureModel.placeholderImage options:YYWebImageOptionProgressiveBlur | YYWebImageOptionSetImageWithFadeAnimation completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        if (!error && stage == YYWebImageStageFinished) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                pictureModel.posterImage = image;
+                [strongSelf configTagImageView:weakCell.tagImageView imageType:pictureModel.imageType];
+            });
+        }
+    }];
     return cell;
 }
 
