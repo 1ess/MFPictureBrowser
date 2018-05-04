@@ -5,6 +5,7 @@
 #import "UIImageView+TransitionImage.h"
 #import "UIImage+ForceDecoded.h"
 #import "MFRunLoopDistribution.h"
+#import "MFPictureBrowserMacro.h"
 @interface MFPictureView()
 <
 UIScrollViewDelegate
@@ -136,7 +137,7 @@ UIScrollViewDelegate
                 UIImage *animatedImage = [UIImage forceDecodedImageWithData:animatedData compressed:pictureModel.compressed];
                 self.loadingFinished = true;
                 if (animatedImage) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
+                    _mf_dispatch_async_on_main_queue(^{
                         pictureModel.animatedImage = animatedImage;
                         pictureModel.posterImage = animatedImage.images.firstObject;
                         [self setPictureSize:animatedImage.size];
@@ -150,7 +151,7 @@ UIScrollViewDelegate
                         }];
                     });
                 }else {
-                    dispatch_async(dispatch_get_main_queue(), ^{
+                    _mf_dispatch_async_on_main_queue(^{
                         [self.progressView setProgress:1 animated:false];
                         self.progressView.alpha = 0;
                     });
@@ -180,7 +181,7 @@ UIScrollViewDelegate
                 pictureModel.posterImage = webpImage;
                 self.loadingFinished = true;
                 if (webpImage) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
+                    _mf_dispatch_async_on_main_queue(^{
                         [self setPictureSize:webpImage.size];
                         self.imageView.image = webpImage;
                         if ([_pictureDelegate respondsToSelector:@selector(pictureView:image:animatedImage:didLoadAtIndex:)]) {
@@ -192,7 +193,7 @@ UIScrollViewDelegate
                         }];
                     });
                 }else {
-                    dispatch_async(dispatch_get_main_queue(), ^{
+                    _mf_dispatch_async_on_main_queue(^{
                         [self.progressView setProgress:1 animated:false];
                         self.progressView.alpha = 0;
                     });
@@ -222,7 +223,7 @@ UIScrollViewDelegate
                 pictureModel.webpAnimatedImage = webpImage;
                 self.loadingFinished = true;
                 if (webpImage) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
+                    _mf_dispatch_async_on_main_queue(^{
                         [self setPictureSize:webpImage.size];
                         self.imageView.image = webpImage;
                         if ([_pictureDelegate respondsToSelector:@selector(pictureView:image:animatedImage:didLoadAtIndex:)]) {
@@ -234,7 +235,7 @@ UIScrollViewDelegate
                         }];
                     });
                 }else {
-                    dispatch_async(dispatch_get_main_queue(), ^{
+                    _mf_dispatch_async_on_main_queue(^{
                         [self.progressView setProgress:1 animated:false];
                         self.progressView.alpha = 0;
                     });
@@ -283,7 +284,7 @@ UIScrollViewDelegate
                 __weak __typeof(self)weakSelf = self;
                 self.operation = [[YYWebImageManager sharedManager] requestImageWithURL:url options:YYWebImageOptionProgressiveBlur progress:^(NSInteger receivedSize, NSInteger expectedSize) {
                     __strong __typeof(weakSelf)strongSelf = weakSelf;
-                    dispatch_async(dispatch_get_main_queue(), ^{
+                    _mf_dispatch_async_on_main_queue(^{
                         [strongSelf.progressView setProgress:(1.0 * receivedSize / expectedSize) <= 0.95 ? (1.0 * receivedSize / expectedSize) : 0.95  animated:true];
                     });
                 } transform:nil completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
@@ -294,7 +295,7 @@ UIScrollViewDelegate
                         NSData *animatedData = yyImage.animatedImageData;
                         UIImage *animatedImage = [UIImage forceDecodedImageWithData:animatedData compressed:pictureModel.compressed];
                         strongSelf.loadingFinished = true;
-                        dispatch_async(dispatch_get_main_queue(), ^{
+                        _mf_dispatch_async_on_main_queue(^{
                             [strongSelf.progressView setProgress:1.f animated:true];
                             strongSelf.progressView.alpha = 0;
                             if (animatedImage) {
@@ -306,7 +307,7 @@ UIScrollViewDelegate
                                     [strongSelf.imageView animatedTransitionImage:animatedImage];
                                     return true;
                                 } withKey:pictureModel.imageURL];
-
+                                
                             }
                             if ([_pictureDelegate respondsToSelector:@selector(pictureView:image:animatedImage:didLoadAtIndex:)]) {
                                 [_pictureDelegate pictureView:strongSelf image:nil animatedImage:animatedImage didLoadAtIndex:strongSelf.index];
@@ -315,7 +316,7 @@ UIScrollViewDelegate
                     }else if (error) {
                         strongSelf.operation = nil;
                         strongSelf.loadingFinished = true;
-                        dispatch_async(dispatch_get_main_queue(), ^{
+                        _mf_dispatch_async_on_main_queue(^{
                             strongSelf.progressView.alpha = 0;
                             [strongSelf.progressView setProgress:1.f animated:true];
                         });
@@ -333,7 +334,7 @@ UIScrollViewDelegate
                 [[YYImageCache sharedCache] getImageDataForKey:key withBlock:^(NSData * _Nullable imageData) {
                     UIImage *animatedImage = [UIImage forceDecodedImageWithData:imageData compressed:pictureModel.compressed];
                     self.loadingFinished = true;
-                    dispatch_async(dispatch_get_main_queue(), ^{
+                    _mf_dispatch_async_on_main_queue(^{
                         [UIView animateWithDuration:0.2 animations:^{
                             if (animatedImage) {
                                 [self.progressView setProgress:1 animated:true];
@@ -378,7 +379,7 @@ UIScrollViewDelegate
                 __weak __typeof(self)weakSelf = self;
                 self.operation = [[YYWebImageManager sharedManager] requestImageWithURL:url options:YYWebImageOptionProgressiveBlur progress:^(NSInteger receivedSize, NSInteger expectedSize) {
                     __strong __typeof(weakSelf)strongSelf = weakSelf;
-                    dispatch_async(dispatch_get_main_queue(), ^{
+                    _mf_dispatch_async_on_main_queue(^{
                         [strongSelf.progressView setProgress:(1.0 * receivedSize / expectedSize) <= 0.95 ? (1.0 * receivedSize / expectedSize) : 0.95  animated:true];
                     });
                 } transform:nil completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
@@ -386,7 +387,7 @@ UIScrollViewDelegate
                     if (!error && stage == YYWebImageStageFinished) {
                         strongSelf.operation = nil;
                         strongSelf.loadingFinished = true;
-                        dispatch_async(dispatch_get_main_queue(), ^{
+                        _mf_dispatch_async_on_main_queue(^{
                             [strongSelf.progressView setProgress:1.f animated:true];
                             strongSelf.progressView.alpha = 0;
                             UIImage *webpImage = (YYImage *)image;
@@ -406,7 +407,7 @@ UIScrollViewDelegate
                     }else if (error) {
                         strongSelf.operation = nil;
                         strongSelf.loadingFinished = true;
-                        dispatch_async(dispatch_get_main_queue(), ^{
+                        _mf_dispatch_async_on_main_queue(^{
                             strongSelf.progressView.alpha = 0;
                             [strongSelf.progressView setProgress:1.f animated:true];
                         });
@@ -424,7 +425,7 @@ UIScrollViewDelegate
                 [[YYImageCache sharedCache] getImageDataForKey:key withBlock:^(NSData * _Nullable imageData) {
                     UIImage *webpImage = [YYImage imageWithData:imageData];
                     self.loadingFinished = true;
-                    dispatch_async(dispatch_get_main_queue(), ^{
+                    _mf_dispatch_async_on_main_queue(^{
                         [UIView animateWithDuration:0.2 animations:^{
                             if (webpImage) {
                                 [self.progressView setProgress:1 animated:true];
@@ -467,7 +468,7 @@ UIScrollViewDelegate
                 __weak __typeof(self)weakSelf = self;
                 self.operation = [[YYWebImageManager sharedManager] requestImageWithURL:url options:YYWebImageOptionProgressiveBlur progress:^(NSInteger receivedSize, NSInteger expectedSize) {
                     __strong __typeof(weakSelf)strongSelf = weakSelf;
-                    dispatch_async(dispatch_get_main_queue(), ^{
+                    _mf_dispatch_async_on_main_queue(^{
                         [strongSelf.progressView setProgress:(1.0 * receivedSize / expectedSize) <= 0.95 ? (1.0 * receivedSize / expectedSize) : 0.95  animated:true];
                     });
                 } transform:nil completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
@@ -475,7 +476,7 @@ UIScrollViewDelegate
                     if (!error && stage == YYWebImageStageFinished) {
                         strongSelf.operation = nil;
                         strongSelf.loadingFinished = true;
-                        dispatch_async(dispatch_get_main_queue(), ^{
+                        _mf_dispatch_async_on_main_queue(^{
                             [strongSelf.progressView setProgress:1.f animated:true];
                             strongSelf.progressView.alpha = 0;
                             YYImage *webpImage = (YYImage *)image;
@@ -496,7 +497,7 @@ UIScrollViewDelegate
                     }else if (error) {
                         strongSelf.operation = nil;
                         strongSelf.loadingFinished = true;
-                        dispatch_async(dispatch_get_main_queue(), ^{
+                        _mf_dispatch_async_on_main_queue(^{
                             strongSelf.progressView.alpha = 0;
                             [strongSelf.progressView setProgress:1.f animated:true];
                         });
@@ -514,7 +515,7 @@ UIScrollViewDelegate
                 [[YYImageCache sharedCache] getImageDataForKey:key withBlock:^(NSData * _Nullable imageData) {
                     UIImage *webpImage = [YYImage imageWithData:imageData];
                     self.loadingFinished = true;
-                    dispatch_async(dispatch_get_main_queue(), ^{
+                    _mf_dispatch_async_on_main_queue(^{
                         [UIView animateWithDuration:0.2 animations:^{
                             if (webpImage) {
                                 [self.progressView setProgress:1 animated:true];
@@ -555,12 +556,12 @@ UIScrollViewDelegate
                 __weak __typeof(self)weakSelf = self;
                 self.operation = [[YYWebImageManager sharedManager] requestImageWithURL:url options:YYWebImageOptionProgressiveBlur progress:^(NSInteger receivedSize, NSInteger expectedSize) {
                     __strong __typeof(weakSelf)strongSelf = weakSelf;
-                    dispatch_async(dispatch_get_main_queue(), ^{
+                    _mf_dispatch_async_on_main_queue(^{
                         [strongSelf.progressView setProgress:(1.0 * receivedSize / expectedSize) <= 0.95 ? (1.0 * receivedSize / expectedSize) : 0.95  animated:true];
                     });
                 } transform:nil completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
                     __strong __typeof(weakSelf)strongSelf = weakSelf;
-                    dispatch_async(dispatch_get_main_queue(), ^{
+                    _mf_dispatch_async_on_main_queue(^{
                         if (stage == YYWebImageStageProgress) {
                             strongSelf.progressView.alpha = 1;
                         }else {
@@ -598,7 +599,7 @@ UIScrollViewDelegate
                 [[YYImageCache sharedCache] getImageDataForKey:key withBlock:^(NSData * _Nullable imageData) {
                     UIImage *image = [UIImage imageWithData:imageData];
                     self.loadingFinished = true;
-                    dispatch_async(dispatch_get_main_queue(), ^{
+                    _mf_dispatch_async_on_main_queue(^{
                         [UIView animateWithDuration:0.2 animations:^{
                             if (image) {
                                 [self.progressView setProgress:1 animated:true];

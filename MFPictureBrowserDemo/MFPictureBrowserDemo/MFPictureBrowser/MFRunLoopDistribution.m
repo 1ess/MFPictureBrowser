@@ -21,9 +21,7 @@
     [self.tasksKeys addObject:key];
 }
 
-- (void)_timerFiredMethod:(NSTimer *)timer {
-    //We do nothing here
-}
+- (void)_timerFiredMethod:(NSTimer *)timer {}
 
 - (instancetype)init {
     if ((self = [super init])) {
