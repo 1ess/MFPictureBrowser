@@ -147,8 +147,9 @@ UIScrollViewDelegate
                         pictureModel.posterImage = animatedImage.images.firstObject;
                         [self setPictureSize:animatedImage.size];
                         self.imageView.image = animatedImage;
+                        __weak __typeof(self)weakSelf = self;
                         if ([_pictureDelegate respondsToSelector:@selector(pictureView:image:animatedImage:didLoadAtIndex:)]) {
-                            [_pictureDelegate pictureView:self image:nil animatedImage:animatedImage didLoadAtIndex:self.index];
+                            [_pictureDelegate pictureView:weakSelf image:nil animatedImage:animatedImage didLoadAtIndex:weakSelf.index];
                         }
                         [self _hideProgressView];
                     }else {
@@ -180,8 +181,9 @@ UIScrollViewDelegate
                     if (webpImage) {
                         [self setPictureSize:webpImage.size];
                         self.imageView.image = webpImage;
+                        __weak __typeof(self)weakSelf = self;
                         if ([_pictureDelegate respondsToSelector:@selector(pictureView:image:animatedImage:didLoadAtIndex:)]) {
-                            [_pictureDelegate pictureView:self image:webpImage animatedImage:nil didLoadAtIndex:self.index];
+                            [_pictureDelegate pictureView:weakSelf image:webpImage animatedImage:nil didLoadAtIndex:weakSelf.index];
                         }
                         [self _hideProgressView];
                     }else {
@@ -213,8 +215,9 @@ UIScrollViewDelegate
                     if (webpImage) {
                         [self setPictureSize:webpImage.size];
                         self.imageView.image = webpImage;
+                        __weak __typeof(self)weakSelf = self;
                         if ([_pictureDelegate respondsToSelector:@selector(pictureView:image:animatedImage:didLoadAtIndex:)]) {
-                            [_pictureDelegate pictureView:self image:webpImage animatedImage:nil didLoadAtIndex:self.index];
+                            [_pictureDelegate pictureView:weakSelf image:webpImage animatedImage:nil didLoadAtIndex:weakSelf.index];
                         }
                         [self _hideProgressView];
                     }else {
@@ -235,8 +238,9 @@ UIScrollViewDelegate
                 pictureModel.posterImage = image;
                 [self setPictureSize:image.size];
                 self.imageView.image = image;
+                __weak __typeof(self)weakSelf = self;
                 if ([_pictureDelegate respondsToSelector:@selector(pictureView:image:animatedImage:didLoadAtIndex:)]) {
-                    [_pictureDelegate pictureView:self image:image animatedImage:nil didLoadAtIndex:self.index];
+                    [_pictureDelegate pictureView:weakSelf image:image animatedImage:nil didLoadAtIndex:weakSelf.index];
                 }
             }
         }
@@ -313,8 +317,9 @@ UIScrollViewDelegate
                         if (animatedImage) {
                             pictureModel.animatedImage = animatedImage;
                             pictureModel.posterImage = animatedImage.images.firstObject;
+                            __weak __typeof(self)weakSelf = self;
                             if ([_pictureDelegate respondsToSelector:@selector(pictureView:image:animatedImage:didLoadAtIndex:)]) {
-                                [_pictureDelegate pictureView:self image:nil animatedImage:animatedImage didLoadAtIndex:self.index];
+                                [_pictureDelegate pictureView:weakSelf image:nil animatedImage:animatedImage didLoadAtIndex:weakSelf.index];
                             }
                             CGSize size = animatedImage.size;
                             [self setPictureSize:size];
@@ -388,8 +393,9 @@ UIScrollViewDelegate
                         [self _hideProgressView];
                         if (webpImage) {
                             pictureModel.posterImage = webpImage;
+                            __weak __typeof(self)weakSelf = self;
                             if ([_pictureDelegate respondsToSelector:@selector(pictureView:image:animatedImage:didLoadAtIndex:)]) {
-                                [_pictureDelegate pictureView:self image:webpImage animatedImage:nil didLoadAtIndex:self.index];
+                                [_pictureDelegate pictureView:weakSelf image:webpImage animatedImage:nil didLoadAtIndex:weakSelf.index];
                             }
                             CGSize size = webpImage.size;
                             [self setPictureSize:size];
@@ -463,8 +469,9 @@ UIScrollViewDelegate
                         [self _hideProgressView];
                         if (webpImage) {
                             pictureModel.posterImage = webpImage;
+                            __weak __typeof(self)weakSelf = self;
                             if ([_pictureDelegate respondsToSelector:@selector(pictureView:image:animatedImage:didLoadAtIndex:)]) {
-                                [_pictureDelegate pictureView:self image:webpImage animatedImage:nil didLoadAtIndex:self.index];
+                                [_pictureDelegate pictureView:weakSelf image:webpImage animatedImage:nil didLoadAtIndex:weakSelf.index];
                             }
                             CGSize size = webpImage.size;
                             [self setPictureSize:size];
@@ -536,8 +543,9 @@ UIScrollViewDelegate
                         [self _hideProgressView];
                         if (image) {
                             pictureModel.posterImage = image;
+                            __weak __typeof(self)weakSelf = self;
                             if ([_pictureDelegate respondsToSelector:@selector(pictureView:image:animatedImage:didLoadAtIndex:)]) {
-                                [_pictureDelegate pictureView:self image:image animatedImage:nil didLoadAtIndex:self.index];
+                                [_pictureDelegate pictureView:weakSelf image:image animatedImage:nil didLoadAtIndex:weakSelf.index];
                             }
                             CGSize size = image.size;
                             [self setPictureSize:size];

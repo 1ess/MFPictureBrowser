@@ -152,15 +152,17 @@ MFPictureViewDelegate
     MFPictureView *pictureView = [[_pictureViews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"index == %d", self.currentIndex]] firstObject];
     
     // 执行关闭动画
+    __weak __typeof(self)weakSelf = self;
     [pictureView animationDismissWithToRect:rect animationBlock:^{
         self.backgroundColor = [UIColor clearColor];
         self.pageTextLabel.alpha = 0;
         [self _showStatusBar];
     } completionBlock:^{
         [self removeFromSuperview];
-        [self.pictureViews removeAllObjects];
-        if ([_delegate respondsToSelector:@selector(pictureBrowser:dimissAtIndex:)] && !self.animationInProgress) {
-            [_delegate pictureBrowser:self dimissAtIndex:self.currentIndex];
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        [strongSelf.pictureViews removeAllObjects];
+        if ([_delegate respondsToSelector:@selector(pictureBrowser:dimissAtIndex:)] && !strongSelf.animationInProgress) {
+            [_delegate pictureBrowser:strongSelf dimissAtIndex:strongSelf.currentIndex];
         }
         self.animationInProgress = true;
     }];
