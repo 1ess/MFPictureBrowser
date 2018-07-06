@@ -3,11 +3,11 @@
 类似于<即刻>应用的图片浏览器效果(支持PNG， JPG， GIF， WebP).
 
 ## 效果图
+![video 1](https://raw.githubusercontent.com/GodzzZZZ/SourceRepository/master/MFPictureBrowser/1.mp4)
+![video 2](https://raw.githubusercontent.com/GodzzZZZ/SourceRepository/master/MFPictureBrowser/2.mp4)
+![video 3](https://raw.githubusercontent.com/GodzzZZZ/SourceRepository/master/MFPictureBrowser/3.mp4)
+![video 4](https://raw.githubusercontent.com/GodzzZZZ/SourceRepository/master/MFPictureBrowser/4.mp4)
 
-<video src="https://raw.githubusercontent.com/GodzzZZZ/SourceRepository/master/MFPictureBrowser/1.mp4" width="25%" autoplay loop></video>
-<video src="https://raw.githubusercontent.com/GodzzZZZ/SourceRepository/master/MFPictureBrowser/2.mp4" width="25%" autoplay loop></video>
-<video src="https://raw.githubusercontent.com/GodzzZZZ/SourceRepository/master/MFPictureBrowser/3.mp4" width="25%" autoplay loop></video>
-<video src="https://raw.githubusercontent.com/GodzzZZZ/SourceRepository/master/MFPictureBrowser/4.mp4" width="25%" autoplay loop></video>
 ## 集成方式
 - cocoapod
 
