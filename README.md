@@ -4,8 +4,10 @@
 
 ## 效果图
 
-<img src="https://github.com/GodzzZZZ/MFPictureBrowser/blob/master/SnapShot/1.webp" width="25%"/><img src="https://github.com/GodzzZZZ/MFPictureBrowser/blob/master/SnapShot/2.webp" width="25%"/><img src="https://github.com/GodzzZZZ/MFPictureBrowser/blob/master/SnapShot/3.webp" width="25%"/><img src="https://github.com/GodzzZZZ/MFPictureBrowser/blob/master/SnapShot/4.webp" width="25%"/>
-
+<video src="https://raw.githubusercontent.com/GodzzZZZ/SourceRepository/master/MFPictureBrowser/1.mp4" width="25%" autoplay loop></video>
+<video src="https://raw.githubusercontent.com/GodzzZZZ/SourceRepository/master/MFPictureBrowser/2.mp4" width="25%" autoplay loop></video>
+<video src="https://raw.githubusercontent.com/GodzzZZZ/SourceRepository/master/MFPictureBrowser/3.mp4" width="25%" autoplay loop></video>
+<video src="https://raw.githubusercontent.com/GodzzZZZ/SourceRepository/master/MFPictureBrowser/4.mp4" width="25%" autoplay loop></video>
 ## 集成方式
 - cocoapod
 
