@@ -4,10 +4,10 @@
 
 ## 效果图
 
-<video src="https://raw.githubusercontent.com/GodzzZZZ/SourceRepository/master/MFPictureBrowser/1.mp4" autoplay loop width="25%"></video>
-<video src="https://raw.githubusercontent.com/GodzzZZZ/SourceRepository/master/MFPictureBrowser/2.mp4" autoplay loop width="25%"></video>
-<video src="https://raw.githubusercontent.com/GodzzZZZ/SourceRepository/master/MFPictureBrowser/3.mp4" autoplay loop width="25%"></video>
-<video src="https://raw.githubusercontent.com/GodzzZZZ/SourceRepository/master/MFPictureBrowser/4.mp4" autoplay loop width="25%"></video>
+<img src="https://raw.githubusercontent.com/GodzzZZZ/SourceRepository/master/MFPictureBrowser/1.gif" width="25%">
+<img src="https://raw.githubusercontent.com/GodzzZZZ/SourceRepository/master/MFPictureBrowser/2.gif" width="25%">
+<img src="https://raw.githubusercontent.com/GodzzZZZ/SourceRepository/master/MFPictureBrowser/3.gif" width="25%">
+<img src="https://raw.githubusercontent.com/GodzzZZZ/SourceRepository/master/MFPictureBrowser/4.gif" width="25%">
 
 ## 集成方式
 - cocoapod
