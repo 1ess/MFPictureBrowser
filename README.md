@@ -1,7 +1,7 @@
 # MFPictureBrowser
 
 类似于<即刻>应用的图片浏览器效果(支持PNG， JPG， GIF， WebP).
-
+![DUB](https://img.shields.io/dub/l/vibe-d.svg)
 ![Total-downloads](https://img.shields.io/cocoapods/dt/MFPictureBrowser.svg)
 ![Version](https://img.shields.io/cocoapods/v/MFPictureBrowser.svg?style=flat)
 ![Platform](https://img.shields.io/cocoapods/p/MFPictureBrowser.svg?style=flat)
