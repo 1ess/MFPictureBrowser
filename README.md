@@ -2,6 +2,11 @@
 
 类似于<即刻>应用的图片浏览器效果(支持PNG， JPG， GIF， WebP).
 
+![Total-downloads](https://img.shields.io/cocoapods/dt/MFPictureBrowser.svg)
+![Version](https://img.shields.io/cocoapods/v/MFPictureBrowser.svg?style=flat)
+![Platform](https://img.shields.io/cocoapods/p/MFPictureBrowser.svg?style=flat)
+![Language](https://img.shields.io/badge/language-objectivec-blue.svg)
+
 ## 效果图
 
 <img src="https://raw.githubusercontent.com/GodzzZZZ/SourceRepository/master/MFPictureBrowser/1.gif" width="25%"><img src="https://raw.githubusercontent.com/GodzzZZZ/SourceRepository/master/MFPictureBrowser/2.gif" width="25%"><img src="https://raw.githubusercontent.com/GodzzZZZ/SourceRepository/master/MFPictureBrowser/3.gif" width="25%"><img src="https://raw.githubusercontent.com/GodzzZZZ/SourceRepository/master/MFPictureBrowser/4.gif" width="25%">
