@@ -1,4 +1,4 @@
-# MFPictureBrowser
+# [废弃]MFPictureBrowser
 
 类似于<即刻>应用的图片浏览器效果(支持PNG， JPG， GIF， WebP).
 
